@@ -94,12 +94,7 @@ a.contact-icon:hover { background: #f5f5f5; color: var(--ink); }
 .tag { color: var(--muted); font-size: 0.75rem; white-space: nowrap; }
 .empty-message { padding-block: 16px; color: var(--muted); }
 
-.site-footer {
-  display: flex; justify-content: space-between; gap: 16px; padding-block: 18px 24px;
-  color: var(--muted); font-size: 0.75rem;
-}
-.site-footer a { white-space: nowrap; }
-.detail-main { max-width: 740px; min-height: calc(100vh - 65px); padding-block: 48px 64px; }
+.detail-main { max-width: 740px; min-height: 100vh; padding-block: 48px 64px; }
 .back-link { display: inline-block; margin-bottom: 28px; color: var(--muted); font-size: 0.875rem; }
 .back-link:hover { color: var(--ink); text-decoration-color: var(--accent); }
 .detail-header h1, .missing-title {

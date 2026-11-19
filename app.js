@@ -42,7 +42,8 @@ function applyTranslations() {
       node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
     });
   }
-  document.querySelectorAll("[data-language]").forEach((button) => {
+  document.querySelector(".language-switch").dataset.language = language;
+  document.querySelectorAll("button[data-language]").forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.language === language));
   });
 }
@@ -300,7 +301,12 @@ if (document.body.dataset.page === "timeline") {
 
 
 // Each language button is a native button, supporting Tab, Enter and Space.
-document.querySelectorAll("[data-language]").forEach((button) => {
+let languageAnimations = [];
+const languageMotion = matchMedia("(prefers-reduced-motion: reduce)");
+languageMotion.addEventListener("change", () => {
+  if (languageMotion.matches) languageAnimations.forEach((animation) => animation.cancel());
+});
+document.querySelectorAll("button[data-language]").forEach((button) => {
   button.addEventListener("click", () => {
     if (language === button.dataset.language) return;
     language = button.dataset.language;
@@ -310,7 +316,17 @@ document.querySelectorAll("[data-language]").forEach((button) => {
       query.set("lang", language);
       history.replaceState(null, "", location.pathname + "?" + query + location.hash);
     }
+    languageAnimations.forEach((animation) => animation.cancel());
+    languageAnimations = [];
     applyTranslations();
     renderCurrentPage();
+    if (!languageMotion.matches) {
+      document.querySelectorAll(".profile-copy, .page-main, .detail-main").forEach((node) => {
+        if (!node.animate) return;
+        languageAnimations.push(node.animate([{ opacity: 0.45 }, { opacity: 1 }], {
+          duration: 180, easing: "ease-out",
+        }));
+      });
+    }
   });
 });

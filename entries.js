@@ -9,8 +9,8 @@ const entries = [
   {
     id: "band-club",
     category: "career",
-    date: "2023-03",
-    endDate: "2024-12",
+    date: "2020-03",
+    endDate: "2021-12",
     title: "교내 밴드 동아리",
     summary: "키보드 세션으로 정기 공연을 준비하고 합주 일정을 조율했어요.",
     tags: ["동아리", "밴드"],
@@ -22,7 +22,7 @@ const entries = [
   {
     id: "football-club",
     category: "career",
-    date: "2023-09",
+    date: "2022-09",
     title: "축구동아리 리그 참가",
     summary: "교내 리그에 출전하며 경기 운영과 팀 훈련에 참여했어요.",
     tags: ["동아리", "축구"],
@@ -34,7 +34,7 @@ const entries = [
   {
     id: "campus-booking",
     category: "project",
-    date: "2024-06",
+    date: "2023-06",
     title: "교내 공간 예약 서비스",
     summary: "빈 강의실을 찾고 한 화면에서 예약하는 웹 프로토타입을 만들었어요.",
     tags: ["수업", "팀 프로젝트"],
@@ -48,7 +48,7 @@ const entries = [
   {
     id: "campus-award",
     category: "award",
-    date: "2024-11",
+    date: "2023-11",
     title: "교내 소프트웨어 경진대회 우수상",
     summary: "수업에서 시작한 교내 공간 예약 서비스를 발전시켜 출품했어요.",
     tags: ["우수상", "교내 대회"],
@@ -74,7 +74,7 @@ const entries = [
   {
     id: "match-log",
     category: "project",
-    date: "2025-05",
+    date: "2026-05",
     title: "동아리 경기 기록 웹앱",
     summary: "경기 결과와 참가 명단을 휴대폰에서 기록할 수 있는 페이지를 만들었어요.",
     tags: ["개인 프로젝트", "동아리"],

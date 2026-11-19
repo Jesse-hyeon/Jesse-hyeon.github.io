@@ -191,7 +191,7 @@ a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
 }
 
 .language-switch {
-  position: fixed; z-index: 10; bottom: 24px;
+  position: fixed; z-index: 10; top: 10px;
   right: max(32px, calc((100vw - 1160px) / 2));
   display: grid; grid-template-columns: repeat(2, 36px); gap: 2px; padding: 2px;
   border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
@@ -221,5 +221,7 @@ a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
   .language-switch::before, .language-switch button { transition: none; }
 }
 @media (max-width: 760px) {
-  .language-switch { bottom: max(16px, env(safe-area-inset-bottom)); right: max(16px, env(safe-area-inset-right)); }
+  .language-switch { top: max(12px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); }
+  .page-layout { padding-top: 80px; }
+  .detail-main { padding-top: 80px; }
 }

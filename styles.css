@@ -42,15 +42,13 @@ button { font: inherit; }
 .profile-details li { display: flex; align-items: center; gap: 9px; }
 .profile-details svg { flex: 0 0 16px; width: 16px; height: 16px; fill: currentColor; }
 .page-main, .detail-main { min-width: 0; overflow-wrap: anywhere; }
-.intro, .timeline-section { scroll-margin-top: 22px; }
-.intro h1, .detail-header h1, .missing-title {
+.timeline-section { scroll-margin-top: 22px; }
+.detail-header h1, .missing-title {
   margin: 0 0 18px; font-size: clamp(1.9rem, 4vw, 2.7rem); line-height: 1.25;
   font-weight: 800; letter-spacing: -0.06em; word-break: keep-all;
 }
-.intro p, .detail-header > p, .detail-section p { margin: 0 0 13px; color: var(--body); line-height: 1.8; word-break: keep-all; }
-.intro .sample-note { margin: 17px 0 0; color: var(--muted); font-size: 0.875rem; }
+.detail-header > p, .detail-section p { margin: 0 0 13px; color: var(--body); line-height: 1.8; word-break: keep-all; }
 
-.timeline-section { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 24px; }
 .section-heading h2 { margin: 0; font-size: 1.56rem; letter-spacing: -0.045em; }
 .section-heading p { margin: 3px 0 0; color: var(--muted); font-size: 0.92rem; }
 .filters { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 14px; border-bottom: 1px solid var(--line); }
@@ -114,8 +112,6 @@ button { font: inherit; }
   .profile { padding-bottom: 22px; border-bottom: 1px solid var(--line); }
   .profile-avatar { width: 106px; }
   .profile-description { margin-block: 2px; }
-  .intro h1 { margin-bottom: 12px; }
-  .timeline-section { margin-top: 30px; padding-top: 17px; }
   .timeline-row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .timeline-row > :is(.entry-date, .entry-range) { margin-top: 0; }
   .detail-main { padding-block: 25px 44px; }

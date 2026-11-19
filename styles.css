@@ -35,9 +35,12 @@ button { font: inherit; }
 }
 .profile-name { margin: 0; font-size: 1.08rem; font-weight: 800; }
 .profile-description { margin: 5px 0 9px; font-size: 0.92rem; color: var(--muted); word-break: keep-all; }
-.profile-majors { list-style: none; padding: 0; }
-.profile-majors li + li { margin-top: 3px; }
-.profile-link { font-size: 0.92rem; font-weight: 650; }
+.profile-details {
+  display: grid; gap: 6px; margin: 15px 0 0; padding: 0;
+  list-style: none; color: var(--muted); font-size: 0.875rem;
+}
+.profile-details li { display: flex; align-items: center; gap: 9px; }
+.profile-details svg { flex: 0 0 16px; width: 16px; height: 16px; fill: currentColor; }
 .page-main, .detail-main { min-width: 0; overflow-wrap: anywhere; }
 .intro, .timeline-section { scroll-margin-top: 22px; }
 .intro h1, .detail-header h1, .missing-title {

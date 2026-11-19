@@ -210,7 +210,6 @@ if (document.body.dataset.page === "timeline") {
   indicator.setAttribute("aria-hidden", "true");
   filters.append(indicator);
   let selectedFilter = activeFilter;
-  let transitionId = 0;
   let animation;
 
   function positionIndicator() {
@@ -227,41 +226,17 @@ if (document.body.dataset.page === "timeline") {
     positionIndicator();
   }
 
-  async function transitionTimeline(filter) {
-    const id = ++transitionId;
+  function transitionTimeline(filter) {
     animation?.cancel();
-    list.style.overflow = "";
-    if (reducedMotion.matches || !list.animate) {
-      showTimeline(filter);
-      list.removeAttribute("aria-busy");
-      return;
-    }
-    list.setAttribute("aria-busy", "true");
-    animation = list.animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 90, easing: "ease-out", fill: "forwards",
-    });
-    await animation.finished.catch(() => {});
-    if (id !== transitionId) return;
-    const previousHeight = list.offsetHeight;
     showTimeline(filter);
-    const nextHeight = list.offsetHeight;
-    animation.cancel();
-    list.style.overflow = "hidden";
-    animation = list.animate([
-      { opacity: 0, transform: "translateY(6px)", height: previousHeight + "px" },
-      { opacity: 1, transform: "translateY(0)", height: nextHeight + "px" },
-    ], { duration: 200, easing: "cubic-bezier(0.2, 0, 0, 1)" });
-    await animation.finished.catch(() => {});
-    if (id !== transitionId) return;
-    list.style.overflow = "";
-    list.removeAttribute("aria-busy");
+    if (reducedMotion.matches || !list.animate) return;
+    animation = list.animate([{ opacity: 0.65 }, { opacity: 1 }], {
+      duration: 120, easing: "ease-out",
+    });
   }
 
   renderCurrentPage = () => {
-    ++transitionId;
     animation?.cancel();
-    list.style.overflow = "";
-    list.removeAttribute("aria-busy");
     showTimeline(selectedFilter);
     showEducation();
     selectFilter(selectedFilter);
@@ -276,10 +251,7 @@ if (document.body.dataset.page === "timeline") {
   });
   reducedMotion.addEventListener("change", () => {
     if (reducedMotion.matches) {
-      ++transitionId;
       animation?.cancel();
-      list.style.overflow = "";
-      list.removeAttribute("aria-busy");
       showTimeline(selectedFilter);
     }
   });

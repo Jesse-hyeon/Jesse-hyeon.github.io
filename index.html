@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="커리어, 수상, 프로젝트를 시간순으로 모은 포트폴리오">
+  <title>김하늘 포트폴리오</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./entries.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body data-page="timeline">
+  <header class="site-header" id="top">
+    <div class="shell header-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true">✳</span> 김하늘 포트폴리오</a>
+      <a class="header-link" href="#timeline">타임라인</a>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="intro-title">
+      <div class="hero-copy">
+        <p class="sample-label">샘플 포트폴리오</p>
+        <h1 id="intro-title">배우고 만들고,<br><span>기록합니다.</span></h1>
+        <p class="hero-description">수업에서 시작한 아이디어부터 팀과 함께 만든 프로젝트까지.<br class="desktop-break"> 그 과정에서 맡은 역할과 배운 점을 모았습니다.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-card art-card-back"></div>
+        <div class="art-card art-card-front">
+          <div class="art-track"><i></i><b></b></div>
+          <div class="art-track"><i></i><b></b></div>
+          <div class="art-track"><i></i><b></b></div>
+        </div>
+      </div>
+    </section>
+    <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
+      <div class="section-heading">
+        <div>
+          <h2 id="timeline-title">타임라인</h2>
+          <p>오래된 경험부터 최신 경험까지</p>
+        </div>
+        <div class="filters" role="group" aria-label="타임라인 필터">
+          <button type="button" data-filter="all" aria-pressed="true">전체</button>
+          <button type="button" data-filter="career" aria-pressed="false">커리어</button>
+          <button type="button" data-filter="award" aria-pressed="false">수상경험</button>
+          <button type="button" data-filter="project" aria-pressed="false">프로젝트</button>
+        </div>
+      </div>
+      <p class="sr-only" id="filter-status" role="status"></p>
+      <div id="timeline-list"></div>
+      <noscript><p>타임라인을 보려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
+    </section>
+  </main>
+  <footer class="site-footer shell"><span>김하늘 포트폴리오 · 예시 데이터</span><a href="#top">맨 위로</a></footer>
+</body>
+</html>

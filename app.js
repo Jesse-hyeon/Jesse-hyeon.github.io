@@ -118,7 +118,7 @@ function showDetail() {
     return;
   }
 
-  document.title = entry.title + " | 김현우 포트폴리오";
+  document.title = entry.title + " | Hyeonwoo Kim";
   const header = element("header", "detail-header");
   const meta = element("div", "card-meta");
   meta.append(badge(entry), entryDate(entry));

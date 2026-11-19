@@ -84,13 +84,13 @@ button { font: inherit; }
 }
 #timeline-list { display: flow-root; }
 
-.year-group { margin-top: 24px; }
+.year-group { margin-top: 40px; }
+.year-group:first-child { margin-top: 24px; }
 .year {
-  display: flex; align-items: center; gap: 14px; margin: 0 0 16px;
-  color: var(--ink); font-size: 0.875rem; font-weight: 750;
+  margin: 0 0 20px;
+  color: var(--ink); font-size: 1.125rem; font-weight: 600;
   line-height: 1.5; font-variant-numeric: tabular-nums; white-space: nowrap;
 }
-.year::after { content: ""; flex: 1; height: 1px; background: var(--accent); opacity: 0.35; }
 .year-entries { display: grid; gap: var(--item-gap); margin: 0; padding: 0; list-style: none; border-left: 1px solid var(--line); }
 .timeline-row {
   position: relative; display: grid; grid-template-columns: var(--date-column-width) minmax(0, 1fr);
@@ -169,7 +169,6 @@ a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
   .shell { width: calc(100% - 40px); }
   .page-layout { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-block: 32px 40px; }
   .profile { gap: 16px; max-width: 400px; }
-  .year-group { margin-top: 22px; }
   .detail-main { padding-block: 32px 40px; }
 }
 

@@ -2,6 +2,51 @@ const params = new URLSearchParams(location.search);
 const requestedFilter = params.get("filter") === "career" ? "activity" : params.get("filter");
 const activeFilter = Object.hasOwn(categories, requestedFilter) ? requestedFilter : "all";
 
+const locales = { ko: korean, en: english };
+let language = params.get("lang");
+if (!Object.hasOwn(locales, language)) {
+  try {
+    language = localStorage.getItem("portfolio-language");
+  } catch {
+    language = null;
+  }
+}
+if (!Object.hasOwn(locales, language)) language = "ko";
+
+function text(key) {
+  return key.split(".").reduce((value, part) => value[part], locales[language]);
+}
+
+function localizedEntry(entry) {
+  return { ...entry, ...(locales[language].entries[entry.id] || korean.entries[entry.id]) };
+}
+
+function rememberLanguage() {
+  try {
+    localStorage.setItem("portfolio-language", language);
+  } catch {
+    // Navigation links also carry the language when browser storage is unavailable.
+  }
+}
+
+function applyTranslations() {
+  document.documentElement.lang = language;
+  document.title = text("pageTitle");
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = text("description");
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    node.textContent = text(node.dataset.i18n);
+  });
+  for (const attribute of ["aria-label", "alt"]) {
+    document.querySelectorAll("[data-i18n-" + attribute + "]").forEach((node) => {
+      node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
+    });
+  }
+  document.querySelectorAll("[data-language]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.language === language));
+  });
+}
+
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -16,11 +61,13 @@ function link(className, text, href) {
 }
 
 function filterQuery(filter) {
-  return filter === "all" ? "" : "?filter=" + encodeURIComponent(filter);
+  const query = new URLSearchParams({ lang: language });
+  if (filter !== "all") query.set("filter", filter);
+  return "?" + query;
 }
 
 function detailUrl(id, filter) {
-  const query = new URLSearchParams({ id });
+  const query = new URLSearchParams({ id, lang: language });
   if (filter !== "all") query.set("filter", filter);
   return "./detail.html?" + query;
 }
@@ -37,10 +84,11 @@ function entryDate(entry) {
 }
 
 function badge(entry) {
-  return element("span", "badge", entry.label || categories[entry.category]);
+  return element("span", "badge", entry.label || text("filters." + entry.category));
 }
 
-function timelineRow(entry, filter) {
+function timelineRow(source, filter) {
+  const entry = localizedEntry(source);
   const row = element("li", "timeline-row");
   const content = entry.detail
     ? link("timeline-card", "", detailUrl(entry.id, filter))
@@ -77,14 +125,16 @@ function showTimeline(filter) {
     list.append(group);
   }
 
-  if (!selected.length) list.append(element("p", "empty-message", "등록된 경험이 없습니다."));
+  if (!selected.length) list.append(element("p", "empty-message", text("labels.empty")));
   document.querySelector("#filter-status").textContent =
-    (categories[filter] || "All") + " · " + selected.length + "개";
+    text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", selected.length);
 }
 
 function showEducation() {
   const list = document.querySelector("#education-list");
-  for (const entry of education) {
+  list.replaceChildren();
+  for (const source of education) {
+    const entry = { ...source, ...text("education") };
     const row = element("li", "education-row");
     const content = element("div");
     content.append(element("h3", "", entry.title), element("p", "", entry.summary));
@@ -95,16 +145,18 @@ function showEducation() {
 
 function showDetail() {
   const target = document.querySelector("#entry-detail");
+  target.replaceChildren();
   document.querySelector("#timeline-return").href =
     "./index.html" + filterQuery(activeFilter) + "#timeline";
-  const entry = entries.find(({ id }) => id === params.get("id"));
+  const source = entries.find(({ id }) => id === params.get("id"));
 
-  if (!entry) {
-    target.append(element("h1", "missing-title", "경험을 찾을 수 없습니다."));
+  if (!source) {
+    target.append(element("h1", "missing-title", text("labels.missing")));
     return;
   }
 
-  document.title = entry.title + " | Hyeonwoo Kim";
+  const entry = localizedEntry(source);
+  document.title = entry.title + " | " + text("profile.name");
   const header = element("header", "detail-header");
   const meta = element("div", "card-meta");
   meta.append(badge(entry), entryDate(entry));
@@ -119,22 +171,26 @@ function showDetail() {
     body.append(block);
   }
   if (!body.childElementCount) {
-    body.append(element("p", "detail-pending", "상세 내용은 추후 추가할 예정입니다."));
+    body.append(element("p", "detail-pending", text("labels.pending")));
   }
   target.append(body);
 
   if (!entry.related?.length) return;
   const related = element("section", "related");
-  related.append(element("h2", "", "연결된 경험"));
+  related.append(element("h2", "", text("labels.related")));
   for (const item of entry.related) {
     const match = entries.find(({ id }) => id === item.id);
     if (!match) continue;
     const card = link("related-card", "", detailUrl(match.id, activeFilter));
-    card.append(element("span", "related-label", item.label), element("strong", "", match.title));
+    card.append(element("span", "related-label", item.label), element("strong", "", localizedEntry(match).title));
     related.append(card);
   }
   target.append(related);
 }
+
+let renderCurrentPage;
+rememberLanguage();
+applyTranslations();
 
 if (document.body.dataset.page === "timeline") {
   document.querySelectorAll(".contact-icon").forEach((icon) => {
@@ -200,9 +256,16 @@ if (document.body.dataset.page === "timeline") {
     list.removeAttribute("aria-busy");
   }
 
-  showTimeline(activeFilter);
-  selectFilter(activeFilter);
-  showEducation();
+  renderCurrentPage = () => {
+    ++transitionId;
+    animation?.cancel();
+    list.style.overflow = "";
+    list.removeAttribute("aria-busy");
+    showTimeline(selectedFilter);
+    showEducation();
+    selectFilter(selectedFilter);
+  };
+  renderCurrentPage();
   const resizeObserver = new ResizeObserver(positionIndicator);
   resizeObserver.observe(filters);
   buttons.forEach((button) => resizeObserver.observe(button));
@@ -231,5 +294,23 @@ if (document.body.dataset.page === "timeline") {
     });
   });
 } else {
-  showDetail();
+  renderCurrentPage = showDetail;
+  renderCurrentPage();
 }
+
+
+// Each language button is a native button, supporting Tab, Enter and Space.
+document.querySelectorAll("[data-language]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (language === button.dataset.language) return;
+    language = button.dataset.language;
+    rememberLanguage();
+    if (location.protocol !== "file:") {
+      const query = new URLSearchParams(location.search);
+      query.set("lang", language);
+      history.replaceState(null, "", location.pathname + "?" + query + location.hash);
+    }
+    applyTranslations();
+    renderCurrentPage();
+  });
+});

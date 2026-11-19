@@ -190,3 +190,23 @@ a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
 @media (prefers-reduced-motion: reduce) {
   .filters button, .filters-ready .filter-indicator { transition: none; }
 }
+
+.language-switch {
+  position: fixed; z-index: 10; top: 12px;
+  right: max(32px, calc((100vw - 1160px) / 2));
+  display: flex; align-items: center; padding: 3px;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--paper);
+}
+.language-switch button {
+  min-width: 40px; min-height: 36px; padding: 6px 9px;
+  border: 0; border-radius: 999px; background: transparent;
+  color: var(--muted); font-size: 0.75rem; font-weight: 650; cursor: pointer;
+}
+.language-switch button:hover { color: var(--ink); }
+.language-switch button[aria-pressed="true"] { background: #fff1e6; color: var(--ink); }
+.language-divider { color: var(--line); font-size: 0.75rem; pointer-events: none; }
+@media (max-width: 760px) {
+  .language-switch { top: max(12px, env(safe-area-inset-top)); right: max(16px, env(safe-area-inset-right)); }
+  .page-layout { padding-top: 80px; }
+  .detail-main { padding-top: 80px; }
+}

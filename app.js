@@ -59,7 +59,7 @@ function showTimeline(filter) {
   list.replaceChildren();
   const sorted = entries
     .filter((entry) => filter === "all" || entry.category === filter)
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .sort((a, b) => b.date.localeCompare(a.date));
 
   let currentYear;
   let rows;

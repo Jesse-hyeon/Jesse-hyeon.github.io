@@ -26,13 +26,6 @@ function detailUrl(id, filter) {
   return "./detail.html?" + query;
 }
 
-function dateLabel(entry) {
-  const format = (date) => date.replace("-", ".");
-  return entry.endDate
-    ? format(entry.date) + " – " + format(entry.endDate)
-    : format(entry.date);
-}
-
 function entryDate(entry) {
   const date = element("time", "entry-date", entry.date.replace("-", "."));
   date.dateTime = entry.date;
@@ -52,16 +45,11 @@ function badge(entry) {
 function timelineCard(entry, filter) {
   const row = element("li", "timeline-row " + entry.category);
   const card = link("timeline-card", "", detailUrl(entry.id, filter));
-  card.setAttribute("aria-label", entry.title + " 상세 보기");
   const meta = element("div", "card-meta");
   meta.append(badge(entry));
   for (const tag of entry.tags) meta.append(element("span", "tag", tag));
 
-  const content = element("div", "card-content");
-  content.append(meta, element("h4", "", entry.title), element("p", "", entry.summary));
-  const icon = element("span", "card-icon");
-  icon.setAttribute("aria-hidden", "true");
-  card.append(content, icon);
+  card.append(element("h4", "", entry.title), element("p", "", entry.summary), meta);
   row.append(entryDate(entry), card);
   return row;
 }
@@ -109,7 +97,7 @@ function showDetail() {
   document.title = entry.title + " | 김하늘 포트폴리오";
   const header = element("header", "detail-header " + entry.category);
   const meta = element("div", "card-meta");
-  meta.append(badge(entry), element("span", "entry-date", dateLabel(entry)));
+  meta.append(badge(entry), entryDate(entry));
   for (const tag of entry.tags) meta.append(element("span", "tag", tag));
   header.append(meta, element("h1", "", entry.title), element("p", "", entry.summary));
 

@@ -9,32 +9,34 @@
   <script src="./entries.js" defer></script>
   <script src="./app.js" defer></script>
 </head>
-<body data-page="timeline">
-  <header class="site-header" id="top">
+<body data-page="timeline" id="top">
+  <header class="site-header">
     <div class="shell header-inner">
-      <a class="brand" href="./index.html"><span class="brand-mark" aria-hidden="true">✳</span> 김하늘 포트폴리오</a>
-      <a class="header-link" href="#timeline">타임라인</a>
+      <a class="brand" href="./index.html">김하늘</a>
+      <nav class="site-nav" aria-label="주 메뉴">
+        <a href="#about">소개</a>
+        <a href="#timeline">타임라인</a>
+      </nav>
     </div>
   </header>
-  <main class="shell">
-    <section class="hero" aria-labelledby="intro-title">
-      <div class="hero-copy">
-        <p class="sample-label">샘플 포트폴리오</p>
-        <h1 id="intro-title">배우고 만들고,<br><span>기록합니다.</span></h1>
-        <p class="hero-description">수업에서 시작한 아이디어부터 팀과 함께 만든 프로젝트까지.<br class="desktop-break"> 그 과정에서 맡은 역할과 배운 점을 모았습니다.</p>
+  <div class="shell page-layout">
+    <aside class="profile" aria-label="프로필">
+      <div class="profile-avatar" aria-hidden="true">KH</div>
+      <div class="profile-copy">
+        <p class="profile-name">김하늘</p>
+        <p class="profile-description">프론트엔드 개발에 관심이 있어요.</p>
+        <a class="profile-link" href="https://github.com/Jesse-hyeon">GitHub</a>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="art-card art-card-back"></div>
-        <div class="art-card art-card-front">
-          <div class="art-track"><i></i><b></b></div>
-          <div class="art-track"><i></i><b></b></div>
-          <div class="art-track"><i></i><b></b></div>
-        </div>
-      </div>
-    </section>
-    <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
-      <div class="section-heading">
-        <div>
+    </aside>
+    <main class="page-main">
+      <section class="intro" id="about" aria-labelledby="intro-title">
+        <h1 id="intro-title">안녕하세요, 김하늘입니다.</h1>
+        <p>일상에서 느낀 불편을 웹으로 해결하는 데 관심이 있어요. 수업에서 공간 예약 서비스를 만들었고, 인턴으로 일하며 실제 사용자가 쓰는 화면을 개선하는 경험을 했습니다.</p>
+        <p>여기에는 프로젝트와 수상 경험, 밴드와 축구동아리 활동에서 맡은 역할과 배운 점을 시간순으로 모았습니다.</p>
+        <p class="sample-note">현재 이름, 소개 및 경험은 예시입니다.</p>
+      </section>
+      <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
+        <div class="section-heading">
           <h2 id="timeline-title">타임라인</h2>
           <p>오래된 경험부터 최신 경험까지</p>
         </div>
@@ -44,12 +46,12 @@
           <button type="button" data-filter="award" aria-pressed="false">수상경험</button>
           <button type="button" data-filter="project" aria-pressed="false">프로젝트</button>
         </div>
-      </div>
-      <p class="sr-only" id="filter-status" role="status"></p>
-      <div id="timeline-list"></div>
-      <noscript><p>타임라인을 보려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
-    </section>
-  </main>
-  <footer class="site-footer shell"><span>김하늘 포트폴리오 · 예시 데이터</span><a href="#top">맨 위로</a></footer>
+        <p class="sr-only" id="filter-status" role="status"></p>
+        <div id="timeline-list"></div>
+        <noscript><p>타임라인을 보려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
+      </section>
+    </main>
+  </div>
+  <footer class="site-footer shell"><span>김하늘 포트폴리오</span><a href="#top">맨 위로</a></footer>
 </body>
 </html>

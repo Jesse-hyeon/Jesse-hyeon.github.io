@@ -43,12 +43,14 @@ button { font: inherit; }
 .profile-details li { display: flex; align-items: center; gap: 8px; }
 .profile-details span { min-width: 0; overflow-wrap: anywhere; }
 .profile-details svg { flex: 0 0 16px; width: 16px; height: 16px; fill: currentColor; }
-.profile-socials { display: flex; gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
+.profile-socials { display: flex; justify-content: flex-start; align-items: center; gap: 8px; margin: 24px 0 0; padding: 0; list-style: none; }
+.profile-socials li { display: flex; flex: 0 0 44px; }
 .contact-icon {
-  position: relative; display: grid; place-items: center; width: 40px; height: 40px;
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px;
   padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--muted);
+  transition: background-color 160ms ease, color 160ms ease;
 }
-.contact-icon svg { width: 19px; height: 19px; fill: currentColor; }
+.contact-icon svg { width: 21px; height: 21px; fill: currentColor; }
 .contact-icon:is(:hover, :focus-visible) { background: #fff1e6; color: var(--accent); }
 .contact-tooltip {
   position: absolute; z-index: 1; bottom: calc(100% + 8px); left: 50%;
@@ -57,6 +59,10 @@ button { font: inherit; }
   font-weight: 500; white-space: nowrap; pointer-events: none; visibility: hidden;
 }
 .contact-icon:is(:hover, :focus-visible):not([data-tooltip-dismissed]) .contact-tooltip { visibility: visible; }
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-icon { transition: none; }
+}
 
 .page-main, .detail-main { min-width: 0; overflow-wrap: anywhere; }
 .timeline-section { scroll-margin-top: 24px; }

@@ -38,9 +38,11 @@ button { font: inherit; }
 }
 .profile-details {
   display: grid; gap: 8px; margin: 24px 0 0; padding: 0;
-  list-style: none; color: var(--muted); font-size: 0.875rem;
+  max-width: 100%; list-style: none; color: var(--muted); font-size: 0.875rem;
 }
 .profile-details li { display: flex; align-items: center; gap: 8px; }
+.profile-details a { min-width: 0; overflow-wrap: anywhere; text-decoration: none; }
+.profile-details a:is(:hover, :focus-visible) { color: var(--accent); text-decoration: underline; }
 .profile-details svg { flex: 0 0 16px; width: 16px; height: 16px; fill: currentColor; }
 .profile-socials { display: flex; gap: 12px; margin: 24px 0 0; padding: 0; list-style: none; }
 .contact-icon {

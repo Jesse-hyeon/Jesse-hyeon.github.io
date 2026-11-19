@@ -7,6 +7,18 @@ const categories = {
 
 const entries = [
   {
+    id: "intro-programming",
+    category: "project",
+    date: "2020-03",
+    title: "기초 프로그래밍 수업",
+    summary: "프로그래밍 기초를 배우며 첫 번째 작은 프로그램을 만들었어요.",
+    tags: ["수업", "프로그래밍"],
+    sections: [
+      { title: "수업에서 한 일", text: "기초 문법과 문제 해결 과정을 익히고, 배운 내용을 활용해 간단한 프로그램을 구현했습니다." },
+      { title: "배운 점", text: "작은 문제로 나누어 순서대로 해결하는 과정을 경험했습니다." },
+    ],
+  },
+  {
     id: "band-club",
     category: "career",
     date: "2020-03",

@@ -94,7 +94,7 @@ function showDetail() {
     return;
   }
 
-  document.title = entry.title + " | 김하늘 포트폴리오";
+  document.title = entry.title + " | 김현우 포트폴리오";
   const header = element("header", "detail-header " + entry.category);
   const meta = element("div", "card-meta");
   meta.append(badge(entry), entryDate(entry));

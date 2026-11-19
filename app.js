@@ -151,6 +151,14 @@ function showDetail() {
 }
 
 if (document.body.dataset.page === "timeline") {
+  document.querySelectorAll(".contact-icon").forEach((icon) => {
+    icon.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") icon.dataset.tooltipDismissed = "true";
+    });
+    for (const event of ["mouseleave", "blur"]) {
+      icon.addEventListener(event, () => delete icon.dataset.tooltipDismissed);
+    }
+  });
   showTimeline(activeFilter);
   showEducation();
   document.querySelectorAll("[data-filter]").forEach((button) => {

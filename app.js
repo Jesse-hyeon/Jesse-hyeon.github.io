@@ -78,9 +78,6 @@ function showTimeline(filter) {
   }
 
   if (!selected.length) list.append(element("p", "empty-message", "등록된 경험이 없습니다."));
-  document.querySelectorAll("[data-filter]").forEach((button) => {
-    button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
-  });
   document.querySelector("#filter-status").textContent =
     (categories[filter] || "All") + " · " + selected.length + "개";
 }
@@ -148,15 +145,89 @@ if (document.body.dataset.page === "timeline") {
       icon.addEventListener(event, () => delete icon.dataset.tooltipDismissed);
     }
   });
+  const filters = document.querySelector(".filters");
+  const buttons = [...filters.querySelectorAll("[data-filter]")];
+  const list = document.querySelector("#timeline-list");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const indicator = element("span", "filter-indicator");
+  indicator.setAttribute("aria-hidden", "true");
+  filters.append(indicator);
+  let selectedFilter = activeFilter;
+  let transitionId = 0;
+  let animation;
+
+  function positionIndicator() {
+    const selected = buttons.find((button) => button.dataset.filter === selectedFilter);
+    indicator.style.width = selected.offsetWidth + "px";
+    indicator.style.transform = `translate(${selected.offsetLeft}px, ${selected.offsetTop + selected.offsetHeight - 2}px)`;
+  }
+
+  function selectFilter(filter) {
+    selectedFilter = filter;
+    buttons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
+    });
+    positionIndicator();
+  }
+
+  async function transitionTimeline(filter) {
+    const id = ++transitionId;
+    animation?.cancel();
+    list.style.overflow = "";
+    if (reducedMotion.matches || !list.animate) {
+      showTimeline(filter);
+      list.removeAttribute("aria-busy");
+      return;
+    }
+    list.setAttribute("aria-busy", "true");
+    animation = list.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 90, easing: "ease-out", fill: "forwards",
+    });
+    await animation.finished.catch(() => {});
+    if (id !== transitionId) return;
+    const previousHeight = list.offsetHeight;
+    showTimeline(filter);
+    const nextHeight = list.offsetHeight;
+    animation.cancel();
+    list.style.overflow = "hidden";
+    animation = list.animate([
+      { opacity: 0, transform: "translateY(6px)", height: previousHeight + "px" },
+      { opacity: 1, transform: "translateY(0)", height: nextHeight + "px" },
+    ], { duration: 200, easing: "cubic-bezier(0.2, 0, 0, 1)" });
+    await animation.finished.catch(() => {});
+    if (id !== transitionId) return;
+    list.style.overflow = "";
+    list.removeAttribute("aria-busy");
+  }
+
   showTimeline(activeFilter);
+  selectFilter(activeFilter);
   showEducation();
-  document.querySelectorAll("[data-filter]").forEach((button) => {
+  const resizeObserver = new ResizeObserver(positionIndicator);
+  resizeObserver.observe(filters);
+  buttons.forEach((button) => resizeObserver.observe(button));
+  document.fonts.ready.then(() => {
+    positionIndicator();
+    filters.classList.add("filters-ready");
+  });
+  reducedMotion.addEventListener("change", () => {
+    if (reducedMotion.matches) {
+      ++transitionId;
+      animation?.cancel();
+      list.style.overflow = "";
+      list.removeAttribute("aria-busy");
+      showTimeline(selectedFilter);
+    }
+  });
+  buttons.forEach((button) => {
     button.addEventListener("click", () => {
       const filter = button.dataset.filter;
+      if (filter === selectedFilter) return;
+      selectFilter(filter);
       if (location.protocol !== "file:") {
         history.replaceState(null, "", location.pathname + filterQuery(filter) + location.hash);
       }
-      showTimeline(filter);
+      transitionTimeline(filter);
     });
   });
 } else {

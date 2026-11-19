@@ -67,14 +67,22 @@ button { font: inherit; }
 .page-main, .detail-main { min-width: 0; overflow-wrap: anywhere; }
 .timeline-section { scroll-margin-top: 24px; }
 .section-heading h2 { margin: 0; font-size: 1.875rem; line-height: 1.25; font-weight: 750; letter-spacing: -0.04em; }
-.filters { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 18px; border-bottom: 1px solid var(--line); }
+.filters { position: relative; display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 18px; border-bottom: 1px solid var(--line); }
 .filters button {
   min-height: 44px; padding: 7px 0; border: 0; border-bottom: 2px solid transparent;
-  background: transparent; color: var(--muted); cursor: pointer; font-weight: 550;
-  font-size: 0.875rem; white-space: nowrap;
+  background: transparent; color: var(--muted); cursor: pointer; font-weight: 650;
+  font-size: 0.875rem; white-space: nowrap; transition: color 160ms ease;
 }
 .filters button:hover { color: var(--ink); }
-.filters button[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 750; }
+.filters button[aria-pressed="true"] { color: var(--ink); }
+.filter-indicator {
+  position: absolute; top: 0; left: 0; height: 2px;
+  background: var(--accent); pointer-events: none;
+}
+.filters-ready .filter-indicator {
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1), width 220ms ease;
+}
+#timeline-list { display: flow-root; }
 
 .year-group { margin-top: 24px; }
 .year {
@@ -177,4 +185,8 @@ a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
 }
 @media (max-width: 360px) {
   .profile-name { white-space: normal; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filters button, .filters-ready .filter-indicator { transition: none; }
 }

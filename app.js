@@ -67,24 +67,8 @@ function showTimeline(filter) {
     const group = element("section", "year-group");
     group.append(element("h3", "year", year));
     const rows = element("ol", "year-entries");
-    const activities = [];
-    for (const entry of grouped) {
-      if (filter === "all" && entry.category === "activity") {
-        activities.push(entry);
-      } else {
-        rows.append(timelineRow(entry, filter));
-      }
-    }
-    if (rows.childElementCount) group.append(rows);
-
-    if (activities.length) {
-      const disclosure = element("details", "activity-disclosure");
-      disclosure.append(element("summary", "", "Activities · " + activities.length));
-      const activityRows = element("ol", "year-entries");
-      for (const entry of activities) activityRows.append(timelineRow(entry, filter));
-      disclosure.append(activityRows);
-      group.append(disclosure);
-    }
+    for (const entry of grouped) rows.append(timelineRow(entry, filter));
+    group.append(rows);
     list.append(group);
   }
 

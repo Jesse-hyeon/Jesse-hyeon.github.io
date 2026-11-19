@@ -135,14 +135,6 @@ a.timeline-card:hover h4, a.timeline-card:focus-visible h4 {
   .detail-main { padding-block: 32px 40px; }
 }
 
-.activity-disclosure { margin-top: 10px; }
-.activity-disclosure summary {
-  width: fit-content; min-height: 44px; padding-block: 10px;
-  color: var(--muted); font-size: 0.8125rem; cursor: pointer;
-}
-.activity-disclosure summary:hover { color: var(--ink); }
-.activity-disclosure summary::marker { color: var(--accent); }
-.activity-disclosure .year-entries { margin-top: 4px; }
 .detail-pending { margin: 0; color: var(--muted); font-size: 0.875rem; }
 .education-section { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
 .education-section h2 { margin: 0 0 20px; font-size: 1.25rem; font-weight: 650; }

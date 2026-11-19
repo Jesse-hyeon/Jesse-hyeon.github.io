@@ -28,10 +28,10 @@ button { font: inherit; }
 .site-nav a:hover { color: var(--link); text-decoration: underline; }
 
 .page-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: clamp(28px, 6vw, 76px); padding-block: 58px 68px; }
-.profile { display: grid; align-content: start; justify-items: start; gap: 18px; }
+.profile { display: grid; align-content: start; justify-items: start; gap: 11px; }
 .profile-avatar {
-  display: block; width: 140px; height: auto; border: 1px solid var(--line);
-  border-radius: 18px; background: var(--tint);
+  display: block; width: 140px; height: auto; padding: 4px; border: 1px solid var(--line);
+  border-radius: 50%; object-fit: cover; background: var(--paper);
 }
 .profile-name { margin: 0; font-size: 1.08rem; font-weight: 800; }
 .profile-description { margin: 5px 0 9px; font-size: 0.92rem; color: var(--muted); word-break: keep-all; }
@@ -106,8 +106,8 @@ button { font: inherit; }
   .shell { width: calc(100% - 36px); }
   .header-inner { padding-block: 14px; }
   .page-layout { grid-template-columns: minmax(0, 1fr); gap: 25px; padding-block: 26px 48px; }
-  .profile { grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 13px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
-  .profile-avatar { width: 66px; border-radius: 10px; }
+  .profile { padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+  .profile-avatar { width: 106px; }
   .profile-description { margin-block: 2px; }
   .intro h1 { margin-bottom: 12px; }
   .timeline-section { margin-top: 30px; padding-top: 17px; }

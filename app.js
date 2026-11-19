@@ -49,6 +49,11 @@ function timelineRow(entry, filter) {
   meta.append(badge(entry));
   content.append(element("h4", "", entry.title), meta);
   if (entry.summary) content.append(element("p", "", entry.summary));
+  if (entry.detail) {
+    const arrow = element("span", "timeline-arrow", "↗");
+    arrow.setAttribute("aria-hidden", "true");
+    content.append(arrow);
+  }
   row.append(entryDate(entry), content);
   return row;
 }

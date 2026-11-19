@@ -102,8 +102,32 @@ button { font: inherit; }
   margin: 0 0 3px; color: var(--ink); font-size: 1.0625rem; line-height: 1.5;
   font-weight: 650; letter-spacing: -0.02em; word-break: keep-all;
 }
-a.timeline-card:hover h4, a.timeline-card:focus-visible h4 {
-  text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px;
+a.timeline-card {
+  position: relative; min-height: 44px; margin: -8px -10px; padding: 8px 38px 8px 10px;
+  border-radius: 8px; transition: background-color 180ms ease;
+}
+.timeline-arrow {
+  position: absolute; top: 9px; right: 10px; width: 20px; height: 24px;
+  display: grid; place-items: center; color: var(--muted); font-size: 1.125rem;
+  line-height: 1; opacity: 0; pointer-events: none;
+  transition: transform 180ms ease, opacity 180ms ease, color 180ms ease;
+}
+a.timeline-card:is(:focus-visible, :active) { background: #FFF7F1; }
+a.timeline-card:is(:focus-visible, :active) .timeline-arrow {
+  opacity: 1; color: var(--accent); transform: translate(2px, -2px);
+}
+@media (hover: hover) {
+  a.timeline-card:hover { background: #FFF7F1; }
+  a.timeline-card:hover .timeline-arrow {
+    opacity: 1; color: var(--accent); transform: translate(2px, -2px);
+  }
+}
+@media (hover: none) {
+  .timeline-arrow { opacity: 0.65; }
+}
+@media (prefers-reduced-motion: reduce) {
+  a.timeline-card, .timeline-arrow { transition: none; }
+  a.timeline-card .timeline-arrow { transform: none; }
 }
 .timeline-card p { margin: 5px 0 0; color: var(--body); font-size: 0.875rem; line-height: 1.6; word-break: keep-all; }
 .card-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 10px; }

@@ -57,7 +57,7 @@ const korean = {
       "summary": ""
     },
     "milan-football": {
-      "title": "밀란 축구동아리",
+      "title": "H-밀란 축구팀 소속",
       "summary": ""
     },
     "sk-hynix-phase-1": {

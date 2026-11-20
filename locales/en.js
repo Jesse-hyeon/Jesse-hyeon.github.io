@@ -57,7 +57,7 @@ const english = {
       summary: "",
     },
     "milan-football": {
-      title: "Milan Football Club",
+      title: "Member of H-Milan Football Team",
       summary: "",
     },
     "sk-hynix-phase-1": {

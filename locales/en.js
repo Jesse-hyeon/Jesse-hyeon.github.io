@@ -53,7 +53,7 @@ const english = {
       summary: "",
     },
     "impactive-ai": {
-      title: "Impactive-ai Service Planning",
+      title: "Impactive-ai Causal Analysis Solution Planning and Development",
       summary: "",
     },
     "milan-football": {

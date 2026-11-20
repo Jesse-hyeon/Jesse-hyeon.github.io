@@ -53,7 +53,7 @@ const korean = {
       "summary": ""
     },
     "impactive-ai": {
-      "title": "Impactive-ai 서비스 기획",
+      "title": "Impactive-ai 인과 분석 솔루션 기획 및 개발",
       "summary": ""
     },
     "milan-football": {

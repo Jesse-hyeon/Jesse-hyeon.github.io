@@ -98,7 +98,7 @@ const english = {
     },
     "404-edition": {
       title: "404 Edition",
-      summary: "A project using image generation AI.",
+      summary: "",
     },
     "sw-festival": {
       title: "SW Festival",

@@ -98,7 +98,7 @@ const korean = {
     },
     "404-edition": {
       "title": "404 Edition",
-      "summary": "이미지 생성 AI를 활용한 프로젝트."
+      "summary": ""
     },
     "sw-festival": {
       "title": "SW 페스티벌",

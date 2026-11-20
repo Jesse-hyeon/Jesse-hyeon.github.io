@@ -4,7 +4,7 @@ const english = {
   description: "Hyeonwoo Kim's research, projects, awards, and activities portfolio",
   profile: {
     name: "Hyeonwoo Kim",
-    bio: "I study AI, entrepreneurship, and psychology, with a focus on causal inference and discovery.",
+    bio: "I study AI Convergence & Entrepreneurship and Counseling Psychology, with a focus on causal inference and discovery.",
     location: "Ulsan, Korea",
     school: "Handong Global University",
     alt: "Hyeonwoo Kim profile photo",
@@ -161,7 +161,7 @@ const english = {
   },
   education: {
     title: "Handong Global University",
-    summary: "Majors in AI and Psychology",
+    summary: "Majors in AI Convergence & Entrepreneurship and Counseling Psychology",
   },
   militaryService: {
     title: "Republic of Korea Army, V Corps",

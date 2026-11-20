@@ -4,7 +4,7 @@ const korean = {
   "description": "김현우의 연구, 프로젝트, 수상 및 활동 포트폴리오",
   "profile": {
     "name": "김현우",
-    "bio": "AI와 심리학을 전공했으며, 인과추론과\n인과발견에 관심이 있습니다.",
+    "bio": "AI Convergence & Entrepreneurship 및 상담심리학을 전공했으며, 인과추론과\n인과발견에 관심이 있습니다.",
     "location": "울산, 대한민국",
     "school": "한동대학교",
     "alt": "김현우 프로필 사진",
@@ -160,7 +160,7 @@ const korean = {
   },
   "education": {
     "title": "한동대학교",
-    "summary": "AI 및 심리학 전공"
+    "summary": "AI Convergence & Entrepreneurship 및 상담심리학 전공"
   },
   "militaryService": {
     "title": "대한민국 육군 제5군단",

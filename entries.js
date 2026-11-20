@@ -234,5 +234,5 @@ const entries = [
   },
 ];
 
-const education = [{ startDate: "2020-03", endDate: "2027-02", expectedGraduation: true }];
+const education = [{ startDate: "2020-03", endDate: "2027-02" }];
 const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnverified: true }];

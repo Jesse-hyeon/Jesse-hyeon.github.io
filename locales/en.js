@@ -24,6 +24,7 @@ const english = {
     project: "Projects",
     award: "Awards",
     activity: "Other Activities",
+    career: "Career / Internships",
   },
   labels: {
     language: "Language",
@@ -36,6 +37,7 @@ const english = {
     pending: "Details will be added later.",
     present: "Present",
     expectedGraduation: "Expected graduation",
+    dischargeUnverified: "The discharge date requires verification against official service records.",
     related: "Related experience",
     jsRequired: "Please enable JavaScript to view the experience timeline.",
     count: "{category} · {count} entries",
@@ -64,8 +66,12 @@ const english = {
       label: "Startup",
     },
     "causal-discovery": {
-      title: "Korea Data Science Society Best Paper Award",
+      title: "Korean Association of Data Science (KADS) Best Paper Award",
       summary: "",
+      sections: [
+        { title: "Conference", text: "Korean Association of Data Science (KADS) Summer Conference" },
+        { title: "Authorship", text: "First author" },
+      ],
     },
     "sk-hynix-phase-2": {
       title: "SK hynix 2nd PoC (Impactive AI Intern)",

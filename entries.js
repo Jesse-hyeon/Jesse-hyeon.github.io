@@ -6,7 +6,8 @@ const categories = {
   "research": "research",
   "project": "project",
   "award": "award",
-  "activity": "activity"
+  "activity": "activity",
+  "career": "career"
 };
 
 const entries = [
@@ -14,7 +15,7 @@ const entries = [
     "id": "impactive-internship",
     "group": "2025",
     "order": 0,
-    "category": "activity",
+    "category": "career",
     "startDate": "2025-05",
     "endDate": "2026-03"
   },
@@ -234,4 +235,4 @@ const entries = [
 ];
 
 const education = [{ startDate: "2020-03", endDate: "2027-02", expectedGraduation: true }];
-const militaryService = [{ startDate: "2021-08", endDate: "2023-02" }];
+const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnverified: true }];

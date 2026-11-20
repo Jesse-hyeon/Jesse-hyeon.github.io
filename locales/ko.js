@@ -23,7 +23,8 @@ const korean = {
     "research": "연구",
     "project": "프로젝트",
     "award": "수상",
-    "activity": "기타 활동"
+    "activity": "기타 활동",
+    "career": "경력/인턴십"
   },
   "labels": {
     "language": "언어 선택",
@@ -36,6 +37,7 @@ const korean = {
     "pending": "상세 내용은 추후 추가할 예정입니다.",
     "present": "현재",
     "expectedGraduation": "졸업 예정",
+    "dischargeUnverified": "전역일은 실제 복무 기록 확인이 필요합니다.",
     "related": "연결된 경험",
     "jsRequired": "내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.",
     "count": "{category} · {count}개",
@@ -64,7 +66,11 @@ const korean = {
     },
     "causal-discovery": {
       "title": "한국데이터사이언스학회 우수논문상",
-      "summary": ""
+      "summary": "",
+      "sections": [
+        { "title": "학술대회", "text": "한국데이터사이언스학회 하계종합학술대회" },
+        { "title": "저자 역할", "text": "제1저자" }
+      ]
     },
     "sk-hynix-phase-2": {
       "title": "SK 하이닉스 2차 PoC (Impactive AI 인턴)",

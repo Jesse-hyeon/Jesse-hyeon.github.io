@@ -1,6 +1,9 @@
 const params = new URLSearchParams(location.search);
-const requestedFilter = params.get("filter") === "career" ? "activity" : params.get("filter");
-const activeFilter = Object.hasOwn(categories, requestedFilter) ? requestedFilter : "all";
+const availableFilters = ["all", ...Object.keys(categories).filter((category) =>
+  entries.some((entry) => entry.category === category)
+)];
+const requestedFilter = params.get("filter");
+const activeFilter = availableFilters.includes(requestedFilter) ? requestedFilter : "all";
 
 const locales = { ko: korean, en: english };
 let language = params.get("lang");
@@ -90,7 +93,8 @@ function badge(entry) {
 }
 
 function entryHref(entry, filter) {
-  return entry.url || (entry.detail ? detailUrl(entry.id, filter) : null);
+  const hasContent = entry.sections?.some((section) => section.text?.trim());
+  return entry.url || (entry.detail && hasContent ? detailUrl(entry.id, filter) : null);
 }
 
 function entryContent(entry, filter, heading = "h4") {
@@ -202,6 +206,9 @@ function showBackgroundSection(selector, data, translationKey) {
       period.append(element("span", "graduation-status", "(" + text("labels.expectedGraduation") + ")"));
     }
     row.append(period, element("p", "", entry.summary));
+    if (entry.endDateUnverified) {
+      row.append(element("p", "record-note", text("labels.dischargeUnverified")));
+    }
     list.append(row);
   }
 }
@@ -221,6 +228,10 @@ function showDetail() {
   }
 
   const entry = localizedEntry(source);
+  if (!entry.detail || !entry.sections?.some((section) => section.text?.trim())) {
+    location.replace(document.querySelector("#timeline-return").href);
+    return;
+  }
   document.title = entry.title + " | " + text("profile.name");
   const header = element("header", "detail-header");
   const meta = element("div", "card-meta");
@@ -235,9 +246,6 @@ function showDetail() {
     block.append(element("h2", "", section.title), element("p", "", section.text));
     body.append(block);
   }
-  if (!body.childElementCount) {
-    body.append(element("p", "detail-pending", text("labels.pending")));
-  }
   target.append(body);
 
   if (!entry.related?.length) return;
@@ -245,12 +253,13 @@ function showDetail() {
   related.append(element("h2", "", text("labels.related")));
   for (const item of entry.related) {
     const match = entries.find(({ id }) => id === item.id);
-    if (!match) continue;
-    const card = link("related-card", "", detailUrl(match.id, activeFilter));
+    const href = match && entryHref(localizedEntry(match), activeFilter);
+    if (!href) continue;
+    const card = link("related-card", "", href);
     card.append(element("span", "related-label", item.label), element("strong", "", localizedEntry(match).title));
     related.append(card);
   }
-  target.append(related);
+  if (related.childElementCount > 1) target.append(related);
 }
 
 let renderCurrentPage;
@@ -267,7 +276,11 @@ if (document.body.dataset.page === "timeline") {
     }
   });
   const filters = document.querySelector(".filters");
-  const buttons = [...filters.querySelectorAll("[data-filter]")];
+  const filterButtons = [...filters.querySelectorAll("[data-filter]")];
+  filterButtons.forEach((button) => {
+    button.hidden = !availableFilters.includes(button.dataset.filter);
+  });
+  const buttons = filterButtons.filter((button) => !button.hidden);
   const list = document.querySelector("#timeline-list");
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const indicator = element("span", "filter-indicator");

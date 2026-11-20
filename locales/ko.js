@@ -45,8 +45,8 @@ const korean = {
       "label": "창업"
     },
     "causal-discovery": {
-      "title": "인과발견 연구 및 논문",
-      "summary": "인과발견을 주제로 한 연구 및 논문 작업."
+      "title": "한국데이터사이언스학회 하계종합학술대회 우수 논문상 수상 (1저자)",
+      "summary": ""
     },
     "sk-hynix-phase-2": {
       "title": "SK 하이닉스 2차 프로젝트 (AX팀)",

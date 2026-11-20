@@ -45,8 +45,8 @@ const english = {
       label: "Startup",
     },
     "causal-discovery": {
-      title: "Causal Discovery Research and Manuscript",
-      summary: "Research and writing on causal discovery.",
+      title: "Best Paper Award, Korea Data Science Society Summer Conference (First Author)",
+      summary: "",
     },
     "sk-hynix-phase-2": {
       title: "SK hynix Phase 2 Project (AX Team)",

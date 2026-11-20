@@ -49,7 +49,8 @@ const entries = [
     "group": "2026",
     "order": 5,
     "category": "activity",
-    "startDate": "2026"
+    "startDate": "2026-03",
+    "endDate": "2026-12"
   },
   {
     "id": "sk-hynix-phase-1",

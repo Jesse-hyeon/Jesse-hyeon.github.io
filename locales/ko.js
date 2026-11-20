@@ -135,6 +135,10 @@ const korean = {
     "choir-director-2023": {
       "title": "학부합창대회 음악 디렉터",
       "summary": ""
+    },
+    "military-service": {
+      "title": "군복무",
+      "summary": ""
     }
   },
   "education": {

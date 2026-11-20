@@ -136,6 +136,10 @@ const english = {
       title: "College Choir Competition Music Director",
       summary: "",
     },
+    "military-service": {
+      title: "Military Service",
+      summary: "",
+    },
   },
   education: {
     title: "Handong Global University",

@@ -1,5 +1,5 @@
 // Dates accept YYYY or YYYY-MM. Leave unknown dates empty.
-// group selects the year heading and order controls placement within it.
+// group selects the timeline heading and order controls placement within it.
 // Text is maintained in locales/ko.js and locales/en.js, keyed by entry id.
 const categories = {
   "research": "research",
@@ -8,7 +8,7 @@ const categories = {
   "activity": "activity"
 };
 
-const timelineGroups = ["2026","2025","2024","2023"];
+const timelineGroups = ["2026","2025","2024","2023","2021–2023"];
 
 const entries = [
   {
@@ -198,6 +198,14 @@ const entries = [
     "category": "activity",
     "startDate": "2023-10",
     "endDate": "2023-12"
+  },
+  {
+    "id": "military-service",
+    "group": "2021–2023",
+    "order": 1,
+    "category": "activity",
+    "startDate": "2021-08",
+    "endDate": "2023-02"
   }
 ];
 

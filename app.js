@@ -113,10 +113,11 @@ function showTimeline(filter) {
   list.replaceChildren();
   const selected = entries.filter((entry) => filter === "all" || entry.category === filter);
 
-  for (const year of timelineGroups) {
+  const years = [...new Set(selected.map((entry) => entry.startDate.slice(0, 4)))].sort().reverse();
+  for (const year of years) {
     const grouped = selected
-      .filter((entry) => entry.group === year)
-      .sort((a, b) => a.order - b.order);
+      .filter((entry) => entry.startDate.slice(0, 4) === year)
+      .sort((a, b) => b.startDate.localeCompare(a.startDate) || a.order - b.order);
     if (!grouped.length) continue;
 
     const group = element("section", "year-group");
@@ -132,15 +133,19 @@ function showTimeline(filter) {
     text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", selected.length);
 }
 
-function showEducation() {
-  const list = document.querySelector("#education-list");
+function showBackgroundSection(selector, data, translationKey) {
+  const list = document.querySelector(selector);
   list.replaceChildren();
-  for (const source of education) {
-    const entry = { ...source, ...text("education") };
-    const row = element("li", "education-row");
-    const content = element("div");
-    content.append(element("h3", "", entry.title), element("p", "", entry.summary));
-    row.append(entryDate(entry), content);
+  for (const source of data) {
+    const entry = { ...source, ...text(translationKey) };
+    const row = element("li", "background-row");
+    row.append(element("h3", "", entry.title));
+    const period = element("div", "background-period");
+    period.append(entryDate(entry));
+    if (entry.expectedGraduation) {
+      period.append(element("span", "graduation-status", "(" + text("labels.expectedGraduation") + ")"));
+    }
+    row.append(period, element("p", "", entry.summary));
     list.append(row);
   }
 }
@@ -239,7 +244,8 @@ if (document.body.dataset.page === "timeline") {
   renderCurrentPage = () => {
     animation?.cancel();
     showTimeline(selectedFilter);
-    showEducation();
+    showBackgroundSection("#education-list", education, "education");
+    showBackgroundSection("#military-list", militaryService, "militaryService");
     selectFilter(selectedFilter);
   };
   renderCurrentPage();

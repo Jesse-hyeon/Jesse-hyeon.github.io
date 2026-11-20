@@ -1,5 +1,6 @@
 // Dates accept YYYY or YYYY-MM. Leave unknown dates empty.
-// group selects the timeline heading and order controls placement within it.
+// startDate determines grouping and sorting. order breaks ties within a year.
+// parentId is reserved for future nested records. No hierarchy is rendered yet.
 // Text is maintained in locales/ko.js and locales/en.js, keyed by entry id.
 const categories = {
   "research": "research",
@@ -7,8 +8,6 @@ const categories = {
   "award": "award",
   "activity": "activity"
 };
-
-const timelineGroups = ["2026","2025","2024","2023","2021–2023"];
 
 const entries = [
   {
@@ -24,13 +23,13 @@ const entries = [
     "id": "causal-discovery",
     "group": "2026",
     "order": 2,
-    "category": "research",
+    "category": "award",
     "startDate": "2026-06",
     "detail": true
   },
   {
     "id": "sk-hynix-phase-2",
-    "group": "2026",
+    "group": "2025",
     "order": 3,
     "category": "project",
     "startDate": "2025-11",
@@ -197,14 +196,7 @@ const entries = [
     "startDate": "2023-10",
     "endDate": "2023-12"
   },
-  {
-    "id": "military-service",
-    "group": "2021–2023",
-    "order": 1,
-    "category": "activity",
-    "startDate": "2021-08",
-    "endDate": "2023-02"
-  }
 ];
 
-const education = [{ startDate: "2020-03", endDate: "2026-08" }];
+const education = [{ startDate: "2020-03", endDate: "2027-02", expectedGraduation: true }];
+const militaryService = [{ startDate: "2021-08", endDate: "2023-02" }];

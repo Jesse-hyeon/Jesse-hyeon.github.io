@@ -15,7 +15,8 @@ const korean = {
   "headings": {
     "portfolio": "김현우 포트폴리오",
     "experience": "활동 및 성과",
-    "education": "학력"
+    "education": "학력",
+    "military": "병역"
   },
   "filters": {
     "all": "전체",
@@ -34,6 +35,7 @@ const korean = {
     "missing": "경험을 찾을 수 없습니다.",
     "pending": "상세 내용은 추후 추가할 예정입니다.",
     "present": "현재",
+    "expectedGraduation": "졸업 예정",
     "related": "연결된 경험",
     "jsRequired": "내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.",
     "count": "{category} · {count}개"
@@ -132,13 +134,13 @@ const korean = {
       "title": "학부합창대회 음악 디렉터",
       "summary": ""
     },
-    "military-service": {
-      "title": "군복무",
-      "summary": ""
-    }
   },
   "education": {
     "title": "한동대학교",
-    "summary": "AI Convergence & Entrepreneurship (45), 상담심리학 (33)"
+    "summary": "AI 및 심리학 전공"
+  },
+  "militaryService": {
+    "title": "대한민국 육군 제5군단",
+    "summary": "운전병"
   }
 };

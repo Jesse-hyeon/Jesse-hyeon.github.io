@@ -16,6 +16,7 @@ const english = {
     portfolio: "Hyeonwoo Kim Portfolio",
     experience: "Activities & Achievements",
     education: "Education",
+    military: "Military Service",
   },
   filters: {
     all: "All",
@@ -34,6 +35,7 @@ const english = {
     missing: "Experience not found.",
     pending: "Details will be added later.",
     present: "Present",
+    expectedGraduation: "Expected graduation",
     related: "Related experience",
     jsRequired: "Please enable JavaScript to view the experience timeline.",
     count: "{category} · {count} entries",
@@ -132,13 +134,13 @@ const english = {
       title: "College Choir Competition Music Director",
       summary: "",
     },
-    "military-service": {
-      title: "Military Service",
-      summary: "",
-    },
   },
   education: {
     title: "Handong Global University",
-    summary: "AI Convergence & Entrepreneurship (45), Counseling Psychology (33)",
+    summary: "Majors in AI and Psychology",
+  },
+  militaryService: {
+    title: "Republic of Korea Army, V Corps",
+    summary: "Driver",
   },
 };

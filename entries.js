@@ -72,7 +72,8 @@ const entries = [
     "group": "2025",
     "order": 3,
     "category": "project",
-    "startDate": "2025",
+    "startDate": "2025-08",
+    "endDate": "2025-12",
     "detail": true
   },
   {

@@ -33,6 +33,7 @@ const english = {
     empty: "No experiences have been added yet.",
     missing: "Experience not found.",
     pending: "Details will be added later.",
+    present: "Present",
     related: "Related experience",
     jsRequired: "Please enable JavaScript to view the experience timeline.",
     count: "{category} · {count} entries",

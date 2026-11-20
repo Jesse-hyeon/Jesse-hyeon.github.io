@@ -33,6 +33,7 @@ const korean = {
     "empty": "등록된 경험이 없습니다.",
     "missing": "경험을 찾을 수 없습니다.",
     "pending": "상세 내용은 추후 추가할 예정입니다.",
+    "present": "현재",
     "related": "연결된 경험",
     "jsRequired": "내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.",
     "count": "{category} · {count}개"

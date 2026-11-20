@@ -75,7 +75,8 @@ function detailUrl(id, filter) {
 
 function entryDate(entry) {
   const range = element("span", "entry-range");
-  for (const value of [entry.startDate, entry.endDate].filter(Boolean)) {
+  const endDate = entry.endDate || (entry.ongoing ? text("labels.present") : null);
+  for (const value of [entry.startDate, endDate].filter(Boolean)) {
     if (range.childElementCount) range.append(" – ");
     const date = element(value.includes("-") ? "time" : "span", "entry-date", value.replace("-", "."));
     if (date.tagName === "TIME") date.dateTime = value;

@@ -16,8 +16,8 @@ const entries = [
     "group": "2026",
     "order": 1,
     "category": "project",
-    "startDate": "2025",
-    "endDate": "2026",
+    "startDate": "2026-06",
+    "ongoing": true,
     "detail": true
   },
   {
@@ -25,7 +25,7 @@ const entries = [
     "group": "2026",
     "order": 2,
     "category": "research",
-    "startDate": "2026",
+    "startDate": "2026-06",
     "detail": true
   },
   {

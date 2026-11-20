@@ -1,7 +1,7 @@
 // Dates accept YYYY or YYYY-MM. Leave unknown dates empty.
 // startDate determines grouping and sorting. order breaks ties within a year.
-// parentId is reserved for future nested records. No hierarchy is rendered yet.
-// Text is maintained in locales/ko.js and locales/en.js, keyed by entry id.
+// parentId links a flat record to an expandable parent activity. No deeper nesting is rendered yet.
+// Parent dates are editable initial coverage periods. Text is maintained in locales/ko.js and locales/en.js, keyed by entry id.
 const categories = {
   "research": "research",
   "project": "project",
@@ -10,6 +10,14 @@ const categories = {
 };
 
 const entries = [
+  {
+    "id": "impactive-internship",
+    "group": "2025",
+    "order": 0,
+    "category": "activity",
+    "startDate": "2025-05",
+    "endDate": "2026-03"
+  },
   {
     "id": "causal-x",
     "group": "2026",
@@ -34,6 +42,7 @@ const entries = [
     "category": "project",
     "startDate": "2025-11",
     "endDate": "2026-01",
+    "parentId": "impactive-internship",
     "detail": true
   },
   {
@@ -43,6 +52,7 @@ const entries = [
     "category": "project",
     "startDate": "2026-01",
     "endDate": "2026-03",
+    "parentId": "impactive-internship",
     "detail": true
   },
   {
@@ -60,6 +70,7 @@ const entries = [
     "category": "project",
     "startDate": "2025-05",
     "endDate": "2025-06",
+    "parentId": "impactive-internship",
     "detail": true
   },
   {
@@ -68,6 +79,7 @@ const entries = [
     "order": 2,
     "category": "project",
     "startDate": "2025-05",
+    "parentId": "impactive-internship",
     "detail": true
   },
   {
@@ -77,6 +89,7 @@ const entries = [
     "category": "project",
     "startDate": "2025-08",
     "endDate": "2025-12",
+    "parentId": "impactive-internship",
     "detail": true
   },
   {
@@ -84,7 +97,8 @@ const entries = [
     "group": "2025",
     "order": 4,
     "category": "project",
-    "startDate": "2025-11"
+    "startDate": "2025-11",
+    "parentId": "impactive-internship"
   },
   {
     "id": "likelion-leadership",
@@ -100,6 +114,7 @@ const entries = [
     "order": 6,
     "category": "award",
     "startDate": "2025-08",
+    "parentId": "likelion-leadership",
     "detail": true
   },
   {
@@ -143,6 +158,22 @@ const entries = [
     "detail": true
   },
   {
+    "id": "sabong-band",
+    "group": "2024",
+    "order": 3,
+    "category": "activity",
+    "startDate": "2024-04",
+    "endDate": "2024-10"
+  },
+  {
+    "id": "choir-competition",
+    "group": "2023",
+    "order": 8,
+    "category": "activity",
+    "startDate": "2023-10",
+    "endDate": "2024-12"
+  },
+  {
     "id": "likelion-planning-track",
     "group": "2024",
     "order": 4,
@@ -171,14 +202,16 @@ const entries = [
     "group": "2024",
     "order": 6,
     "category": "activity",
-    "startDate": "2024-04"
+    "startDate": "2024-04",
+    "parentId": "sabong-band"
   },
   {
     "id": "sabong-band-second-performance",
     "group": "2024",
     "order": 7,
     "category": "activity",
-    "startDate": "2024-10"
+    "startDate": "2024-10",
+    "parentId": "sabong-band"
   },
   {
     "id": "choir-director-2024",
@@ -186,7 +219,8 @@ const entries = [
     "order": 9,
     "category": "activity",
     "startDate": "2024-10",
-    "endDate": "2024-12"
+    "endDate": "2024-12",
+    "parentId": "choir-competition"
   },
   {
     "id": "choir-director-2023",
@@ -194,7 +228,8 @@ const entries = [
     "order": 1,
     "category": "activity",
     "startDate": "2023-10",
-    "endDate": "2023-12"
+    "endDate": "2023-12",
+    "parentId": "choir-competition"
   },
 ];
 

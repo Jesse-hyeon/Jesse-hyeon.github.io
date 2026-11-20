@@ -38,9 +38,25 @@ const korean = {
     "expectedGraduation": "졸업 예정",
     "related": "연결된 경험",
     "jsRequired": "내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.",
-    "count": "{category} · {count}개"
+    "count": "{category} · {count}개",
+    "children": "{count}개 항목",
+    "parentDetail": "상위 활동 상세 보기"
   },
   "entries": {
+    "impactive-internship": {
+      "title": "Impactive AI 인턴십",
+      "summary": ""
+    },
+    "sabong-band": {
+      "title": "사봉밴드",
+      "summary": "",
+      "role": "공연 기획"
+    },
+    "choir-competition": {
+      "title": "학부합창대회",
+      "summary": "",
+      "role": "음악 디렉터"
+    },
     "causal-x": {
       "title": "Causal X",
       "summary": "",
@@ -71,7 +87,7 @@ const korean = {
       "summary": ""
     },
     "sk-on": {
-      "title": "SK ON 프로젝트",
+      "title": "SK ON 배터리 수요예측 프로젝트",
       "summary": ""
     },
     "commax-demand-forecasting": {
@@ -79,8 +95,9 @@ const korean = {
       "summary": ""
     },
     "likelion-leadership": {
-      "title": "멋쟁이사자처럼 13기 대표",
-      "summary": ""
+      "title": "멋쟁이사자처럼 13기",
+      "summary": "",
+      "role": "대표"
     },
     "likelion-hackathon-award": {
       "title": "멋쟁이사자처럼 중앙해커톤 최우수상",
@@ -120,18 +137,18 @@ const korean = {
     },
     "sabong-band-first-performance": {
       "title": "사봉밴드 1차 공연",
-      "summary": ""
+      "summary": "기획 및 공연"
     },
     "sabong-band-second-performance": {
       "title": "사봉밴드 2차 공연",
-      "summary": ""
+      "summary": "기획 및 공연"
     },
     "choir-director-2024": {
-      "title": "학부합창대회 음악 디렉터",
+      "title": "2차 음악 디렉팅",
       "summary": ""
     },
     "choir-director-2023": {
-      "title": "학부합창대회 음악 디렉터",
+      "title": "1차 음악 디렉팅",
       "summary": ""
     },
   },

@@ -39,8 +39,25 @@ const english = {
     related: "Related experience",
     jsRequired: "Please enable JavaScript to view the experience timeline.",
     count: "{category} · {count} entries",
+    children: "{count} items",
+    parentDetail: "View activity details",
   },
   entries: {
+    "impactive-internship": {
+      title: "Impactive AI Internship",
+      summary: "",
+      role: "",
+    },
+    "sabong-band": {
+      title: "Sabong Band",
+      summary: "",
+      role: "Performance Planning",
+    },
+    "choir-competition": {
+      title: "College Choir Competition",
+      summary: "",
+      role: "Music Director",
+    },
     "causal-x": {
       title: "Causal X",
       summary: "",
@@ -71,7 +88,7 @@ const english = {
       summary: "",
     },
     "sk-on": {
-      title: "SK ON Project",
+      title: "SK ON Battery Demand Forecasting Project",
       summary: "",
     },
     "commax-demand-forecasting": {
@@ -79,8 +96,9 @@ const english = {
       summary: "",
     },
     "likelion-leadership": {
-      title: "Like Lion 13th Cohort Representative",
+      title: "Like Lion 13th Cohort",
       summary: "",
+      role: "Representative",
     },
     "likelion-hackathon-award": {
       title: "Like Lion Central Hackathon — Top Excellence Award",
@@ -120,18 +138,18 @@ const english = {
     },
     "sabong-band-first-performance": {
       title: "Sabong Band 1st Performance",
-      summary: "",
+      summary: "Planning and Performance",
     },
     "sabong-band-second-performance": {
       title: "Sabong Band 2nd Performance",
-      summary: "",
+      summary: "Planning and Performance",
     },
     "choir-director-2024": {
-      title: "College Choir Competition Music Director",
+      title: "Second Music Direction",
       summary: "",
     },
     "choir-director-2023": {
-      title: "College Choir Competition Music Director",
+      title: "First Music Direction",
       summary: "",
     },
   },

@@ -89,48 +89,104 @@ function badge(entry) {
   return element("span", "badge", entry.label || text("filters." + entry.category));
 }
 
-function timelineRow(source, filter) {
-  const entry = localizedEntry(source);
-  const row = element("li", "timeline-row");
-  const content = entry.detail
-    ? link("timeline-card", "", detailUrl(entry.id, filter))
-    : element("div", "timeline-card");
+function entryHref(entry, filter) {
+  return entry.url || (entry.detail ? detailUrl(entry.id, filter) : null);
+}
+
+function entryContent(entry, filter, heading = "h4") {
+  const href = entryHref(entry, filter);
+  const content = href ? link("timeline-card", "", href) : element("div", "timeline-card");
   const meta = element("div", "card-meta");
   meta.append(badge(entry));
-  content.append(element("h4", "", entry.title), meta);
+  content.append(element(heading, "", entry.title), meta);
+  if (entry.role) content.append(element("p", "entry-role", entry.role));
   if (entry.summary) content.append(element("p", "", entry.summary));
-  if (entry.detail) {
+  if (href) {
     const arrow = element("span", "timeline-arrow", "↗");
     arrow.setAttribute("aria-hidden", "true");
     content.append(arrow);
   }
-  row.append(entryDate(entry), content);
+  return content;
+}
+
+function timelineRow(source, filter, child = false) {
+  const entry = localizedEntry(source);
+  const row = element("li", child ? "timeline-child" : "timeline-row");
+  row.append(entryDate(entry), entryContent(entry, filter, child ? "h5" : "h4"));
   return row;
+}
+
+const expandedGroups = new Map();
+
+function timelineGroup(source, children, filter) {
+  const entry = localizedEntry(source);
+  const row = element("li", "timeline-group");
+  const disclosure = element("details", "timeline-accordion");
+  const stateKey = filter + ":" + entry.id;
+  disclosure.dataset.stateKey = stateKey;
+  disclosure.open = expandedGroups.get(stateKey) ?? (filter !== "all" || params.get("open") === entry.id);
+  disclosure.addEventListener("toggle", () => {
+    expandedGroups.set(stateKey, disclosure.open);
+  });
+  const summary = element("summary", "timeline-row timeline-parent");
+  // The summary toggles the group. A parent's own link is kept inside the panel.
+  const content = entryContent({ ...entry, detail: false, url: null }, filter);
+  const count = element("span", "group-count", text("labels.children").replace("{count}", children.length));
+  const chevron = element("span", "accordion-chevron");
+  chevron.setAttribute("aria-hidden", "true");
+  content.append(count, chevron);
+  summary.append(entryDate(entry), content);
+  const panel = element("div", "timeline-children-wrapper");
+  const href = entryHref(entry, filter);
+  if (href) panel.append(link("parent-detail-link", text("labels.parentDetail"), href));
+  const list = element("ol", "timeline-children");
+  for (const child of children) list.append(timelineRow(child, filter, true));
+  panel.append(list);
+  disclosure.append(summary, panel);
+  row.append(disclosure);
+  return row;
+}
+
+function byStartDate(a, b) {
+  return b.startDate.localeCompare(a.startDate) || a.order - b.order;
 }
 
 function showTimeline(filter) {
   const list = document.querySelector("#timeline-list");
+  list.querySelectorAll("details[data-state-key]").forEach((details) => {
+    expandedGroups.set(details.dataset.stateKey, details.open);
+  });
   list.replaceChildren();
-  const selected = entries.filter((entry) => filter === "all" || entry.category === filter);
 
-  const years = [...new Set(selected.map((entry) => entry.startDate.slice(0, 4)))].sort().reverse();
+  const visible = [];
+  for (const entry of entries.filter((item) => !item.parentId)) {
+    const children = entries.filter((item) => item.parentId === entry.id).sort(byStartDate);
+    const parentMatches = filter === "all" || entry.category === filter;
+    const matchingChildren = children.filter((item) => filter === "all" || item.category === filter);
+    if (parentMatches || matchingChildren.length) {
+      visible.push({ entry, children: parentMatches ? children : matchingChildren });
+    }
+  }
+
+  const years = [...new Set(visible.map(({ entry }) => entry.startDate.slice(0, 4)))].sort().reverse();
   for (const year of years) {
-    const grouped = selected
-      .filter((entry) => entry.startDate.slice(0, 4) === year)
-      .sort((a, b) => b.startDate.localeCompare(a.startDate) || a.order - b.order);
-    if (!grouped.length) continue;
-
+    const grouped = visible
+      .filter(({ entry }) => entry.startDate.slice(0, 4) === year)
+      .sort((a, b) => byStartDate(a.entry, b.entry));
     const group = element("section", "year-group");
     group.append(element("h3", "year", year));
     const rows = element("ol", "year-entries");
-    for (const entry of grouped) rows.append(timelineRow(entry, filter));
+    for (const { entry, children } of grouped) {
+      rows.append(children.length ? timelineGroup(entry, children, filter) : timelineRow(entry, filter));
+    }
     group.append(rows);
     list.append(group);
   }
 
-  if (!selected.length) list.append(element("p", "empty-message", text("labels.empty")));
+  if (!visible.length) list.append(element("p", "empty-message", text("labels.empty")));
+  const matchedCount = entries.filter((entry) => filter === "all" || entry.category === filter).length;
   document.querySelector("#filter-status").textContent =
-    text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", selected.length);
+    text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", matchedCount);
 }
 
 function showBackgroundSection(selector, data, translationKey) {
@@ -153,9 +209,11 @@ function showBackgroundSection(selector, data, translationKey) {
 function showDetail() {
   const target = document.querySelector("#entry-detail");
   target.replaceChildren();
-  document.querySelector("#timeline-return").href =
-    "./index.html" + filterQuery(activeFilter) + "#timeline";
   const source = entries.find(({ id }) => id === params.get("id"));
+  const backQuery = new URLSearchParams(filterQuery(activeFilter));
+  if (source?.parentId) backQuery.set("open", source.parentId);
+  document.querySelector("#timeline-return").href =
+    "./index.html?" + backQuery + "#timeline";
 
   if (!source) {
     target.append(element("h1", "missing-title", text("labels.missing")));

@@ -101,7 +101,7 @@ const english = {
       summary: "",
     },
     "sw-festival": {
-      title: "SW Festival",
+      title: "Smart SW Contest",
       summary: "",
     },
     "likelion-12": {

@@ -135,7 +135,7 @@ const entries = [
     "group": "2024",
     "order": 2,
     "category": "project",
-    "startDate": "2024",
+    "startDate": "2024-11",
     "detail": true
   },
   {

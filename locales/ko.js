@@ -101,7 +101,7 @@ const korean = {
       "summary": ""
     },
     "sw-festival": {
-      "title": "SW 페스티벌",
+      "title": "스마트 SW 공모전",
       "summary": ""
     },
     "likelion-12": {

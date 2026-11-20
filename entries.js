@@ -80,7 +80,8 @@ const entries = [
     "group": "2025",
     "order": 4,
     "category": "activity",
-    "startDate": "2025"
+    "startDate": "2025-01",
+    "endDate": "2026-01"
   },
   {
     "id": "likelion-hackathon-award",

@@ -72,6 +72,10 @@ const english = {
       title: "SK ON Project",
       summary: "",
     },
+    "commax-demand-forecasting": {
+      title: "COMMAX Demand Forecasting Project",
+      summary: "",
+    },
     "likelion-leadership": {
       title: "Like Lion 13th Cohort Representative",
       summary: "",

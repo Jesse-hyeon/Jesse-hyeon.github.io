@@ -72,6 +72,10 @@ const korean = {
       "title": "SK ON 프로젝트",
       "summary": ""
     },
+    "commax-demand-forecasting": {
+      "title": "COMMAX 수요예측 프로젝트",
+      "summary": ""
+    },
     "likelion-leadership": {
       "title": "멋쟁이사자처럼 13기 대표",
       "summary": ""

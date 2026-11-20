@@ -76,9 +76,16 @@ const entries = [
     "detail": true
   },
   {
-    "id": "likelion-leadership",
+    "id": "commax-demand-forecasting",
     "group": "2025",
     "order": 4,
+    "category": "project",
+    "startDate": "2025-11"
+  },
+  {
+    "id": "likelion-leadership",
+    "group": "2025",
+    "order": 5,
     "category": "activity",
     "startDate": "2025-01",
     "endDate": "2026-01"
@@ -86,7 +93,7 @@ const entries = [
   {
     "id": "likelion-hackathon-award",
     "group": "2025",
-    "order": 5,
+    "order": 6,
     "category": "award",
     "startDate": "2025-08",
     "detail": true
@@ -94,7 +101,7 @@ const entries = [
   {
     "id": "g-star-award",
     "group": "2025",
-    "order": 6,
+    "order": 7,
     "category": "award",
     "startDate": "2025-11",
     "detail": true
@@ -102,7 +109,7 @@ const entries = [
   {
     "id": "demo-day-award",
     "group": "2025",
-    "order": 7,
+    "order": 8,
     "category": "award",
     "startDate": "2025-05",
     "detail": true
@@ -110,7 +117,7 @@ const entries = [
   {
     "id": "rpm-award-2025",
     "group": "2025",
-    "order": 8,
+    "order": 9,
     "category": "award",
     "startDate": "2025-11",
     "detail": true

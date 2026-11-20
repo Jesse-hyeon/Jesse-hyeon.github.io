@@ -128,8 +128,12 @@ const korean = {
       "title": "사봉밴드 2차 공연",
       "summary": ""
     },
-    "music-director": {
-      "title": "학합 음악 디렉터",
+    "choir-director-2024": {
+      "title": "학부합창대회 음악 디렉터",
+      "summary": ""
+    },
+    "choir-director-2023": {
+      "title": "학부합창대회 음악 디렉터",
       "summary": ""
     }
   },

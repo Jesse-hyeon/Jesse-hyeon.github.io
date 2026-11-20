@@ -128,8 +128,12 @@ const english = {
       title: "Sabong Band 2nd Performance",
       summary: "",
     },
-    "music-director": {
-      title: "Hakhap Music Director",
+    "choir-director-2024": {
+      title: "College Choir Competition Music Director",
+      summary: "",
+    },
+    "choir-director-2023": {
+      title: "College Choir Competition Music Director",
       summary: "",
     },
   },

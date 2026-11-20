@@ -8,7 +8,7 @@ const categories = {
   "activity": "activity"
 };
 
-const timelineGroups = ["2026","2025","2024","2023–2024"];
+const timelineGroups = ["2026","2025","2024","2023"];
 
 const entries = [
   {
@@ -184,12 +184,20 @@ const entries = [
     "startDate": "2024-10"
   },
   {
-    "id": "music-director",
-    "group": "2023–2024",
+    "id": "choir-director-2024",
+    "group": "2024",
+    "order": 9,
+    "category": "activity",
+    "startDate": "2024-10",
+    "endDate": "2024-12"
+  },
+  {
+    "id": "choir-director-2023",
+    "group": "2023",
     "order": 1,
     "category": "activity",
-    "startDate": "2023",
-    "endDate": "2024"
+    "startDate": "2023-10",
+    "endDate": "2023-12"
   }
 ];
 

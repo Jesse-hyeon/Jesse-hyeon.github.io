@@ -209,4 +209,4 @@ const entries = [
   }
 ];
 
-const education = [{ startDate: "2020" }];
+const education = [{ startDate: "2020-03", endDate: "2026-08" }];

@@ -61,7 +61,7 @@ const english = {
       summary: "",
     },
     "sk-hynix-phase-1": {
-      title: "SK hynix Phase 1 Project (AX Team)",
+      title: "SK hynix Phase 1 PoC (Impactive AI Internship)",
       summary: "",
     },
     "sk-siltron": {

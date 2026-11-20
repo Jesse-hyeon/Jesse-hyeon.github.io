@@ -40,8 +40,8 @@ const english = {
   entries: {
     "causal-x": {
       title: "Causal X",
-      summary: "A startup project carried out from 2025 to 2026.",
-      label: "Startup / Project",
+      summary: "",
+      label: "Startup",
     },
     "causal-discovery": {
       title: "Causal Discovery Research and Manuscript",

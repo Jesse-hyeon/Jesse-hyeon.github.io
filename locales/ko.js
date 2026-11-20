@@ -40,8 +40,8 @@ const korean = {
   "entries": {
     "causal-x": {
       "title": "Causal X",
-      "summary": "2025–2026년에 진행한 창업 프로젝트.",
-      "label": "창업 / 프로젝트"
+      "summary": "",
+      "label": "창업"
     },
     "causal-discovery": {
       "title": "인과발견 연구 및 논문",

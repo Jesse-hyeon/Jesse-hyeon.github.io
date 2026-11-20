@@ -104,6 +104,10 @@ const korean = {
       "title": "멋쟁이사자처럼 12기 아기사자",
       "summary": ""
     },
+    "likelion-planning-track": {
+      "title": "멋쟁이사자처럼 기획 트랙 수료",
+      "summary": ""
+    },
     "rpm-award-2024": {
       "title": "RPM 창업경진대회 장려상",
       "summary": ""

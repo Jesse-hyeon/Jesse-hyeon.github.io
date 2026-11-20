@@ -139,9 +139,17 @@ const entries = [
     "startDate": "2024"
   },
   {
-    "id": "rpm-award-2024",
+    "id": "likelion-planning-track",
     "group": "2024",
     "order": 4,
+    "category": "activity",
+    "startDate": "2024-01",
+    "endDate": "2024-12"
+  },
+  {
+    "id": "rpm-award-2024",
+    "group": "2024",
+    "order": 5,
     "category": "award",
     "startDate": "2024",
     "detail": true
@@ -149,7 +157,7 @@ const entries = [
   {
     "id": "addiction-psychology",
     "group": "2024",
-    "order": 5,
+    "order": 7,
     "category": "activity",
     "startDate": "2024"
   },

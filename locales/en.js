@@ -104,6 +104,10 @@ const english = {
       title: "Like Lion 12th Cohort Member",
       summary: "",
     },
+    "likelion-planning-track": {
+      title: "Completed the Like Lion Planning Track",
+      summary: "",
+    },
     "rpm-award-2024": {
       title: "RPM Startup Competition — Encouragement Award",
       summary: "",

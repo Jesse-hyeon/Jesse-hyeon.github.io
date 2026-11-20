@@ -164,16 +164,23 @@ const entries = [
   {
     "id": "addiction-psychology",
     "group": "2024",
-    "order": 7,
+    "order": 8,
     "category": "activity",
     "startDate": "2024"
   },
   {
-    "id": "sabong-band",
+    "id": "sabong-band-first-performance",
     "group": "2024",
     "order": 6,
     "category": "activity",
-    "startDate": "2024"
+    "startDate": "2024-04"
+  },
+  {
+    "id": "sabong-band-second-performance",
+    "group": "2024",
+    "order": 7,
+    "category": "activity",
+    "startDate": "2024-10"
   },
   {
     "id": "music-director",

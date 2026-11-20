@@ -120,8 +120,12 @@ const korean = {
       "title": "중독심리학회",
       "summary": ""
     },
-    "sabong-band": {
-      "title": "사봉밴드 1차·2차",
+    "sabong-band-first-performance": {
+      "title": "사봉밴드 1차 공연",
+      "summary": ""
+    },
+    "sabong-band-second-performance": {
+      "title": "사봉밴드 2차 공연",
       "summary": ""
     },
     "music-director": {

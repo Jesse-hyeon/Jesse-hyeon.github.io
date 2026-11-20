@@ -120,8 +120,12 @@ const english = {
       title: "Addiction Psychology Society",
       summary: "",
     },
-    "sabong-band": {
-      title: "Sabong Band (1 & 2)",
+    "sabong-band-first-performance": {
+      title: "Sabong Band 1st Performance",
+      summary: "",
+    },
+    "sabong-band-second-performance": {
+      title: "Sabong Band 2nd Performance",
       summary: "",
     },
     "music-director": {

@@ -268,13 +268,10 @@ if (document.body.dataset.page === "timeline") {
   });
   const filters = document.querySelector(".filters");
   const buttons = [...filters.querySelectorAll("[data-filter]")];
-  const list = document.querySelector("#timeline-list");
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const indicator = element("span", "filter-indicator");
   indicator.setAttribute("aria-hidden", "true");
   filters.append(indicator);
   let selectedFilter = activeFilter;
-  let animation;
 
   function positionIndicator() {
     const selected = buttons.find((button) => button.dataset.filter === selectedFilter);
@@ -290,17 +287,7 @@ if (document.body.dataset.page === "timeline") {
     positionIndicator();
   }
 
-  function transitionTimeline(filter) {
-    animation?.cancel();
-    showTimeline(filter);
-    if (reducedMotion.matches || !list.animate) return;
-    animation = list.animate([{ opacity: 0.65 }, { opacity: 1 }], {
-      duration: 120, easing: "ease-out",
-    });
-  }
-
   renderCurrentPage = () => {
-    animation?.cancel();
     showTimeline(selectedFilter);
     showBackgroundSection("#education-list", education, "education");
     showBackgroundSection("#military-list", militaryService, "militaryService");
@@ -312,13 +299,6 @@ if (document.body.dataset.page === "timeline") {
   buttons.forEach((button) => resizeObserver.observe(button));
   document.fonts.ready.then(() => {
     positionIndicator();
-    filters.classList.add("filters-ready");
-  });
-  reducedMotion.addEventListener("change", () => {
-    if (reducedMotion.matches) {
-      animation?.cancel();
-      showTimeline(selectedFilter);
-    }
   });
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -328,7 +308,7 @@ if (document.body.dataset.page === "timeline") {
       if (location.protocol !== "file:") {
         history.replaceState(null, "", location.pathname + filterQuery(filter) + location.hash);
       }
-      transitionTimeline(filter);
+      showTimeline(filter);
     });
   });
 } else {
@@ -338,11 +318,6 @@ if (document.body.dataset.page === "timeline") {
 
 
 // Each language button is a native button, supporting Tab, Enter and Space.
-let languageAnimations = [];
-const languageMotion = matchMedia("(prefers-reduced-motion: reduce)");
-languageMotion.addEventListener("change", () => {
-  if (languageMotion.matches) languageAnimations.forEach((animation) => animation.cancel());
-});
 document.querySelectorAll("button[data-language]").forEach((button) => {
   button.addEventListener("click", () => {
     if (language === button.dataset.language) return;
@@ -353,17 +328,7 @@ document.querySelectorAll("button[data-language]").forEach((button) => {
       query.set("lang", language);
       history.replaceState(null, "", location.pathname + "?" + query + location.hash);
     }
-    languageAnimations.forEach((animation) => animation.cancel());
-    languageAnimations = [];
     applyTranslations();
     renderCurrentPage();
-    if (!languageMotion.matches) {
-      document.querySelectorAll(".profile-copy, .page-main, .detail-main").forEach((node) => {
-        if (!node.animate) return;
-        languageAnimations.push(node.animate([{ opacity: 0.45 }, { opacity: 1 }], {
-          duration: 180, easing: "ease-out",
-        }));
-      });
-    }
   });
 });

@@ -45,7 +45,7 @@ const english = {
       label: "Startup",
     },
     "causal-discovery": {
-      title: "Best Paper Award, Korea Data Science Society Summer Conference (First Author)",
+      title: "Korea Data Science Society Best Paper Award",
       summary: "",
     },
     "sk-hynix-phase-2": {

@@ -45,7 +45,7 @@ const korean = {
       "label": "창업"
     },
     "causal-discovery": {
-      "title": "한국데이터사이언스학회 하계종합학술대회 우수 논문상 수상 (1저자)",
+      "title": "한국데이터사이언스학회 우수논문상",
       "summary": ""
     },
     "sk-hynix-phase-2": {

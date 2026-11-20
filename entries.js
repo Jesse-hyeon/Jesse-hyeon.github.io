@@ -166,7 +166,8 @@ const entries = [
     "group": "2024",
     "order": 8,
     "category": "activity",
-    "startDate": "2024"
+    "startDate": "2024-01",
+    "endDate": "2024-12"
   },
   {
     "id": "sabong-band-first-performance",

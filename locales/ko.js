@@ -143,6 +143,6 @@ const korean = {
   },
   "education": {
     "title": "한동대학교",
-    "summary": "한동대학교 입학 · AI 융합 및 창업, 심리학 전공"
+    "summary": "AI Convergence & Entrepreneurship (45), 상담심리학 (33)"
   }
 };

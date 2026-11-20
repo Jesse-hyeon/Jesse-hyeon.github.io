@@ -143,6 +143,6 @@ const english = {
   },
   education: {
     title: "Handong Global University",
-    summary: "Entered Handong Global University in 2020 · AI Convergence and Entrepreneurship, Psychology",
+    summary: "AI Convergence & Entrepreneurship (45), Counseling Psychology (33)",
   },
 };

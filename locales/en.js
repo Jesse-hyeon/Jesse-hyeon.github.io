@@ -14,7 +14,7 @@ const english = {
   },
   headings: {
     portfolio: "Hyeonwoo Kim Portfolio",
-    experience: "Experience",
+    experience: "Activities & Achievements",
     education: "Education",
   },
   filters: {
@@ -22,14 +22,14 @@ const english = {
     research: "Research",
     project: "Projects",
     award: "Awards",
-    activity: "Activities",
+    activity: "Other Activities",
   },
   labels: {
     language: "Language",
     ko: "Korean",
     en: "English",
-    filters: "Experience filters",
-    back: "Back to Experience",
+    filters: "Activities and achievements filters",
+    back: "Back to Activities & Achievements",
     empty: "No experiences have been added yet.",
     missing: "Experience not found.",
     pending: "Details will be added later.",

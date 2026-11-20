@@ -14,7 +14,7 @@ const korean = {
   },
   "headings": {
     "portfolio": "김현우 포트폴리오",
-    "experience": "경험",
+    "experience": "활동 및 성과",
     "education": "학력"
   },
   "filters": {
@@ -22,14 +22,14 @@ const korean = {
     "research": "연구",
     "project": "프로젝트",
     "award": "수상",
-    "activity": "활동"
+    "activity": "기타 활동"
   },
   "labels": {
     "language": "언어 선택",
     "ko": "한국어",
     "en": "영어",
-    "filters": "경험 필터",
-    "back": "경험 목록으로 돌아가기",
+    "filters": "활동 및 성과 필터",
+    "back": "활동 및 성과로 돌아가기",
     "empty": "등록된 경험이 없습니다.",
     "missing": "경험을 찾을 수 없습니다.",
     "pending": "상세 내용은 추후 추가할 예정입니다.",

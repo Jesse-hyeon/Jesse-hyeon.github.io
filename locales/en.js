@@ -104,10 +104,6 @@ const english = {
       title: "Smart SW Contest",
       summary: "",
     },
-    "likelion-12": {
-      title: "Like Lion 12th Cohort Member",
-      summary: "",
-    },
     "likelion-planning-track": {
       title: "Completed the Like Lion Planning Track",
       summary: "",

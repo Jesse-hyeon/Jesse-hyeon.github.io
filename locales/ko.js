@@ -104,10 +104,6 @@ const korean = {
       "title": "스마트 SW 공모전",
       "summary": ""
     },
-    "likelion-12": {
-      "title": "멋쟁이사자처럼 12기 아기사자",
-      "summary": ""
-    },
     "likelion-planning-track": {
       "title": "멋쟁이사자처럼 기획 트랙 수료",
       "summary": ""

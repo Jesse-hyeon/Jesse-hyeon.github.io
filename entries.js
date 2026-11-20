@@ -139,13 +139,6 @@ const entries = [
     "detail": true
   },
   {
-    "id": "likelion-12",
-    "group": "2024",
-    "order": 3,
-    "category": "activity",
-    "startDate": "2024"
-  },
-  {
     "id": "likelion-planning-track",
     "group": "2024",
     "order": 4,

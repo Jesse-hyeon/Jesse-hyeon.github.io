@@ -158,7 +158,7 @@ const entries = [
     "group": "2024",
     "order": 5,
     "category": "award",
-    "startDate": "2024",
+    "startDate": "2024-11",
     "detail": true
   },
   {

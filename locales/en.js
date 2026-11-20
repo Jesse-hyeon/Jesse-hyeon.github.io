@@ -49,7 +49,7 @@ const english = {
       summary: "",
     },
     "sk-hynix-phase-2": {
-      title: "SK hynix Phase 2 Project (AX Team)",
+      title: "SK hynix 2nd PoC (Impactive AI Intern)",
       summary: "",
     },
     "impactive-ai": {

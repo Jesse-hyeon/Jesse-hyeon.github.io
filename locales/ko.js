@@ -49,7 +49,7 @@ const korean = {
       "summary": ""
     },
     "sk-hynix-phase-2": {
-      "title": "SK 하이닉스 2차 프로젝트 (AX팀)",
+      "title": "SK 하이닉스 2차 PoC (Impactive AI 인턴)",
       "summary": ""
     },
     "impactive-ai": {

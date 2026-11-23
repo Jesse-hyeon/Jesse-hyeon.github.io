@@ -77,7 +77,7 @@ const english = {
   entries: {
     "t-lab": {
       title: "T-LAB Technology Entrepreneurship Society",
-      summary: "",
+      summary: "Top Excellence Award at the G-Star Startup Competition and an award at a campus startup competition",
     },
     "impactive-internship": {
       title: "Impactive AI Internship",

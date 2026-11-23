@@ -99,11 +99,10 @@ const english = {
     },
     "causal-x": {
       title: "Causal X",
-      summary: "A causal analysis decision-support service using commodity price, supply, and macroeconomic data",
+      summary: "A time-series causal analysis service that examines the drivers of commodity price fluctuations and the lags in their impact to support corporate procurement and risk management decisions",
       label: "Startup",
-      role: "Founder · Service planning",
       sections: [
-        { title: "Responsibilities", text: "Planned a causal analysis decision-support service using commodity price, supply, and macroeconomic data\nInterviewed manufacturing companies to understand procurement and contract decision processes\nTranslated causal analysis findings into product features and analysis reports" },
+        { title: "Responsibilities", text: "A time-series causal analysis service that examines the drivers of commodity price fluctuations and the lags in their impact to support corporate procurement and risk management decisions\nInterviewed manufacturing companies to understand procurement and contract decision processes\nTranslated causal analysis findings into product features and analysis reports" },
       ],
     },
     "causal-discovery": {

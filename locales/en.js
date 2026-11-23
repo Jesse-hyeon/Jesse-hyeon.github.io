@@ -77,11 +77,11 @@ const english = {
   entries: {
     "t-lab": {
       title: "T-LAB Technology Entrepreneurship Society",
-      summary: "Multiple startup competition awards, including the G-STAR Grand Prize (Gyeongsangbuk-do Governor's Award), RPM, and Startup Demo Day",
+      summary: "G-STAR Startup Competition Gyeongsangbuk-do Governor's Award and multiple campus startup competition awards",
     },
     "impactive-internship": {
       title: "Impactive AI Internship",
-      summary: "Participated in SK hynix, SK Siltron, SK ON, and COMMAX PoCs, and in causal analysis solution planning and development",
+      summary: "Participated in planning and developing a causal analysis solution for SK hynix, SK Siltron, SK ON, and COMMAX",
       sections: [
         { title: "Responsibilities", text: "Participated in SK hynix Phase 1 and 2 and SK Siltron industrial AI PoCs\nParticipated in SK ON battery and COMMAX demand forecasting projects\nParticipated in causal analysis solution planning and development" },
       ],

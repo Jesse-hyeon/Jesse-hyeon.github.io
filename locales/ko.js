@@ -77,11 +77,11 @@ const korean = {
   "entries": {
     "t-lab": {
       "title": "기술창업학회 T-LAB",
-      "summary": "G-STAR 최우수상(경상북도지사상), RPM, 스타트업 데모데이 등 창업경진대회 다수 수상"
+      "summary": "G-STAR 창업경진대회 경상북도지사상 수상 및 교내 창업경진대회 다수 수상"
     },
     "impactive-internship": {
       "title": "Impactive AI 인턴십",
-      "summary": "SK 하이닉스, SK 실트론, SK ON, COMMAX PoC와 인과분석 솔루션 기획 및 개발 참여",
+      "summary": "SK 하이닉스, SK 실트론, SK ON, COMMAX 대상 인과분석 솔루션 기획 및 개발 참여",
       "sections": [
         { "title": "수행 업무", "text": "SK 하이닉스 1·2차, SK 실트론 등 기업 대상 AI PoC 프로젝트 참여\nSK ON 배터리 및 COMMAX 수요예측 프로젝트 참여\n인과분석 솔루션 기획 및 개발 업무 참여" }
       ]

@@ -132,7 +132,8 @@ test("Experience is the landing page with education and military service", () =>
   assert(page.document.querySelector(".profile-description").textContent.includes("심리학을 전공했으며"));
   assert(!page.document.querySelector(".profile-description").textContent.includes("상담심리학을 전공했으며"));
   assert(page.main.textContent.includes("2027.02"));
-  assert(page.main.textContent.includes("전역일"));
+  assert(page.main.textContent.includes("2021.08.17 – 2023.02.16"));
+  assert(!page.main.textContent.includes("전역일"));
 });
 
 test("Resume PDFs open in a new tab for preview on every route", () => {

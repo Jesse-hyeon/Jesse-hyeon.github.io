@@ -51,7 +51,7 @@ function entryDate(entry) {
   const end = entry.endDate || (entry.ongoing ? text("labels.present") : null);
   for (const value of [entry.startDate, end].filter(Boolean)) {
     if (range.childElementCount) range.append(" – ");
-    const node = element(value.includes("-") ? "time" : "span", "", value.replace("-", "."));
+    const node = element(value.includes("-") ? "time" : "span", "", value.replaceAll("-", "."));
     if (node.tagName === "TIME") node.dateTime = value;
     range.append(node);
   }

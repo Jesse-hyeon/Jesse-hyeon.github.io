@@ -1,4 +1,4 @@
-// Dates accept YYYY or YYYY-MM. Leave unknown dates empty.
+// Dates accept YYYY, YYYY-MM, or YYYY-MM-DD. Leave unknown dates empty.
 // startDate determines grouping and sorting. order breaks ties within a year.
 // parentId links a flat record to an expandable parent activity. No deeper nesting is rendered yet.
 // Parent dates are editable initial coverage periods. Text is maintained in locales/ko.js and locales/en.js, keyed by entry id.
@@ -243,7 +243,7 @@ const entries = [
 ];
 
 const education = [{ startDate: "2020-03", endDate: "2027-02" }];
-const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnverified: true }];
+const militaryService = [{ startDate: "2021-08-17", endDate: "2023-02-16" }];
 
 // Page composition references the same activity IDs used by detail pages.
 const portfolioViews = {

@@ -24,7 +24,7 @@ const korean = {
     "experience": "경력",
     "projects": "프로젝트",
     "journey": "Journey",
-    "resume": "Resume / 이력서",
+    "resume": "Resume",
     "resumeDescription": "경력과 주요 프로젝트를 한 페이지로 정리했습니다.",
     "careerLeadership": "경력 및 리더십",
     "honorsAwards": "수상 및 성과",

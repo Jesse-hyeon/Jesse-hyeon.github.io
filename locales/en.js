@@ -24,7 +24,7 @@ const english = {
     experience: "Experience",
     projects: "Projects",
     journey: "Journey",
-    resume: "Resume / 이력서",
+    resume: "Resume",
     resumeDescription: "A one-page overview of my experience and selected projects.",
     careerLeadership: "Career & Leadership",
     honorsAwards: "Honors & Awards",

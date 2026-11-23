@@ -80,6 +80,13 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 #honors, #activities, #education, #militaryService { padding-top: 28px; border-top: 1px solid var(--line); }
 #activities .cv-list { gap: 20px; }
 #activities .entry-content h3 { color: var(--body); }
+.experience-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: 40px; align-items: start; }
+.experience-columns > .content-section { min-width: 0; margin-top: 0; }
+.experience-columns .cv-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.experience-columns #activities .cv-list { gap: 28px; }
+@media (max-width: 700px) {
+  .experience-columns { grid-template-columns: minmax(0, 1fr); }
+}
 .background-list h3 { font-size: 1rem; }
 .background-period { margin: 7px 0 0; color: var(--muted); font-size: 0.8125rem; }
 .record-note { margin: 8px 0 0; font-size: 0.8125rem; color: var(--muted); }
@@ -128,6 +135,7 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
   .site-nav a { font-size: 0.8125rem; }
   .header-inner { gap: 12px; }
   .content-section { margin-top: 32px; }
+  .experience-columns { margin-top: 32px; }
   .project-grid { grid-template-columns: minmax(0, 1fr); }
   .journey-row { grid-template-columns: 52px minmax(0, 1fr); gap: 16px; }
 }

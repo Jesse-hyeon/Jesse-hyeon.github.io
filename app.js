@@ -133,7 +133,9 @@ function showExperience() {
   activities.append(entryList(entries.filter(entry =>
     entry.category === "activity" && !entry.parentId && !portfolioViews.careerLeadership.includes(entry.id)
   ), { compact: true }));
-  main.append(career, awards, activities, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
+  const columns = element("div", "experience-columns");
+  columns.append(awards, activities);
+  main.append(career, columns, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
 }
 function projectCard(source) {
   const entry = localizedEntry(source);

@@ -239,6 +239,7 @@ function applyTranslations() {
       node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
     });
   }
+  document.querySelector(".language-switch").dataset.language = language;
   document.querySelectorAll("[data-language]").forEach(button => {
     button.setAttribute("aria-pressed", String(button.dataset.language === language));
   });

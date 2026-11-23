@@ -77,7 +77,7 @@ const english = {
   entries: {
     "t-lab": {
       title: "T-LAB Technology Entrepreneurship Society",
-      summary: "Top Excellence Award at the G-Star Startup Competition and an award at a campus startup competition",
+      summary: "Multiple startup competition awards, including the G-STAR Grand Prize (Gyeongsangbuk-do Governor's Award), RPM, and Startup Demo Day",
     },
     "impactive-internship": {
       title: "Impactive AI Internship",

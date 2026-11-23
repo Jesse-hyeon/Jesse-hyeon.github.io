@@ -77,7 +77,7 @@ const korean = {
   "entries": {
     "t-lab": {
       "title": "기술창업학회 T-LAB",
-      "summary": "G-Star 창업경진대회 최우수상, 교내 창업경진대회 수상"
+      "summary": "G-STAR 최우수상(경상북도지사상), RPM, 스타트업 데모데이 등 창업경진대회 다수 수상"
     },
     "impactive-internship": {
       "title": "Impactive AI 인턴십",

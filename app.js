@@ -6,9 +6,7 @@ if (!Object.hasOwn(locales, language)) {
 }
 if (!Object.hasOwn(locales, language)) language = "ko";
 
-const legacyTimeline = document.body.dataset.page === "about" &&
-  (location.hash === "#timeline" || params.has("filter") || params.has("open"));
-const currentPage = legacyTimeline ? "experience" : document.body.dataset.page;
+const currentPage = document.body.dataset.page === "about" ? "experience" : document.body.dataset.page;
 const main = document.querySelector("#page-content");
 
 function text(key) {
@@ -119,18 +117,6 @@ function backgroundSection(key, records) {
   node.append(list);
   return node;
 }
-function showAbout() {
-  main.append(element("h1", "page-title", text("ui.about")));
-  const journeySection = section(text("ui.journey"), "journey");
-  const list = element("ol", "journey-list");
-  for (const point of journey) {
-    const row = element("li", "journey-row");
-    row.append(element("span", "journey-year", point.year), element("p", "", text("journey." + point.key)));
-    list.append(row);
-  }
-  journeySection.append(list);
-  main.append(journeySection, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
-}
 function showExperience() {
   const heading = element("h1", "page-title", text("ui.experience"));
   heading.id = "timeline";
@@ -147,7 +133,7 @@ function showExperience() {
   activities.append(entryList(entries.filter(entry =>
     entry.category === "activity" && !entry.parentId && entry.id !== "likelion-leadership"
   ), { compact: true }));
-  main.append(career, awards, activities);
+  main.append(career, awards, activities, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
 }
 function projectCard(source) {
   const entry = localizedEntry(source);
@@ -271,8 +257,7 @@ function applyTranslations() {
 function renderPage() {
   applyTranslations();
   main.replaceChildren();
-  if (currentPage === "about") showAbout();
-  else if (currentPage === "experience") showExperience();
+  if (currentPage === "experience") showExperience();
   else if (currentPage === "projects") showProjects();
   else showDetail();
 }
@@ -302,8 +287,4 @@ function scrollToFragment() {
   if (id) document.getElementById(id)?.scrollIntoView();
 }
 requestAnimationFrame(scrollToFragment);
-window.addEventListener("hashchange", () => {
-  if (document.body.dataset.page === "about" && location.hash === "#timeline" && currentPage === "about") {
-    location.replace(pageUrl("experience") + "#timeline");
-  } else scrollToFragment();
-});
+window.addEventListener("hashchange", scrollToFragment);

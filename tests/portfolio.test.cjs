@@ -106,7 +106,7 @@ test("All independent routes render in both languages without accordion controls
       const active = page.document.querySelectorAll("[data-nav]")
         .filter(node => node.attributes["aria-current"] === "page");
       assert.equal(active.length, 1);
-      assert.equal(active[0].dataset.nav, route === "index" ? "about" : route);
+      assert.equal(active[0].dataset.nav, ["index", "about"].includes(route) ? "experience" : route);
     }
   }
 });
@@ -124,10 +124,13 @@ test("All 26 records and parent relationships remain available from one source",
   }
 });
 
-test("About has four static Journey milestones and actual PDF downloads", () => {
+test("Experience is the landing page with education, military service and PDF downloads", () => {
   const page = render("/index.html?lang=ko");
-  const journey = page.document.getElementById("journey");
-  assert.equal(descendants(journey).filter(node => node.tagName === "LI").length, 4);
+  assert.equal(page.document.querySelectorAll("[data-nav]").length, 2);
+  assert(!page.document.getElementById("journey"));
+  assert(page.document.getElementById("career"));
+  assert(page.document.querySelector(".profile-description").textContent.includes("심리학을 전공했으며"));
+  assert(!page.document.querySelector(".profile-description").textContent.includes("상담심리학을 전공했으며"));
   assert(page.main.textContent.includes("2027.02"));
   assert(page.main.textContent.includes("전역일"));
   for (const language of ["KO", "EN"]) {

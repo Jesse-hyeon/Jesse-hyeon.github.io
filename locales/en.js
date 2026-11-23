@@ -18,6 +18,36 @@ const english = {
     education: "Education",
     military: "Military Service",
   },
+  ui: {
+    navLabel: "Primary navigation",
+    about: "About",
+    experience: "Experience",
+    projects: "Projects",
+    journey: "Journey",
+    resume: "Resume / 이력서",
+    resumeDescription: "A one-page overview of my experience and selected projects.",
+    careerLeadership: "Career & Leadership",
+    honorsAwards: "Honors & Awards",
+    additionalActivities: "Additional Activities",
+    featuredProjects: "Featured Projects",
+    industryProjects: "Industry Projects",
+    otherProjects: "Other Projects",
+    relatedProjects: "Related Projects",
+    relatedAchievements: "Related Achievements",
+    parentActivity: "Parent activity",
+    overview: "Overview",
+    projectDetails: "Project details",
+    downloadKo: "KO PDF",
+    downloadEn: "EN PDF",
+    back: "Back to list",
+    skipLink: "Skip to content",
+  },
+  journey: {
+    admission: "Entered Handong Global University",
+    exploration: "AI projects and startup competition activity",
+    industry: "Impactive AI Internship, Like Lion 13th Cohort Representative",
+    startup: "Founded Causal X, KADS Best Paper Award",
+  },
   filters: {
     all: "All",
     research: "Research",
@@ -47,8 +77,11 @@ const english = {
   entries: {
     "impactive-internship": {
       title: "Impactive AI Internship",
-      summary: "",
-      role: "",
+      summary: "Participated in SK hynix, SK Siltron, SK ON, and COMMAX PoCs and causal analysis solution development",
+      role: "Intern",
+      sections: [
+        { title: "Responsibilities", text: "Participated in SK hynix Phase 1 and 2 and SK Siltron industrial AI PoCs\nParticipated in SK ON battery and COMMAX demand forecasting projects\nParticipated in causal analysis solution planning and development" },
+      ],
     },
     "sabong-band": {
       title: "Sabong Band",
@@ -62,12 +95,18 @@ const english = {
     },
     "causal-x": {
       title: "Causal X",
-      summary: "",
+      summary: "A causal analysis decision-support service using commodity price, supply, and macroeconomic data",
       label: "Startup",
+      role: "Founder · Service planning",
+      sections: [
+        { title: "Responsibilities", text: "Planned a causal analysis decision-support service using commodity price, supply, and macroeconomic data\nInterviewed manufacturing companies to understand procurement and contract decision processes\nTranslated causal analysis findings into product features and analysis reports" },
+      ],
     },
     "causal-discovery": {
       title: "Korean Association of Data Science (KADS) Best Paper Award",
-      summary: "",
+      summary: "Best Paper Award for causal discovery research",
+      projectTitle: "Causal Discovery Research",
+      projectSummary: "Research and writing on causal discovery",
       sections: [
         { title: "Conference", text: "Korean Association of Data Science (KADS) Summer Conference" },
         { title: "Authorship", text: "First author" },
@@ -75,11 +114,11 @@ const english = {
     },
     "sk-hynix-phase-2": {
       title: "SK hynix 2nd PoC (Impactive AI Intern)",
-      summary: "",
+      summary: "A second industrial AI PoC completed during the Impactive AI internship",
     },
     "impactive-ai": {
       title: "Impactive-ai Causal Analysis Solution Planning and Development",
-      summary: "",
+      summary: "Participated in planning and developing a causal analysis solution",
     },
     "milan-football": {
       title: "Member of H-Milan Football Team",
@@ -87,23 +126,23 @@ const english = {
     },
     "sk-hynix-phase-1": {
       title: "SK hynix Phase 1 PoC (Impactive AI Internship)",
-      summary: "",
+      summary: "An initial industrial AI PoC completed during the Impactive AI internship",
     },
     "sk-siltron": {
       title: "SK Siltron Project PoC",
-      summary: "",
+      summary: "Participated in an industrial AI PoC for SK Siltron",
     },
     "sk-on": {
       title: "SK ON Battery Demand Forecasting Project",
-      summary: "",
+      summary: "Participated in a battery demand forecasting project",
     },
     "commax-demand-forecasting": {
       title: "COMMAX Demand Forecasting Project",
-      summary: "",
+      summary: "Participated in a demand forecasting project",
     },
     "likelion-leadership": {
       title: "Like Lion 13th Cohort",
-      summary: "",
+      summary: "Key achievement: Top Excellence Award at the Central Hackathon",
       role: "Representative",
     },
     "likelion-hackathon-award": {

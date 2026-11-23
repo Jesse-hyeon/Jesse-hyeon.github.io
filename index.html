@@ -2,23 +2,31 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
-  <link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="김현우의 연구, 프로젝트, 수상 및 활동 포트폴리오">
+  <link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon.png?v=4">
   <title>김현우 — 포트폴리오</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
-  <link rel="stylesheet" href="./styles.css?v=62">
-  <script src="./locales/ko.js?v=62" defer></script>
-  <script src="./locales/en.js?v=62" defer></script>
-  <script src="./entries.js?v=62" defer></script>
-  <script src="./app.js?v=62" defer></script>
+  <link rel="stylesheet" href="./styles.css?v=63">
+  <script src="./locales/ko.js?v=63" defer></script>
+  <script src="./locales/en.js?v=63" defer></script>
+  <script src="./entries.js?v=63" defer></script>
+  <script src="./app.js?v=63" defer></script>
 </head>
-<body data-page="timeline" id="top">
-  <header class="utility-bar">
-  <div class="language-switch" role="group" aria-label="언어 선택" data-i18n-aria-label="labels.language">
-    <button type="button" data-language="ko" lang="ko" aria-label="한국어" aria-pressed="true" data-i18n-aria-label="labels.ko">KO</button>
-    <button type="button" data-language="en" lang="en" aria-label="영어" aria-pressed="false" data-i18n-aria-label="labels.en">EN</button>
-  </div>
+<body data-page="about" id="top">
+  <a class="skip-link" href="#page-content" data-i18n="ui.skipLink">본문으로</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <nav class="site-nav" aria-label="주 메뉴" data-i18n-aria-label="ui.navLabel">
+        <a data-nav="about" href="./index.html" data-i18n="ui.about">About</a>
+        <a data-nav="experience" href="./experience.html" data-i18n="ui.experience">Experience</a>
+        <a data-nav="projects" href="./projects.html" data-i18n="ui.projects">Projects</a>
+      </nav>
+      <div class="language-switch" role="group" aria-label="언어 선택" data-i18n-aria-label="labels.language">
+        <button type="button" data-language="ko" lang="ko" aria-label="한국어" aria-pressed="true" data-i18n-aria-label="labels.ko">KO</button>
+        <button type="button" data-language="en" lang="en" aria-label="영어" aria-pressed="false" data-i18n-aria-label="labels.en">EN</button>
+      </div>
+    </div>
   </header>
   <div class="shell page-layout">
     <aside id="about" class="profile" aria-label="프로필" data-i18n-aria-label="profile.label">
@@ -55,34 +63,17 @@
             </a>
           </li>
         </ul>
+        <section class="profile-resume" aria-labelledby="resume-title">
+          <h2 id="resume-title" data-i18n="ui.resume">Resume</h2>
+          <div class="resume-links">
+            <a href="./assets/resumes/Hyeonwoo_Kim_Resume_KO.pdf" download data-i18n="ui.downloadKo">KO PDF</a>
+            <a href="./assets/resumes/Hyeonwoo_Kim_Resume_EN.pdf" download data-i18n="ui.downloadEn">EN PDF</a>
+          </div>
+        </section>
       </div>
     </aside>
-    <main class="page-main">
-      <h1 class="sr-only" data-i18n="headings.portfolio">김현우 포트폴리오</h1>
-      <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
-        <div class="section-heading">
-          <h2 id="timeline-title" data-i18n="headings.experience">활동 및 성과</h2>
-        </div>
-        <div class="filters" role="group" aria-label="활동 및 성과 필터" data-i18n-aria-label="labels.filters">
-          <button type="button" data-filter="all" aria-pressed="true" data-i18n="filters.all">전체</button>
-          <button type="button" data-filter="research" hidden aria-pressed="false" data-i18n="filters.research">연구</button>
-          <button type="button" data-filter="career" aria-pressed="false" data-i18n="filters.career">경력/인턴십</button>
-          <button type="button" data-filter="project" aria-pressed="false" data-i18n="filters.project">프로젝트</button>
-          <button type="button" data-filter="award" aria-pressed="false" data-i18n="filters.award">수상</button>
-          <button type="button" data-filter="activity" aria-pressed="false" data-i18n="filters.activity">기타 활동</button>
-        </div>
-        <p class="sr-only" id="filter-status" role="status"></p>
-        <div id="timeline-list"></div>
-        <noscript><p data-i18n="labels.jsRequired">내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
-      </section>
-      <section class="background-section" aria-labelledby="education-title">
-        <h2 id="education-title" data-i18n="headings.education">학력</h2>
-        <ol id="education-list"></ol>
-      </section>
-      <section class="background-section" aria-labelledby="military-title">
-        <h2 id="military-title" data-i18n="headings.military">병역</h2>
-        <ol id="military-list"></ol>
-      </section>
+    <main class="page-main" id="page-content" tabindex="-1">
+      <noscript>내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.</noscript>
     </main>
   </div>
 </body>

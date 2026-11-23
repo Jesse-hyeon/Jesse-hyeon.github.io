@@ -1,0 +1,200 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+const { test } = require("node:test");
+
+const root = path.resolve(__dirname, "..");
+const read = name => fs.readFileSync(path.join(root, name), "utf8");
+
+class Element {
+  constructor(tag, attributes = {}) {
+    this.tagName = tag.toUpperCase();
+    this.attributes = attributes;
+    this.className = attributes.class || "";
+    this.id = attributes.id || "";
+    this.href = attributes.href;
+    this.dataset = {};
+    this.children = [];
+    this.events = {};
+    for (const [key, value] of Object.entries(attributes)) {
+      if (key.startsWith("data-")) {
+        this.dataset[key.slice(5).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())] = value;
+      }
+    }
+  }
+  append(...children) { this.children.push(...children); }
+  replaceChildren() { this.children = []; this.value = ""; }
+  setAttribute(key, value) { this.attributes[key] = value; }
+  getAttribute(key) { return this.attributes[key]; }
+  removeAttribute(key) { delete this.attributes[key]; }
+  addEventListener(event, callback) { this.events[event] = callback; }
+  scrollIntoView() { this.scrolled = true; }
+  get childElementCount() { return this.children.filter(child => child instanceof Element).length; }
+  set textContent(value) { this.value = value; }
+  get textContent() {
+    return (this.value || "") + this.children.map(child =>
+      child instanceof Element ? child.textContent : child
+    ).join("");
+  }
+}
+
+function descendants(node) {
+  return node.children.filter(child => child instanceof Element)
+    .flatMap(child => [child, ...descendants(child)]);
+}
+
+function matches(node, selector) {
+  if (selector.startsWith("#")) return node.id === selector.slice(1);
+  if (selector.startsWith(".")) return node.className.split(" ").includes(selector.slice(1));
+  const match = selector.match(/^([a-z]+)?\[([^=\]]+)(?:="([^"]*)")?\]$/);
+  return Boolean(match && (!match[1] || node.tagName === match[1].toUpperCase()) &&
+    Object.hasOwn(node.attributes, match[2]) &&
+    (match[3] === undefined || node.attributes[match[2]] === match[3]));
+}
+
+function render(url, storage = new Map()) {
+  const location = new URL(url, "https://example.com/");
+  location.replace = target => { location.redirect = target; };
+  const filename = location.pathname.split("/").at(-1) || "index.html";
+  const markup = read(filename);
+  const nodes = [...markup.matchAll(/<([a-z][a-z0-9-]*)\b([^>]*?)>/g)].map(match => {
+    const attributes = Object.fromEntries(
+      [...match[2].matchAll(/([a-z0-9-]+)="([^"]*)"/g)].map(attribute => [attribute[1], attribute[2]])
+    );
+    return new Element(match[1], attributes);
+  });
+  const main = nodes.find(node => node.id === "page-content");
+  const allNodes = () => [...nodes, ...descendants(main)];
+  const document = {
+    documentElement: new Element("html"),
+    body: nodes.find(node => node.tagName === "BODY"),
+    createElement: tag => new Element(tag),
+    querySelector: selector => allNodes().find(node => matches(node, selector)),
+    querySelectorAll: selector => allNodes().filter(node => matches(node, selector)),
+    getElementById: id => allNodes().find(node => node.id === id),
+  };
+  const windowEvents = {};
+  const context = vm.createContext({
+    document, location, URLSearchParams,
+    localStorage: {
+      getItem: key => storage.get(key) || null,
+      setItem: (key, value) => storage.set(key, value),
+    },
+    history: { replaceState(_, __, target) { location.href = new URL(target, location).href; } },
+    requestAnimationFrame: callback => callback(),
+    window: { addEventListener(event, callback) { windowEvents[event] = callback; } },
+  });
+  for (const file of ["locales/ko.js", "locales/en.js", "entries.js", "app.js"]) {
+    vm.runInContext(read(file), context);
+  }
+  return { context, document, main, location, storage, windowEvents };
+}
+
+function changeLanguage(page, language) {
+  page.document.querySelectorAll("button[data-language]")
+    .find(button => button.dataset.language === language).events.click();
+}
+
+test("All independent routes render in both languages without accordion controls", () => {
+  for (const route of ["index", "about", "experience", "projects"]) {
+    for (const language of ["ko", "en"]) {
+      const page = render("/" + route + ".html?lang=" + language);
+      assert.equal(page.document.documentElement.lang, language);
+      assert.equal(descendants(page.main).filter(node => node.tagName === "H1").length, 1);
+      assert(!descendants(page.main).some(node => ["DETAILS", "SUMMARY", "BUTTON"].includes(node.tagName)));
+      const active = page.document.querySelectorAll("[data-nav]")
+        .filter(node => node.attributes["aria-current"] === "page");
+      assert.equal(active.length, 1);
+      assert.equal(active[0].dataset.nav, route === "index" ? "about" : route);
+    }
+  }
+});
+
+test("All 26 records and parent relationships remain available from one source", () => {
+  const page = render("/index.html");
+  const records = vm.runInContext("entries", page.context);
+  assert.equal(records.length, 26);
+  assert.equal(new Set(records.map(entry => entry.id)).size, 26);
+  for (const record of records) {
+    if (record.parentId) assert(records.some(parent => parent.id === record.parentId));
+    for (const language of ["ko", "en"]) {
+      assert(vm.runInContext("locales." + language + ".entries", page.context)[record.id].title);
+    }
+  }
+});
+
+test("About has four static Journey milestones and actual PDF downloads", () => {
+  const page = render("/index.html?lang=ko");
+  const journey = page.document.getElementById("journey");
+  assert.equal(descendants(journey).filter(node => node.tagName === "LI").length, 4);
+  assert(page.main.textContent.includes("2027.02"));
+  assert(page.main.textContent.includes("전역일"));
+  for (const language of ["KO", "EN"]) {
+    const filename = "assets/resumes/Hyeonwoo_Kim_Resume_" + language + ".pdf";
+    assert(fs.readFileSync(path.join(root, filename)).subarray(0, 5).equals(Buffer.from("%PDF-")));
+    assert(read("index.html").includes('href="./' + filename + '" download'));
+  }
+});
+
+test("Experience separates career, all six awards and additional activities", () => {
+  const page = render("/experience.html?lang=en");
+  assert.equal(page.document.getElementById("career").children[1].children.length, 3);
+  assert.equal(page.document.getElementById("honors").children[1].children.length, 6);
+  const activities = page.document.getElementById("activities");
+  assert(activities.textContent.includes("Sabong Band"));
+  assert(activities.textContent.includes("College Choir Competition"));
+});
+
+test("Projects references shared records and uses cards only for featured entries", () => {
+  const page = render("/projects.html?lang=en");
+  assert.equal(page.document.getElementById("featured").children[1].children.length, 2);
+  assert.equal(page.document.getElementById("industry").children[1].children.length, 6);
+  assert.equal(page.document.getElementById("other").children[1].children.length, 2);
+  assert.equal(descendants(page.main).filter(node => node.className.includes("project-card")).length, 2);
+});
+
+test("Career details show related projects and achievements as static lists", () => {
+  const internship = render("/detail.html?id=impactive-internship&lang=en");
+  assert.equal(descendants(internship.main).filter(node => node.className === "cv-row").length, 6);
+  const leader = render("/detail.html?id=likelion-leadership&lang=ko");
+  assert(leader.main.textContent.includes("중앙해커톤"));
+  assert(!leader.main.textContent.includes("추후 추가"));
+  const band = render("/detail.html?id=sabong-band&lang=ko");
+  assert(band.main.textContent.includes("1차 공연"));
+  assert(band.main.textContent.includes("2차 공연"));
+});
+
+test("Only meaningful details are clickable and old empty child URLs lead to their parent", () => {
+  const page = render("/projects.html?lang=ko");
+  const other = page.document.getElementById("other");
+  assert.equal(descendants(other).filter(node => node.tagName === "A").length, 0);
+  const causal = render("/detail.html?id=causal-x&lang=ko");
+  assert(!causal.location.redirect);
+  assert(causal.main.textContent.includes("원자재"));
+  const child = render("/detail.html?id=sk-on&lang=en");
+  assert(child.location.redirect.includes("id=impactive-internship"));
+  assert(child.location.redirect.includes("lang=en"));
+});
+
+test("Legacy index timeline URLs still render Experience", () => {
+  for (const url of ["/index.html?lang=ko#timeline", "/index.html?lang=en&filter=award", "/index.html?open=impactive-internship"]) {
+    const page = render(url);
+    assert(page.document.getElementById("honors"));
+  }
+});
+
+test("Language switches preserve the route, nav state, dates and detail context", () => {
+  const page = render("/experience.html?lang=ko");
+  changeLanguage(page, "en");
+  assert(page.location.pathname.endsWith("experience.html"));
+  assert.equal(page.document.querySelector('[data-nav="experience"]').attributes["aria-current"], "page");
+  assert(page.main.textContent.includes("2025.05"));
+  changeLanguage(page, "ko");
+  assert.equal(page.document.documentElement.lang, "ko");
+  const detail = render("/detail.html?id=causal-discovery&lang=en&from=projects");
+  assert(detail.document.querySelector(".back-link").href.includes("projects.html?lang=en"));
+  changeLanguage(detail, "ko");
+  assert(detail.main.textContent.includes("제1저자"));
+  assert(detail.document.querySelector(".back-link").href.includes("lang=ko"));
+});

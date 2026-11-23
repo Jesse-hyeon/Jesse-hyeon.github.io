@@ -18,6 +18,36 @@ const korean = {
     "education": "학력",
     "military": "병역"
   },
+  "ui": {
+    "navLabel": "주 메뉴",
+    "about": "소개",
+    "experience": "경력",
+    "projects": "프로젝트",
+    "journey": "Journey",
+    "resume": "Resume / 이력서",
+    "resumeDescription": "경력과 주요 프로젝트를 한 페이지로 정리했습니다.",
+    "careerLeadership": "경력 및 리더십",
+    "honorsAwards": "수상 및 성과",
+    "additionalActivities": "기타 활동",
+    "featuredProjects": "주요 프로젝트",
+    "industryProjects": "산업 프로젝트",
+    "otherProjects": "기타 프로젝트",
+    "relatedProjects": "관련 프로젝트",
+    "relatedAchievements": "관련 성과",
+    "parentActivity": "상위 활동",
+    "overview": "개요",
+    "projectDetails": "프로젝트 상세",
+    "downloadKo": "KO PDF",
+    "downloadEn": "EN PDF",
+    "back": "목록으로 돌아가기",
+    "skipLink": "본문으로"
+  },
+  "journey": {
+    "admission": "한동대학교 입학",
+    "exploration": "AI 프로젝트 및 창업경진대회 활동",
+    "industry": "Impactive AI 인턴십, 멋쟁이사자처럼 13기 대표",
+    "startup": "Causal X 창업, 한국데이터사이언스학회 우수논문상"
+  },
   "filters": {
     "all": "전체",
     "research": "연구",
@@ -47,7 +77,11 @@ const korean = {
   "entries": {
     "impactive-internship": {
       "title": "Impactive AI 인턴십",
-      "summary": ""
+      "summary": "SK 하이닉스·SK 실트론·SK ON·COMMAX PoC와 인과분석 솔루션 기획 및 개발 참여",
+      "role": "인턴",
+      "sections": [
+        { "title": "수행 업무", "text": "SK 하이닉스 1·2차, SK 실트론 등 기업 대상 AI PoC 프로젝트 참여\nSK ON 배터리 및 COMMAX 수요예측 프로젝트 참여\n인과분석 솔루션 기획 및 개발 업무 참여" }
+      ]
     },
     "sabong-band": {
       "title": "사봉밴드",
@@ -61,12 +95,18 @@ const korean = {
     },
     "causal-x": {
       "title": "Causal X",
-      "summary": "",
-      "label": "창업"
+      "summary": "원자재 가격·수급·거시경제 데이터를 활용한 인과분석 기반 의사결정 지원 서비스 기획",
+      "label": "창업",
+      "role": "창업 프로젝트 · 서비스 기획",
+      "sections": [
+        { "title": "수행 업무", "text": "원자재 가격·수급·거시경제 데이터를 활용한 인과분석 기반 의사결정 지원 서비스 기획\n제조기업 인터뷰를 통해 원자재 구매·계약 의사결정 과정과 요구사항 조사\n인과분석 결과를 실무자가 활용할 수 있는 서비스 기능과 분석 보고서로 구체화" }
+      ]
     },
     "causal-discovery": {
       "title": "한국데이터사이언스학회 우수논문상",
-      "summary": "",
+      "summary": "인과발견 연구의 성과로 받은 우수논문상",
+      "projectTitle": "인과발견 연구",
+      "projectSummary": "인과발견 연구 및 논문 작업",
       "sections": [
         { "title": "학술대회", "text": "한국데이터사이언스학회 하계종합학술대회" },
         { "title": "저자 역할", "text": "제1저자" }
@@ -74,11 +114,11 @@ const korean = {
     },
     "sk-hynix-phase-2": {
       "title": "SK 하이닉스 2차 PoC (Impactive AI 인턴)",
-      "summary": ""
+      "summary": "Impactive AI 인턴십 중 수행한 2차 산업 AI PoC"
     },
     "impactive-ai": {
       "title": "Impactive-ai 인과 분석 솔루션 기획 및 개발",
-      "summary": ""
+      "summary": "인과분석 기반 솔루션 기획 및 개발 참여"
     },
     "milan-football": {
       "title": "H-밀란 축구팀 소속",
@@ -86,24 +126,24 @@ const korean = {
     },
     "sk-hynix-phase-1": {
       "title": "SK 하이닉스 1차 PoC (Impactive AI 인턴)",
-      "summary": ""
+      "summary": "Impactive AI 인턴십 중 수행한 1차 산업 AI PoC"
     },
     "sk-siltron": {
       "title": "SK 실트론 프로젝트 PoC",
-      "summary": ""
+      "summary": "SK 실트론 대상 산업 AI PoC 프로젝트 참여"
     },
     "sk-on": {
       "title": "SK ON 배터리 수요예측 프로젝트",
-      "summary": ""
+      "summary": "배터리 수요예측 프로젝트 참여"
     },
     "commax-demand-forecasting": {
       "title": "COMMAX 수요예측 프로젝트",
-      "summary": ""
+      "summary": "수요예측 프로젝트 참여"
     },
     "likelion-leadership": {
       "title": "멋쟁이사자처럼 13기",
-      "summary": "",
-      "role": "대표"
+      "role": "대표",
+      "summary": "주요 성과: 중앙해커톤 최우수상"
     },
     "likelion-hackathon-award": {
       "title": "멋쟁이사자처럼 중앙해커톤 최우수상",

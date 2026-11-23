@@ -1,362 +1,284 @@
 const params = new URLSearchParams(location.search);
-const availableFilters = ["all", ...Object.keys(categories).filter((category) =>
-  entries.some((entry) => entry.category === category)
-)];
-const requestedFilter = params.get("filter");
-const activeFilter = availableFilters.includes(requestedFilter) ? requestedFilter : "all";
-
 const locales = { ko: korean, en: english };
 let language = params.get("lang");
 if (!Object.hasOwn(locales, language)) {
-  try {
-    language = localStorage.getItem("portfolio-language");
-  } catch {
-    language = null;
-  }
+  try { language = localStorage.getItem("portfolio-language"); } catch { language = null; }
 }
 if (!Object.hasOwn(locales, language)) language = "ko";
+
+const legacyTimeline = document.body.dataset.page === "about" &&
+  (location.hash === "#timeline" || params.has("filter") || params.has("open"));
+const currentPage = legacyTimeline ? "experience" : document.body.dataset.page;
+const main = document.querySelector("#page-content");
 
 function text(key) {
   return key.split(".").reduce((value, part) => value[part], locales[language]);
 }
-
 function localizedEntry(entry) {
   return { ...entry, ...(locales[language].entries[entry.id] || korean.entries[entry.id]) };
 }
-
 function rememberLanguage() {
-  try {
-    localStorage.setItem("portfolio-language", language);
-  } catch {
-    // Navigation links also carry the language when browser storage is unavailable.
-  }
+  try { localStorage.setItem("portfolio-language", language); } catch { /* Links also carry the language. */ }
 }
-
-function applyTranslations() {
-  document.documentElement.lang = language;
-  document.title = text("pageTitle");
-  const description = document.querySelector('meta[name="description"]');
-  if (description) description.content = text("description");
-  document.querySelectorAll("[data-i18n]").forEach((node) => {
-    node.textContent = text(node.dataset.i18n);
-  });
-  for (const attribute of ["aria-label", "alt"]) {
-    document.querySelectorAll("[data-i18n-" + attribute + "]").forEach((node) => {
-      node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
-    });
-  }
-  document.querySelector(".language-switch").dataset.language = language;
-  document.querySelectorAll("button[data-language]").forEach((button) => {
-    button.setAttribute("aria-pressed", String(button.dataset.language === language));
-  });
-}
-
-function element(tag, className, text) {
+function element(tag, className, value) {
   const node = document.createElement(tag);
   if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
+  if (value !== undefined) node.textContent = value;
   return node;
 }
-
-function link(className, text, href) {
-  const anchor = element("a", className, text);
-  anchor.href = href;
-  return anchor;
+function link(className, value, href) {
+  const node = element("a", className, value);
+  node.href = href;
+  return node;
 }
-
-function filterQuery(filter) {
-  const query = new URLSearchParams({ lang: language });
-  if (filter !== "all") query.set("filter", filter);
-  return "?" + query;
+function pageUrl(page) {
+  const filename = page === "about" ? "index" : page;
+  return "./" + filename + ".html?lang=" + language;
 }
-
-function detailUrl(id, filter) {
-  const query = new URLSearchParams({ id, lang: language });
-  if (filter !== "all") query.set("filter", filter);
+function detailUrl(id) {
+  const query = new URLSearchParams({ id, lang: language, from: currentPage === "projects" ? "projects" : "experience" });
   return "./detail.html?" + query;
 }
-
-function entryDate(entry) {
-  const range = element("span", "entry-range");
-  const endDate = entry.endDate || (entry.ongoing ? text("labels.present") : null);
-  for (const value of [entry.startDate, endDate].filter(Boolean)) {
-    if (range.childElementCount) range.append(" – ");
-    const date = element(value.includes("-") ? "time" : "span", "entry-date", value.replace("-", "."));
-    if (date.tagName === "TIME") date.dateTime = value;
-    range.append(date);
-  }
-  return range;
+function childrenOf(id) {
+  return entries.filter(entry => entry.parentId === id).sort(byStartDate);
 }
-
-function badge(entry) {
-  return element("span", "badge", entry.label || text("filters." + entry.category));
-}
-
-function entryHref(entry, filter) {
-  const hasContent = entry.sections?.some((section) => section.text?.trim());
-  return entry.url || (entry.detail && hasContent ? detailUrl(entry.id, filter) : null);
-}
-
-function entryContent(entry, filter, heading = "h4") {
-  const href = entryHref(entry, filter);
-  const content = href ? link("timeline-card", "", href) : element("div", "timeline-card");
-  const meta = element("div", "card-meta");
-  meta.append(badge(entry));
-  content.append(element(heading, "", entry.title), meta);
-  if (entry.role) content.append(element("p", "entry-role", entry.role));
-  if (entry.summary) content.append(element("p", "", entry.summary));
-  if (href) {
-    const arrow = element("span", "timeline-arrow", "↗");
-    arrow.setAttribute("aria-hidden", "true");
-    content.append(arrow);
-  }
-  return content;
-}
-
-function timelineRow(source, filter, child = false) {
-  const entry = localizedEntry(source);
-  const row = element("li", child ? "timeline-child" : "timeline-row");
-  row.append(entryDate(entry), entryContent(entry, filter, child ? "h5" : "h4"));
-  return row;
-}
-
-const expandedGroups = new Map();
-
-function timelineGroup(source, children, filter) {
-  const entry = localizedEntry(source);
-  const row = element("li", "timeline-group");
-  const disclosure = element("details", "timeline-accordion");
-  const stateKey = filter + ":" + entry.id;
-  disclosure.dataset.stateKey = stateKey;
-  disclosure.open = expandedGroups.get(stateKey) ?? (filter !== "all" || params.get("open") === entry.id);
-  disclosure.addEventListener("toggle", () => {
-    expandedGroups.set(stateKey, disclosure.open);
-  });
-  const summary = element("summary", "timeline-row timeline-parent");
-  // The summary toggles the group. A parent's own link is kept inside the panel.
-  const content = entryContent({ ...entry, detail: false, url: null }, filter);
-  const count = element("span", "group-count", text("labels.children").replace("{count}", children.length));
-  const chevron = element("span", "accordion-chevron");
-  chevron.setAttribute("aria-hidden", "true");
-  content.append(count, chevron);
-  summary.append(entryDate(entry), content);
-  const panel = element("div", "timeline-children-wrapper");
-  const href = entryHref(entry, filter);
-  if (href) panel.append(link("parent-detail-link", text("labels.parentDetail"), href));
-  const list = element("ol", "timeline-children");
-  for (const child of children) list.append(timelineRow(child, filter, true));
-  panel.append(list);
-  disclosure.append(summary, panel);
-  row.append(disclosure);
-  return row;
-}
-
 function byStartDate(a, b) {
   return b.startDate.localeCompare(a.startDate) || a.order - b.order;
 }
-
-function showTimeline(filter) {
-  const list = document.querySelector("#timeline-list");
-  list.querySelectorAll("details[data-state-key]").forEach((details) => {
-    expandedGroups.set(details.dataset.stateKey, details.open);
-  });
-  list.replaceChildren();
-
-  const visible = [];
-  for (const entry of entries.filter((item) => !item.parentId)) {
-    const children = entries.filter((item) => item.parentId === entry.id).sort(byStartDate);
-    const parentMatches = filter === "all" || entry.category === filter;
-    const matchingChildren = children.filter((item) => filter === "all" || item.category === filter);
-    if (parentMatches || matchingChildren.length) {
-      visible.push({ entry, children: parentMatches ? children : matchingChildren });
-    }
-  }
-
-  const years = [...new Set(visible.map(({ entry }) => entry.startDate.slice(0, 4)))].sort().reverse();
-  for (const year of years) {
-    const grouped = visible
-      .filter(({ entry }) => entry.startDate.slice(0, 4) === year)
-      .sort((a, b) => byStartDate(a.entry, b.entry));
-    const group = element("section", "year-group");
-    group.append(element("h3", "year", year));
-    const rows = element("ol", "year-entries");
-    for (const { entry, children } of grouped) {
-      rows.append(children.length ? timelineGroup(entry, children, filter) : timelineRow(entry, filter));
-    }
-    group.append(rows);
-    list.append(group);
-  }
-
-  if (!visible.length) list.append(element("p", "empty-message", text("labels.empty")));
-  const matchedCount = entries.filter((entry) => filter === "all" || entry.category === filter).length;
-  document.querySelector("#filter-status").textContent =
-    text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", matchedCount);
+function hasDetail(source) {
+  const entry = localizedEntry(source);
+  return Boolean(
+    entry.sections?.some(section => section.text?.trim()) ||
+    entry.qa?.some(item => item.question?.trim() && item.answer?.trim()) ||
+    entry.media?.some(item => item.src) ||
+    entry.links?.some(item => item.url) ||
+    childrenOf(entry.id).length
+  );
 }
-
-function showBackgroundSection(selector, data, translationKey) {
-  const list = document.querySelector(selector);
-  list.replaceChildren();
-  for (const source of data) {
-    const entry = { ...source, ...text(translationKey) };
-    const row = element("li", "background-row");
-    row.append(element("h3", "", entry.title));
-    const period = element("div", "background-period");
-    period.append(entryDate(entry));
-    if (entry.expectedGraduation) {
-      period.append(element("span", "graduation-status", "(" + text("labels.expectedGraduation") + ")"));
-    }
-    row.append(period, element("p", "", entry.summary));
-    if (entry.endDateUnverified) {
-      row.append(element("p", "record-note", text("labels.dischargeUnverified")));
-    }
+function entryHref(source) {
+  return source.url || (hasDetail(source) ? detailUrl(source.id) : null);
+}
+function entryDate(entry) {
+  const range = element("span", "entry-range");
+  const end = entry.endDate || (entry.ongoing ? text("labels.present") : null);
+  for (const value of [entry.startDate, end].filter(Boolean)) {
+    if (range.childElementCount) range.append(" – ");
+    const node = element(value.includes("-") ? "time" : "span", "", value.replace("-", "."));
+    if (node.tagName === "TIME") node.dateTime = value;
+    range.append(node);
+  }
+  return range;
+}
+function addArrow(node) {
+  const arrow = element("span", "link-arrow", "↗");
+  arrow.setAttribute("aria-hidden", "true");
+  node.append(arrow);
+}
+function entryRow(source, { project = false, compact = false } = {}) {
+  const entry = localizedEntry(source);
+  const row = element("li", compact ? "cv-row compact-row" : "cv-row");
+  const href = entryHref(source);
+  const content = href ? link("entry-content entry-link", "", href) : element("div", "entry-content");
+  const title = project && entry.projectTitle ? entry.projectTitle : entry.title;
+  content.append(element("h3", "", title));
+  if (entry.role) content.append(element("p", "entry-role", entry.role));
+  const summary = project && entry.projectSummary ? entry.projectSummary : entry.summary;
+  if (summary && !compact) content.append(element("p", "entry-summary", summary));
+  if (href) addArrow(content);
+  row.append(entryDate(entry), content);
+  row.id = source.id;
+  return row;
+}
+function entryList(data, options) {
+  const list = element("ul", "cv-list");
+  for (const entry of [...data].sort(byStartDate)) list.append(entryRow(entry, options));
+  return list;
+}
+function section(title, id) {
+  const node = element("section", "content-section");
+  if (id) node.id = id;
+  node.append(element("h2", "", title));
+  return node;
+}
+function selectedEntries(ids) {
+  return ids.map(id => entries.find(entry => entry.id === id)).filter(Boolean);
+}
+function backgroundSection(key, records) {
+  const node = section(text("headings." + (key === "militaryService" ? "military" : key)), key);
+  const list = element("ul", "background-list");
+  for (const source of records) {
+    const item = element("li", "");
+    item.append(element("h3", "", text(key + ".title")));
+    const period = element("p", "background-period");
+    period.append(entryDate(source));
+    if (source.expectedGraduation) period.append(" (" + text("labels.expectedGraduation") + ")");
+    item.append(period, element("p", "entry-summary", text(key + ".summary")));
+    if (source.endDateUnverified) item.append(element("p", "record-note", text("labels.dischargeUnverified")));
+    list.append(item);
+  }
+  node.append(list);
+  return node;
+}
+function showAbout() {
+  main.append(element("h1", "page-title", text("ui.about")));
+  const journeySection = section(text("ui.journey"), "journey");
+  const list = element("ol", "journey-list");
+  for (const point of journey) {
+    const row = element("li", "journey-row");
+    row.append(element("span", "journey-year", point.year), element("p", "", text("journey." + point.key)));
     list.append(row);
   }
+  journeySection.append(list);
+  main.append(journeySection, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
 }
-
-function showDetail() {
-  const target = document.querySelector("#entry-detail");
-  target.replaceChildren();
-  const source = entries.find(({ id }) => id === params.get("id"));
-  const backQuery = new URLSearchParams(filterQuery(activeFilter));
-  if (source?.parentId) backQuery.set("open", source.parentId);
-  document.querySelector("#timeline-return").href =
-    "./index.html?" + backQuery + "#timeline";
-
-  if (!source) {
-    target.append(element("h1", "missing-title", text("labels.missing")));
-    return;
+function showExperience() {
+  const heading = element("h1", "page-title", text("ui.experience"));
+  heading.id = "timeline";
+  main.append(heading);
+  const career = section(text("ui.careerLeadership"), "career");
+  const careerEntries = selectedEntries(portfolioViews.careerLeadership);
+  for (const entry of entries.filter(item => item.category === "research" && !item.parentId)) {
+    if (!careerEntries.some(item => item.id === entry.id)) careerEntries.push(entry);
   }
-
+  career.append(entryList(careerEntries));
+  const awards = section(text("ui.honorsAwards"), "honors");
+  awards.append(entryList(entries.filter(entry => entry.category === "award"), { compact: true }));
+  const activities = section(text("ui.additionalActivities"), "activities");
+  activities.append(entryList(entries.filter(entry =>
+    entry.category === "activity" && !entry.parentId && entry.id !== "likelion-leadership"
+  ), { compact: true }));
+  main.append(career, awards, activities);
+}
+function projectCard(source) {
   const entry = localizedEntry(source);
-  if (!entry.detail || !entry.sections?.some((section) => section.text?.trim())) {
-    location.replace(document.querySelector("#timeline-return").href);
+  const row = element("li", "");
+  const href = entryHref(source);
+  const card = href ? link("project-card entry-link", "", href) : element("div", "project-card");
+  card.append(entryDate(entry), element("h3", "", entry.projectTitle || entry.title));
+  if (entry.projectSummary || entry.summary) card.append(element("p", "entry-summary", entry.projectSummary || entry.summary));
+  if (href) addArrow(card);
+  row.append(card);
+  return row;
+}
+function showProjects() {
+  main.append(element("h1", "page-title", text("ui.projects")));
+  const featured = section(text("ui.featuredProjects"), "featured");
+  const cards = element("ul", "project-grid");
+  for (const entry of selectedEntries(portfolioViews.featuredProjects)) cards.append(projectCard(entry));
+  featured.append(cards);
+  const industry = section(text("ui.industryProjects"), "industry");
+  industry.append(entryList(childrenOf("impactive-internship"), { project: true }));
+  const other = section(text("ui.otherProjects"), "other");
+  other.append(entryList(selectedEntries(portfolioViews.otherProjects), { project: true, compact: true }));
+  main.append(featured, industry, other);
+}
+function showDetail() {
+  const source = entries.find(entry => entry.id === params.get("id"));
+  const from = params.get("from") === "projects" ? "projects" : "experience";
+  const back = link("back-link", text("ui.back"), pageUrl(from));
+  main.append(back);
+  if (!source) {
+    main.append(element("h1", "page-title", text("labels.missing")));
     return;
   }
+  if (!hasDetail(source)) {
+    const target = source.parentId ? detailUrl(source.parentId) : pageUrl("projects");
+    location.replace(target);
+    return;
+  }
+  const entry = localizedEntry(source);
   document.title = entry.title + " | " + text("profile.name");
-  const header = element("header", "detail-header");
-  const meta = element("div", "card-meta");
-  meta.append(badge(entry), entryDate(entry));
-  header.append(meta, element("h1", "", entry.title));
-  if (entry.summary) header.append(element("p", "", entry.summary));
-  target.append(header);
-
-  const body = element("div", "detail-body");
-  for (const section of entry.sections || []) {
-    const block = element("section", "detail-section");
-    block.append(element("h2", "", section.title), element("p", "", section.text));
-    body.append(block);
+  main.append(element("h1", "page-title", entry.title), entryDate(entry));
+  if (entry.role) main.append(element("p", "detail-role", entry.role));
+  if (entry.summary) main.append(element("p", "detail-summary", entry.summary));
+  for (const block of entry.sections || []) {
+    if (!block.text?.trim()) continue;
+    const node = section(block.title);
+    node.append(element("p", "detail-copy", block.text));
+    main.append(node);
   }
-  target.append(body);
-
-  if (!entry.related?.length) return;
-  const related = element("section", "related");
-  related.append(element("h2", "", text("labels.related")));
-  for (const item of entry.related) {
-    const match = entries.find(({ id }) => id === item.id);
-    const href = match && entryHref(localizedEntry(match), activeFilter);
-    if (!href) continue;
-    const card = link("related-card", "", href);
-    card.append(element("span", "related-label", item.label), element("strong", "", localizedEntry(match).title));
-    related.append(card);
+  if (entry.qa?.length) {
+    const node = section(text("ui.projectDetails"));
+    const list = element("dl", "detail-qa");
+    for (const item of entry.qa) {
+      if (item.question && item.answer) list.append(element("dt", "", item.question), element("dd", "", item.answer));
+    }
+    if (list.childElementCount) { node.append(list); main.append(node); }
   }
-  if (related.childElementCount > 1) target.append(related);
+  for (const media of entry.media || []) {
+    if (!media.src || !["image", "video"].includes(media.type)) continue;
+    const figure = element("figure", "detail-media");
+    const asset = element(media.type === "video" ? "video" : "img");
+    asset.src = media.src;
+    if (media.type === "image") { asset.alt = media.alt || entry.title; asset.loading = "lazy"; }
+    else { asset.controls = true; asset.preload = "metadata"; }
+    figure.append(asset);
+    if (media.caption) figure.append(element("figcaption", "", media.caption));
+    main.append(figure);
+  }
+  if (entry.links?.length) {
+    const list = element("ul", "resource-links");
+    for (const item of entry.links) {
+      if (!item.url) continue;
+      const row = element("li");
+      row.append(link("", item.label || item.url, item.url));
+      list.append(row);
+    }
+    if (list.childElementCount) main.append(list);
+  }
+  const children = childrenOf(entry.id);
+  if (children.length) {
+    const title = children.some(item => item.category === "project") ? text("ui.relatedProjects") : text("ui.relatedAchievements");
+    const related = section(title);
+    related.append(entryList(children));
+    main.append(related);
+  }
+  if (entry.related?.length) {
+    const related = section(text("labels.related"));
+    related.append(entryList(selectedEntries(entry.related.map(item => item.id))));
+    main.append(related);
+  }
+  if (entry.parentId) {
+    const parent = entries.find(item => item.id === entry.parentId);
+    if (parent) {
+      const related = section(text("ui.parentActivity"));
+      related.append(entryList([parent]));
+      main.append(related);
+    }
+  }
 }
-
-let renderCurrentPage;
+function applyTranslations() {
+  document.documentElement.lang = language;
+  document.title = text("pageTitle");
+  document.querySelector('meta[name="description"]').content = text("description");
+  document.querySelectorAll("[data-i18n]").forEach(node => { node.textContent = text(node.dataset.i18n); });
+  for (const attribute of ["aria-label", "alt"]) {
+    document.querySelectorAll("[data-i18n-" + attribute + "]").forEach(node => {
+      node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
+    });
+  }
+  document.querySelectorAll("[data-language]").forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.language === language));
+  });
+  document.querySelectorAll("[data-nav]").forEach(node => {
+    node.href = pageUrl(node.dataset.nav);
+    const selected = currentPage === node.dataset.nav || currentPage === "detail" &&
+      node.dataset.nav === (params.get("from") === "projects" ? "projects" : "experience");
+    if (selected) node.setAttribute("aria-current", "page");
+    else node.removeAttribute("aria-current");
+  });
+}
+function renderPage() {
+  applyTranslations();
+  main.replaceChildren();
+  if (currentPage === "about") showAbout();
+  else if (currentPage === "experience") showExperience();
+  else if (currentPage === "projects") showProjects();
+  else showDetail();
+}
 rememberLanguage();
-applyTranslations();
-
-if (document.body.dataset.page === "timeline") {
-  document.querySelectorAll(".contact-icon").forEach((icon) => {
-    icon.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") icon.dataset.tooltipDismissed = "true";
-    });
-    for (const event of ["mouseleave", "blur"]) {
-      icon.addEventListener(event, () => delete icon.dataset.tooltipDismissed);
-    }
-  });
-  const filters = document.querySelector(".filters");
-  const filterButtons = [...filters.querySelectorAll("[data-filter]")];
-  filterButtons.forEach((button) => {
-    button.hidden = !availableFilters.includes(button.dataset.filter);
-  });
-  const buttons = filterButtons.filter((button) => !button.hidden);
-  const list = document.querySelector("#timeline-list");
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  const indicator = element("span", "filter-indicator");
-  indicator.setAttribute("aria-hidden", "true");
-  filters.append(indicator);
-  let selectedFilter = activeFilter;
-  let animation;
-
-  function positionIndicator() {
-    const selected = buttons.find((button) => button.dataset.filter === selectedFilter);
-    indicator.style.width = selected.offsetWidth + "px";
-    indicator.style.transform = `translate(${selected.offsetLeft}px, ${selected.offsetTop + selected.offsetHeight - 2}px)`;
-  }
-
-  function selectFilter(filter) {
-    selectedFilter = filter;
-    buttons.forEach((button) => {
-      button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
-    });
-    positionIndicator();
-  }
-
-  function transitionTimeline(filter) {
-    animation?.cancel();
-    showTimeline(filter);
-    if (reducedMotion.matches || !list.animate) return;
-    animation = list.animate([{ opacity: 0.65 }, { opacity: 1 }], {
-      duration: 120, easing: "ease-out",
-    });
-  }
-
-  renderCurrentPage = () => {
-    animation?.cancel();
-    showTimeline(selectedFilter);
-    showBackgroundSection("#education-list", education, "education");
-    showBackgroundSection("#military-list", militaryService, "militaryService");
-    selectFilter(selectedFilter);
-  };
-  renderCurrentPage();
-  const resizeObserver = new ResizeObserver(positionIndicator);
-  resizeObserver.observe(filters);
-  buttons.forEach((button) => resizeObserver.observe(button));
-  document.fonts.ready.then(() => {
-    positionIndicator();
-    filters.classList.add("filters-ready");
-  });
-  reducedMotion.addEventListener("change", () => {
-    if (reducedMotion.matches) {
-      animation?.cancel();
-      showTimeline(selectedFilter);
-    }
-  });
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const filter = button.dataset.filter;
-      if (filter === selectedFilter) return;
-      selectFilter(filter);
-      if (location.protocol !== "file:") {
-        history.replaceState(null, "", location.pathname + filterQuery(filter) + location.hash);
-      }
-      transitionTimeline(filter);
-    });
-  });
-} else {
-  renderCurrentPage = showDetail;
-  renderCurrentPage();
-}
-
-
-// Each language button is a native button, supporting Tab, Enter and Space.
-let languageAnimations = [];
-const languageMotion = matchMedia("(prefers-reduced-motion: reduce)");
-languageMotion.addEventListener("change", () => {
-  if (languageMotion.matches) languageAnimations.forEach((animation) => animation.cancel());
-});
-document.querySelectorAll("button[data-language]").forEach((button) => {
+renderPage();
+document.querySelectorAll("button[data-language]").forEach(button => {
   button.addEventListener("click", () => {
     if (language === button.dataset.language) return;
     language = button.dataset.language;
@@ -366,17 +288,22 @@ document.querySelectorAll("button[data-language]").forEach((button) => {
       query.set("lang", language);
       history.replaceState(null, "", location.pathname + "?" + query + location.hash);
     }
-    languageAnimations.forEach((animation) => animation.cancel());
-    languageAnimations = [];
-    applyTranslations();
-    renderCurrentPage();
-    if (!languageMotion.matches) {
-      document.querySelectorAll(".profile-copy, .page-main, .detail-main").forEach((node) => {
-        if (!node.animate) return;
-        languageAnimations.push(node.animate([{ opacity: 0.45 }, { opacity: 1 }], {
-          duration: 180, easing: "ease-out",
-        }));
-      });
-    }
+    renderPage();
   });
+});
+document.querySelectorAll(".contact-icon").forEach(icon => {
+  icon.addEventListener("keydown", event => {
+    if (event.key === "Escape") icon.dataset.tooltipDismissed = "true";
+  });
+  for (const event of ["mouseleave", "blur"]) icon.addEventListener(event, () => delete icon.dataset.tooltipDismissed);
+});
+function scrollToFragment() {
+  const id = location.hash.slice(1);
+  if (id) document.getElementById(id)?.scrollIntoView();
+}
+requestAnimationFrame(scrollToFragment);
+window.addEventListener("hashchange", () => {
+  if (document.body.dataset.page === "about" && location.hash === "#timeline" && currentPage === "about") {
+    location.replace(pageUrl("experience") + "#timeline");
+  } else scrollToFragment();
 });

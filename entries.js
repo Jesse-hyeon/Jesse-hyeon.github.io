@@ -236,3 +236,16 @@ const entries = [
 
 const education = [{ startDate: "2020-03", endDate: "2027-02" }];
 const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnverified: true }];
+
+// Page composition references the same activity IDs used by detail pages.
+const portfolioViews = {
+  careerLeadership: ["causal-x", "impactive-internship", "likelion-leadership"],
+  featuredProjects: ["causal-x", "causal-discovery"],
+  otherProjects: ["404-edition", "sw-festival"],
+};
+const journey = [
+  { year: "2020", key: "admission" },
+  { year: "2024", key: "exploration" },
+  { year: "2025", key: "industry" },
+  { year: "2026", key: "startup" },
+];

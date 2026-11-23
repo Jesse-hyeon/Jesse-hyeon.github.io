@@ -61,9 +61,14 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 .content-section h2 { margin: 0 0 24px; font-size: 1.125rem; font-weight: 600; line-height: 1.5; }
 .cv-list, .background-list { display: grid; gap: 28px; margin: 0; padding: 0; list-style: none; }
 .cv-row { display: grid; grid-template-columns: var(--date-column-width) minmax(0, 1fr); align-items: start; gap: 24px; }
-#career .cv-list { margin-left: 4px; padding-left: 18px; border-left: 1px solid var(--line); }
+#career .cv-list { margin-left: 4px; padding-left: 19px; }
 #career .cv-row { position: relative; }
+#career .cv-row:not(:last-child)::after {
+  content: ""; position: absolute; left: -19px; top: 10px; bottom: -38px;
+  width: 1px; background: var(--line);
+}
 #career .cv-row::before {
+  z-index: 1;
   content: ""; position: absolute; left: -22px; top: 7px; width: 7px; height: 7px;
   border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--paper);
 }

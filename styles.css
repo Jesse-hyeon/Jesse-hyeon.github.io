@@ -50,7 +50,7 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 .contact-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); padding: 5px 8px; border-radius: 3px; background: var(--ink); color: var(--paper); font-size: 0.75rem; white-space: nowrap; visibility: hidden; pointer-events: none; }
 .contact-icon:is(:hover, :focus-visible):not([data-tooltip-dismissed]) .contact-tooltip { visibility: visible; }
 .resume-float {
-  position: fixed; z-index: 8; right: max(24px, calc((100vw - 1160px) / 2));
+  position: fixed; z-index: 8; left: max(24px, calc((100vw - 1160px) / 2));
   bottom: max(24px, env(safe-area-inset-bottom)); display: flex; align-items: center;
   gap: 12px; max-width: calc(100% - 32px); padding: 8px 12px;
   border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
@@ -150,5 +150,5 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 
 .page-layout { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
 @media (max-width: 900px) {
-  .resume-float { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); }
+  .resume-float { left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); }
 }

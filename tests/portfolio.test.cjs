@@ -124,7 +124,7 @@ test("All 27 records and parent relationships remain available from one source",
   }
 });
 
-test("Experience is the landing page with education, military service and PDF downloads", () => {
+test("Experience is the landing page with education and military service", () => {
   const page = render("/index.html?lang=ko");
   assert.equal(page.document.querySelectorAll("[data-nav]").length, 2);
   assert(!page.document.getElementById("journey"));
@@ -133,10 +133,20 @@ test("Experience is the landing page with education, military service and PDF do
   assert(!page.document.querySelector(".profile-description").textContent.includes("상담심리학을 전공했으며"));
   assert(page.main.textContent.includes("2027.02"));
   assert(page.main.textContent.includes("전역일"));
+});
+
+test("Resume PDFs open in a new tab for preview on every route", () => {
   for (const language of ["KO", "EN"]) {
     const filename = "assets/resumes/Hyeonwoo_Kim_Resume_" + language + ".pdf";
     assert(fs.readFileSync(path.join(root, filename)).subarray(0, 5).equals(Buffer.from("%PDF-")));
-    assert(read("index.html").includes('href="./' + filename + '" download'));
+    for (const route of ["index.html", "experience.html", "projects.html", "about.html", "detail.html"]) {
+      const markup = read(route);
+      const anchor = markup.match(new RegExp('<a[^>]+href="\\./' + filename.replace(/\./g, "\\.") + '"[^>]*>'));
+      assert(anchor, route + " must offer the resume");
+      assert(anchor[0].includes('target="_blank"'));
+      assert(anchor[0].includes('rel="noopener noreferrer"'));
+      assert(!/\sdownload(?:\s|=|>)/.test(anchor[0]));
+    }
   }
 });
 

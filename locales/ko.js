@@ -81,8 +81,7 @@ const korean = {
     },
     "impactive-internship": {
       "title": "Impactive AI 인턴십",
-      "summary": "SK 하이닉스·SK 실트론·SK ON·COMMAX PoC와 인과분석 솔루션 기획 및 개발 참여",
-      "role": "인턴",
+      "summary": "SK 하이닉스, SK 실트론, SK ON, COMMAX PoC와 인과분석 솔루션 기획 및 개발 참여",
       "sections": [
         { "title": "수행 업무", "text": "SK 하이닉스 1·2차, SK 실트론 등 기업 대상 AI PoC 프로젝트 참여\nSK ON 배터리 및 COMMAX 수요예측 프로젝트 참여\n인과분석 솔루션 기획 및 개발 업무 참여" }
       ]
@@ -144,9 +143,8 @@ const korean = {
       "summary": "수요예측 프로젝트 참여"
     },
     "likelion-leadership": {
-      "title": "멋쟁이사자처럼 13기",
-      "role": "대표",
-      "summary": "주요 성과: 중앙해커톤 최우수상"
+      "title": "멋쟁이사자처럼 13기 대표",
+      "summary": "중앙해커톤 최우수상 수상"
     },
     "likelion-hackathon-award": {
       "title": "멋쟁이사자처럼 중앙해커톤 최우수상",

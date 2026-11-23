@@ -81,8 +81,7 @@ const english = {
     },
     "impactive-internship": {
       title: "Impactive AI Internship",
-      summary: "Participated in SK hynix, SK Siltron, SK ON, and COMMAX PoCs and causal analysis solution development",
-      role: "Intern",
+      summary: "Participated in SK hynix, SK Siltron, SK ON, and COMMAX PoCs, and in causal analysis solution planning and development",
       sections: [
         { title: "Responsibilities", text: "Participated in SK hynix Phase 1 and 2 and SK Siltron industrial AI PoCs\nParticipated in SK ON battery and COMMAX demand forecasting projects\nParticipated in causal analysis solution planning and development" },
       ],
@@ -144,9 +143,8 @@ const english = {
       summary: "Participated in a demand forecasting project",
     },
     "likelion-leadership": {
-      title: "Like Lion 13th Cohort",
-      summary: "Key achievement: Top Excellence Award at the Central Hackathon",
-      role: "Representative",
+      title: "Like Lion 13th Cohort Representative",
+      summary: "Top Excellence Award at the Central Hackathon",
     },
     "likelion-hackathon-award": {
       title: "Like Lion Central Hackathon — Top Excellence Award",

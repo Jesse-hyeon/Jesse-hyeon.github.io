@@ -131,7 +131,7 @@ function showExperience() {
   awards.append(entryList(entries.filter(entry => entry.category === "award"), { compact: true }));
   const activities = section(text("ui.additionalActivities"), "activities");
   activities.append(entryList(entries.filter(entry =>
-    entry.category === "activity" && !entry.parentId && entry.id !== "likelion-leadership"
+    entry.category === "activity" && !entry.parentId && !portfolioViews.careerLeadership.includes(entry.id)
   ), { compact: true }));
   main.append(career, awards, activities, backgroundSection("education", education), backgroundSection("militaryService", militaryService));
 }

@@ -232,6 +232,14 @@ const entries = [
     "endDate": "2023-12",
     "parentId": "choir-competition"
   },
+  {
+    "id": "t-lab",
+    "group": "2023",
+    "order": 2,
+    "category": "activity",
+    "startDate": "2023-12",
+    "endDate": "2026-06"
+  },
 ];
 
 const education = [{ startDate: "2020-03", endDate: "2027-02" }];
@@ -239,7 +247,7 @@ const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnve
 
 // Page composition references the same activity IDs used by detail pages.
 const portfolioViews = {
-  careerLeadership: ["causal-x", "impactive-internship", "likelion-leadership"],
+  careerLeadership: ["causal-x", "impactive-internship", "likelion-leadership", "t-lab"],
   featuredProjects: ["causal-x", "causal-discovery"],
   otherProjects: ["404-edition", "sw-festival"],
 };

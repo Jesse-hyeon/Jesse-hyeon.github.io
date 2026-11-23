@@ -75,6 +75,10 @@ const korean = {
     "parentDetail": "상위 활동 상세 보기"
   },
   "entries": {
+    "t-lab": {
+      "title": "기술창업학회 T-LAB",
+      "summary": ""
+    },
     "impactive-internship": {
       "title": "Impactive AI 인턴십",
       "summary": "SK 하이닉스·SK 실트론·SK ON·COMMAX PoC와 인과분석 솔루션 기획 및 개발 참여",

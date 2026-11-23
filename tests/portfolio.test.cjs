@@ -111,11 +111,11 @@ test("All independent routes render in both languages without accordion controls
   }
 });
 
-test("All 26 records and parent relationships remain available from one source", () => {
+test("All 27 records and parent relationships remain available from one source", () => {
   const page = render("/index.html");
   const records = vm.runInContext("entries", page.context);
-  assert.equal(records.length, 26);
-  assert.equal(new Set(records.map(entry => entry.id)).size, 26);
+  assert.equal(records.length, 27);
+  assert.equal(new Set(records.map(entry => entry.id)).size, 27);
   for (const record of records) {
     if (record.parentId) assert(records.some(parent => parent.id === record.parentId));
     for (const language of ["ko", "en"]) {
@@ -142,11 +142,15 @@ test("Experience is the landing page with education, military service and PDF do
 
 test("Experience separates career, all six awards and additional activities", () => {
   const page = render("/experience.html?lang=en");
-  assert.equal(page.document.getElementById("career").children[1].children.length, 3);
+  assert.equal(page.document.getElementById("career").children[1].children.length, 4);
   assert.equal(page.document.getElementById("honors").children[1].children.length, 6);
   const activities = page.document.getElementById("activities");
   assert(activities.textContent.includes("Sabong Band"));
   assert(activities.textContent.includes("College Choir Competition"));
+  assert(!activities.textContent.includes("T-LAB"));
+  const tlab = page.document.getElementById("t-lab");
+  assert(tlab.textContent.includes("2023.12 – 2026.06"));
+  assert(tlab.textContent.includes("T-LAB Technology Entrepreneurship Society"));
 });
 
 test("Projects references shared records and uses cards only for featured entries", () => {

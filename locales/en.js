@@ -75,6 +75,10 @@ const english = {
     parentDetail: "View activity details",
   },
   entries: {
+    "t-lab": {
+      title: "T-LAB Technology Entrepreneurship Society",
+      summary: "",
+    },
     "impactive-internship": {
       title: "Impactive AI Internship",
       summary: "Participated in SK hynix, SK Siltron, SK ON, and COMMAX PoCs and causal analysis solution development",

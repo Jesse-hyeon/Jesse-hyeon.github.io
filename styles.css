@@ -49,11 +49,19 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 .contact-icon:is(:hover, :focus-visible) { color: var(--ink); background: var(--hover); }
 .contact-tooltip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); padding: 5px 8px; border-radius: 3px; background: var(--ink); color: var(--paper); font-size: 0.75rem; white-space: nowrap; visibility: hidden; pointer-events: none; }
 .contact-icon:is(:hover, :focus-visible):not([data-tooltip-dismissed]) .contact-tooltip { visibility: visible; }
-.profile-resume { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
-.profile-resume h2 { margin: 0 0 10px; font-size: 0.875rem; font-weight: 600; }
-.resume-links { display: flex; flex-wrap: wrap; gap: 8px; }
-.resume-links a { display: grid; place-items: center; min-height: 40px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 3px; font-size: 0.8125rem; text-decoration: none; }
-.resume-links a:hover { background: var(--hover); }
+.resume-float {
+  position: fixed; z-index: 8; right: max(24px, calc((100vw - 1160px) / 2));
+  bottom: max(24px, env(safe-area-inset-bottom)); display: flex; align-items: center;
+  gap: 12px; max-width: calc(100% - 32px); padding: 8px 12px;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--paper);
+}
+.resume-float h2 { margin: 0; color: var(--muted); font-size: 0.8125rem; font-weight: 600; }
+.resume-links { display: flex; gap: 6px; flex-shrink: 0; }
+.resume-links a {
+  display: grid; place-items: center; min-height: 44px; padding: 6px 10px;
+  border: 1px solid var(--line); border-radius: 4px; font-size: 0.8125rem; text-decoration: none;
+}
+.resume-links a:is(:hover, :focus-visible) { background: var(--hover); }
 
 .page-main { min-width: 0; overflow-wrap: anywhere; }
 .page-title { margin: 0; font-size: clamp(1.75rem, 3vw, 2rem); font-weight: 650; letter-spacing: -0.035em; line-height: 1.3; word-break: keep-all; scroll-margin-top: 96px; }
@@ -143,4 +151,9 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
   .experience-columns { margin-top: 32px; }
   .project-grid { grid-template-columns: minmax(0, 1fr); }
   .journey-row { grid-template-columns: 52px minmax(0, 1fr); gap: 16px; }
+}
+
+.page-layout { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
+@media (max-width: 900px) {
+  .resume-float { right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); }
 }

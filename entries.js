@@ -11,7 +11,6 @@ const categories = {
 };
 
 const entries = [
-  { id: "lpcmci-research", category: "research", startDate: "2026", order: 0 },
   {
     "id": "impactive-internship",
     "group": "2025",
@@ -26,7 +25,8 @@ const entries = [
     "order": 1,
     "category": "project",
     "startDate": "2026-06",
-    "ongoing": true
+    "ongoing": true,
+    "detail": true
   },
   {
     "id": "causal-discovery",
@@ -34,6 +34,7 @@ const entries = [
     "order": 2,
     "category": "award",
     "startDate": "2026-06",
+    "detail": true
   },
   {
     "id": "sk-hynix-phase-2",
@@ -43,6 +44,7 @@ const entries = [
     "startDate": "2025-11",
     "endDate": "2026-01",
     "parentId": "impactive-internship",
+    "detail": true
   },
   {
     "id": "impactive-ai",
@@ -52,6 +54,7 @@ const entries = [
     "startDate": "2026-01",
     "endDate": "2026-03",
     "parentId": "impactive-internship",
+    "detail": true
   },
   {
     "id": "milan-football",
@@ -69,6 +72,7 @@ const entries = [
     "startDate": "2025-05",
     "endDate": "2025-06",
     "parentId": "impactive-internship",
+    "detail": true
   },
   {
     "id": "sk-siltron",
@@ -77,6 +81,7 @@ const entries = [
     "category": "project",
     "startDate": "2025-05",
     "parentId": "impactive-internship",
+    "detail": true
   },
   {
     "id": "sk-on",
@@ -86,6 +91,7 @@ const entries = [
     "startDate": "2025-08",
     "endDate": "2025-12",
     "parentId": "impactive-internship",
+    "detail": true
   },
   {
     "id": "commax-demand-forecasting",
@@ -110,6 +116,7 @@ const entries = [
     "category": "award",
     "startDate": "2025-08",
     "parentId": "likelion-leadership",
+    "detail": true
   },
   {
     "id": "g-star-award",
@@ -117,6 +124,7 @@ const entries = [
     "order": 7,
     "category": "award",
     "startDate": "2025-11",
+    "detail": true
   },
   {
     "id": "demo-day-award",
@@ -124,6 +132,7 @@ const entries = [
     "order": 8,
     "category": "award",
     "startDate": "2025-05",
+    "detail": true
   },
   {
     "id": "rpm-award-2025",
@@ -131,6 +140,7 @@ const entries = [
     "order": 9,
     "category": "award",
     "startDate": "2025-11",
+    "detail": true
   },
   {
     "id": "404-edition",
@@ -138,6 +148,7 @@ const entries = [
     "order": 1,
     "category": "project",
     "startDate": "2024-12",
+    "detail": true
   },
   {
     "id": "sw-festival",
@@ -145,6 +156,7 @@ const entries = [
     "order": 2,
     "category": "project",
     "startDate": "2024-11",
+    "detail": true
   },
   {
     "id": "sabong-band",
@@ -176,6 +188,7 @@ const entries = [
     "order": 5,
     "category": "award",
     "startDate": "2024-11",
+    "detail": true
   },
   {
     "id": "addiction-psychology",
@@ -221,17 +234,5 @@ const entries = [
   },
 ];
 
-const education = [{ startDate: "2020-03", endDate: "2027-02", expectedGraduation: true, gpa: "3.8 / 4.5" }];
-const militaryService = [{ startDate: "2021-08", endDate: "2023-02" }];
-
-// Shared contact facts and selected resume content; no private client material.
-const profileLinks = { email: "hyeonwookim2001@gmail.com", github: "https://github.com/Jesse-hyeon", linkedin: "https://linkedin.com/in/hyeonwoo-kim01", portfolio: "https://jesse-hyeon.github.io/" };
-const resumeSelection = { industry: ["sk-hynix-phase-1", "sk-hynix-phase-2", "sk-on", "sk-siltron", "commax-demand-forecasting"], leadership: ["likelion-leadership"], experience: ["causal-x", "impactive-internship"], projects: ["lpcmci-research", "causal-x", "sk-hynix-phase-1", "sk-hynix-phase-2", "sk-on"], awards: ["causal-discovery", "g-star-award", "rpm-award-2025", "likelion-hackathon-award", "demo-day-award"] };
-
-// Journey dates derive from these source records, never from a second date list.
-const journeyMilestones = [
-  { education: true },
-  { entryId: "sw-festival" },
-  { entryId: "impactive-internship" },
-  { entryId: "causal-x" }
-];
+const education = [{ startDate: "2020-03", endDate: "2027-02" }];
+const militaryService = [{ startDate: "2021-08", endDate: "2023-02", endDateUnverified: true }];

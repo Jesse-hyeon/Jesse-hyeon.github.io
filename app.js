@@ -1,145 +1,382 @@
 const params = new URLSearchParams(location.search);
+const availableFilters = ["all", ...Object.keys(categories).filter((category) =>
+  entries.some((entry) => entry.category === category)
+)];
+const requestedFilter = params.get("filter");
+const activeFilter = availableFilters.includes(requestedFilter) ? requestedFilter : "all";
+
 const locales = { ko: korean, en: english };
-let language = params.get('lang');
+let language = params.get("lang");
 if (!Object.hasOwn(locales, language)) {
-  try { language = localStorage.getItem('portfolio-language'); } catch {}
+  try {
+    language = localStorage.getItem("portfolio-language");
+  } catch {
+    language = null;
+  }
 }
-if (!Object.hasOwn(locales, language)) language = 'ko';
-const page = document.body.dataset.page;
-const copy = locales[language];
-const text = (key) => key.split('.').reduce((v, part) => v?.[part], copy);
-const localized = (entry) => ({ ...entry, ...(copy.entries[entry.id] || korean.entries[entry.id]) });
-function node(tag, className, value) {
-  const el = document.createElement(tag);
-  if (className) el.className = className;
-  if (value !== undefined) el.textContent = value;
-  return el;
+if (!Object.hasOwn(locales, language)) language = "ko";
+
+function text(key) {
+  return key.split(".").reduce((value, part) => value[part], locales[language]);
 }
-function anchor(label, href, className = '') {
-  const el = node('a', className, label);
-  el.href = href;
-  return el;
+
+function localizedEntry(entry) {
+  return { ...entry, ...(locales[language].entries[entry.id] || korean.entries[entry.id]) };
 }
-function pageUrl(name, extra = {}) {
-  return `./${name}.html?${new URLSearchParams({ lang: language, ...extra })}`;
+
+function rememberLanguage() {
+  try {
+    localStorage.setItem("portfolio-language", language);
+  } catch {
+    // Navigation links also carry the language when browser storage is unavailable.
+  }
 }
-function entryPage(entry) { return ['project', 'research'].includes(entry.category) ? 'projects' : 'experience'; }
-function detailUrl(entry, origin = page) {
-  const from = ['projects', 'experience'].includes(origin) ? origin : entryPage(entry);
-  const query = new URLSearchParams({ id: entry.id, lang: language, from });
-  if (params.has('filter')) query.set('filter', params.get('filter'));
-  return `./detail.html?${query}`;
-}
-function period(entry) {
-  return [entry.startDate, entry.endDate || (entry.ongoing ? text('labels.present') : '')]
-    .filter(Boolean).map((v) => v.replaceAll('-', '.')).join(' – ') || text('site.undated');
-}
-// Keep old timeline bookmarks useful, including language and filter context.
-if (page === 'about' && (params.has('filter') || location.hash === '#timeline')) {
-  const destination = ['project','research'].includes(params.get('filter')) ? 'projects' : 'experience';
-  location.replace(pageUrl(destination, Object.fromEntries(params)) + '#timeline');
-} else {
-  init();
-}
-function init() {
+
+function applyTranslations() {
   document.documentElement.lang = language;
-  document.title = `${text('site.' + (page === 'detail' ? 'experience' : page))} | ${text('profile.name')}`;
-  try { localStorage.setItem('portfolio-language', language); } catch {}
-  const header = document.querySelector('.site-header');
-  header.append(anchor(text('profile.name'), pageUrl('about'), 'brand'));
-  const nav = node('nav', 'site-nav'); nav.setAttribute('aria-label', 'Main');
-  const source = entries.find((e) => e.id === params.get('id'));
-  const current = page === 'detail' ? (['projects','experience'].includes(params.get('from')) ? params.get('from') : source ? entryPage(source) : 'experience') : page;
-  for (const name of ['about','experience','projects']) {
-    const item = anchor(text('site.' + name), pageUrl(name), 'nav-link');
-    if (name === current) item.setAttribute('aria-current', 'page');
-    nav.append(item);
+  document.title = text("pageTitle");
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.content = text("description");
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    node.textContent = text(node.dataset.i18n);
+  });
+  for (const attribute of ["aria-label", "alt"]) {
+    document.querySelectorAll("[data-i18n-" + attribute + "]").forEach((node) => {
+      node.setAttribute(attribute, text(node.getAttribute("data-i18n-" + attribute)));
+    });
   }
-  header.append(nav);
-  const controls = node('div', 'language-switch'); controls.setAttribute('role','group'); controls.setAttribute('aria-label',text('site.language'));
-  for (const lang of ['ko','en']) {
-    const button = node('button', '', lang.toUpperCase()); button.type = 'button'; button.lang = lang;
-    button.dataset.language = lang; button.setAttribute('aria-label', lang === 'ko' ? '한국어' : 'English');
-    button.setAttribute('aria-pressed', String(lang === language));
-    button.addEventListener('click', () => { const q = new URLSearchParams(location.search); q.set('lang',lang); location.assign(location.pathname + '?' + q + location.hash); });
-    controls.append(button);
+  document.querySelector(".language-switch").dataset.language = language;
+  document.querySelectorAll("button[data-language]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.language === language));
+  });
+}
+
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
+
+function link(className, text, href) {
+  const anchor = element("a", className, text);
+  anchor.href = href;
+  return anchor;
+}
+
+function filterQuery(filter) {
+  const query = new URLSearchParams({ lang: language });
+  if (filter !== "all") query.set("filter", filter);
+  return "?" + query;
+}
+
+function detailUrl(id, filter) {
+  const query = new URLSearchParams({ id, lang: language });
+  if (filter !== "all") query.set("filter", filter);
+  return "./detail.html?" + query;
+}
+
+function entryDate(entry) {
+  const range = element("span", "entry-range");
+  const endDate = entry.endDate || (entry.ongoing ? text("labels.present") : null);
+  for (const value of [entry.startDate, endDate].filter(Boolean)) {
+    if (range.childElementCount) range.append(" – ");
+    const date = element(value.includes("-") ? "time" : "span", "entry-date", value.replace("-", "."));
+    if (date.tagName === "TIME") date.dateTime = value;
+    range.append(date);
   }
-  header.append(controls);
-  document.querySelector('.skip-link').textContent = text('site.skip');
-  if (page === 'detail') return renderDetail(source, current);
-  if (page === 'about') return renderAbout();
-  const main = document.querySelector('main');
-  main.append(node('p','eyebrow','Portfolio'),node('h1','page-title',text('site.'+page)),node('p','lede',text('site.'+page+'Intro')));
-  if (page === 'experience') renderExperience(main); else renderProjects(main);
+  return range;
 }
-function headingSection(title, className = '') {
-  const section = node('section','cv-section '+className);
-  section.append(node('h2','section-title',title)); return section;
+
+function badge(entry) {
+  return element("span", "badge", entry.label || text("filters." + entry.category));
 }
-function renderAbout() {
-  const main = document.querySelector('main'); main.classList.add('about-layout');
-  const aside = node('aside','profile');
-  const photo = node('img','profile-avatar'); photo.src='./assets/profile.webp'; photo.width=360; photo.height=463; photo.alt=text('profile.alt');
-  aside.append(photo,node('p','location',text('profile.location')));
-  const contacts = node('ul','contact-list');
-  for (const [label,url] of [[profileLinks.email,'mailto:'+profileLinks.email],['GitHub',profileLinks.github],['LinkedIn',profileLinks.linkedin]]) { const li=node('li'); li.append(anchor(label,url)); contacts.append(li); }
-  aside.append(contacts); main.append(aside);
-  const content = node('div','about-content'); content.id = 'about';
-  content.append(node('p','eyebrow',text('site.aboutIntro')),node('h1','page-title',text('profile.name')),node('p','lede',text('profile.bio')));
-  const school = headingSection(text('site.education')); school.id = 'education';
-  school.append(node('h3','',text('education.title')),node('p','',text('education.summary')),node('p','date',period(education[0])),node('p','record-note',text('resume.educationNote')),node('p','record-note',text('resume.gpaLabel')+': '+education[0].gpa));
-  const military = node('div','military'); military.id = 'military';
-  military.append(node('h3','',text('site.military')),node('p','',`${text('militaryService.title')} · ${text('militaryService.summary')}`),node('p','date',period(militaryService[0])));
-  school.append(military);content.append(school);
-  const journey=headingSection('Journey'),list=node('ol','journey');
-  journeyMilestones.forEach((milestone,i)=>{const source=milestone.education?education[0]:entries.find(e=>e.id===milestone.entryId);const li=node('li');li.append(node('time','',source.startDate.slice(0,4)),node('p','',text('site.journey')[i]));list.append(li);});
-  journey.append(list);content.append(journey);
-  const resume=headingSection(text('site.resume'),'resume-panel');resume.id='resume';resume.append(node('p','',text('site.resumeDescription')));
-  const actions=node('div','resume-actions');
-  for(const lang of ['KO','EN']){const file=`Hyeonwoo_Kim_Resume_${lang}.pdf`;const a=anchor('',`./assets/resumes/${file}`,'download-button');a.download=file;const icon=node('span','document-icon','▤');icon.setAttribute('aria-hidden','true');a.append(icon,node('span','',text('site.download'+lang)));actions.append(a);}
-  resume.append(actions);content.append(resume);main.append(content);
+
+function entryHref(entry, filter) {
+  const hasContent = entry.sections?.some((section) => section.text?.trim());
+  return entry.url || (entry.detail && hasContent ? detailUrl(entry.id, filter) : null);
 }
-function entryCard(source, project = false) {
-  const e=localized(source),card=anchor('',detailUrl(e),project?'project-card':'entry-card');card.id='entry-'+e.id;
-  if(project){const img=node('img','project-thumb');img.src=`./assets/project-${e.id === 'causal-x' || e.category === 'research' ? 'causal' : e.parentId ? 'industry' : 'other'}.svg`;img.alt='';img.width=480;img.height=240;img.loading='lazy';card.append(img);}
-  const body=node('div','card-body');body.append(node('p','date',period(e)),node('h3','',e.title));
-  if(e.role)body.append(node('p','role',e.role));
-  if(e.summary)body.append(node('p','summary',e.summary));card.append(body);return card;
+
+function entryContent(entry, filter, heading = "h4") {
+  const href = entryHref(entry, filter);
+  const content = href ? link("timeline-card", "", href) : element("div", "timeline-card");
+  const meta = element("div", "card-meta");
+  meta.append(badge(entry));
+  content.append(element(heading, "", entry.title), meta);
+  if (entry.role) content.append(element("p", "entry-role", entry.role));
+  if (entry.summary) content.append(element("p", "", entry.summary));
+  if (href) {
+    const arrow = element("span", "timeline-arrow", "↗");
+    arrow.setAttribute("aria-hidden", "true");
+    content.append(arrow);
+  }
+  return content;
 }
-function appendEntry(list,e,allowChildren=true) {
-  const li=node('li');li.append(entryCard(e));
-  const children=allowChildren?entries.filter(c=>c.parentId===e.id):[];
-  if(children.length){const details=node('details','child-activities');details.dataset.parent=e.id;details.open=params.get('open')===e.id;details.append(node('summary','',`${text('site.children')} (${children.length})`));const sub=node('ul','entry-list');children.forEach(c=>appendEntry(sub,c,false));details.append(sub);li.append(details);}list.append(li);
+
+function timelineRow(source, filter, child = false) {
+  const entry = localizedEntry(source);
+  const row = element("li", child ? "timeline-child" : "timeline-row");
+  row.append(entryDate(entry), entryContent(entry, filter, child ? "h5" : "h4"));
+  return row;
 }
-function renderExperience(main) {
-  const root=node('div');root.id='timeline';
-  const leadership=['likelion-leadership','likelion-planning-track'];
-  const groups=[['career',entries.filter(e=>e.category==='career'||e.category==='research'||e.id==='causal-x')],['leadership',entries.filter(e=>leadership.includes(e.id))],['awards',entries.filter(e=>e.category==='award')],['additional',entries.filter(e=>e.category==='activity'&&!e.parentId&&!leadership.includes(e.id))]];
-  for(const [key,items] of groups){const section=headingSection(text('site.'+key),key==='additional'?'secondary':'');section.id=key;const list=node('ul','entry-list');items.forEach(e=>appendEntry(list,e,key!=='awards'));if(key==='additional'){const details=node('details');details.open=Boolean(params.get('open'));details.append(node('summary','',text('site.additionalHint')),list);section.append(details);}else section.append(list);root.append(section);}main.append(root);
+
+const expandedGroups = new Map();
+
+function timelineGroup(source, children, filter) {
+  const entry = localizedEntry(source);
+  const row = element("li", "timeline-group");
+  const disclosure = element("details", "timeline-accordion");
+  const stateKey = filter + ":" + entry.id;
+  disclosure.dataset.stateKey = stateKey;
+  disclosure.open = expandedGroups.get(stateKey) ?? (filter !== "all" || params.get("open") === entry.id);
+  disclosure.addEventListener("toggle", () => {
+    expandedGroups.set(stateKey, disclosure.open);
+  });
+  const summary = element("summary", "timeline-row timeline-parent");
+  // The summary toggles the group. A parent's own link is kept inside the panel.
+  const content = entryContent({ ...entry, detail: false, url: null }, filter);
+  const count = element("span", "group-count", text("labels.children").replace("{count}", children.length));
+  const chevron = element("span", "accordion-chevron");
+  chevron.setAttribute("aria-hidden", "true");
+  content.append(count, chevron);
+  summary.append(entryDate(entry), content);
+  const panel = element("div", "timeline-children-wrapper");
+  const href = entryHref(entry, filter);
+  if (href) panel.append(link("parent-detail-link", text("labels.parentDetail"), href));
+  const list = element("ol", "timeline-children");
+  for (const child of children) list.append(timelineRow(child, filter, true));
+  panel.append(list);
+  disclosure.append(summary, panel);
+  row.append(disclosure);
+  return row;
 }
-function renderProjects(main) {
-  const root=node('div');root.id='timeline';
-  for(const [key,list] of [['featured',entries.filter(e=>e.id==='causal-x'||e.category==='research')],['industry',entries.filter(e=>e.category==='project'&&e.parentId==='impactive-internship')],['other',entries.filter(e=>e.category==='project'&&!e.parentId&&e.id!=='causal-x')]]){const section=headingSection(text('site.'+key)),grid=node('div','project-grid');list.forEach(e=>grid.append(entryCard(e,true)));section.append(grid);root.append(section);}main.append(root);
+
+function byStartDate(a, b) {
+  return b.startDate.localeCompare(a.startDate) || a.order - b.order;
 }
-function safeAsset(url) {
-  try {const u=new URL(url,location.href);return ['https:','http:'].includes(u.protocol)?u.href:null;}catch{return null;}
+
+function showTimeline(filter) {
+  const list = document.querySelector("#timeline-list");
+  list.querySelectorAll("details[data-state-key]").forEach((details) => {
+    expandedGroups.set(details.dataset.stateKey, details.open);
+  });
+  list.replaceChildren();
+
+  const visible = [];
+  for (const entry of entries.filter((item) => !item.parentId)) {
+    const children = entries.filter((item) => item.parentId === entry.id).sort(byStartDate);
+    const parentMatches = filter === "all" || entry.category === filter;
+    const matchingChildren = children.filter((item) => filter === "all" || item.category === filter);
+    if (parentMatches || matchingChildren.length) {
+      visible.push({ entry, children: parentMatches ? children : matchingChildren });
+    }
+  }
+
+  const years = [...new Set(visible.map(({ entry }) => entry.startDate.slice(0, 4)))].sort().reverse();
+  for (const year of years) {
+    const grouped = visible
+      .filter(({ entry }) => entry.startDate.slice(0, 4) === year)
+      .sort((a, b) => byStartDate(a.entry, b.entry));
+    const group = element("section", "year-group");
+    group.append(element("h3", "year", year));
+    const rows = element("ol", "year-entries");
+    for (const { entry, children } of grouped) {
+      rows.append(children.length ? timelineGroup(entry, children, filter) : timelineRow(entry, filter));
+    }
+    group.append(rows);
+    list.append(group);
+  }
+
+  if (!visible.length) list.append(element("p", "empty-message", text("labels.empty")));
+  const matchedCount = entries.filter((entry) => filter === "all" || entry.category === filter).length;
+  document.querySelector("#filter-status").textContent =
+    text("labels.count").replace("{category}", text("filters." + filter)).replace("{count}", matchedCount);
 }
-function renderDetail(source,current) {
-  const main=document.querySelector('main');main.classList.add('detail-main');
-  const backParams={};if(source?.parentId)backParams.open=source.parentId;if(params.has('filter'))backParams.filter=params.get('filter');
-  const back=anchor(text('site.back'),pageUrl(current,backParams)+(source?'#entry-'+source.id:''),'back-link');back.id='timeline-return';main.append(back);
-  const article=node('article');article.id='entry-detail';main.append(article);
-  if(!source){article.append(node('h1','',text('site.notFound')));return;}
-  const e=localized(source);document.title=e.title+' | '+text('profile.name');
-  const header=node('header','detail-header');header.append(node('p','eyebrow',text('filters.'+e.category)),node('h1','',e.title),node('p','date',period(e)));
-  if(e.role)header.append(node('p','role',e.role));if(e.summary)header.append(node('p','lede',e.summary));article.append(header);
-  for(const section of e.sections||[]){if(!section.text?.trim())continue;const block=headingSection(section.title);block.append(node('p','',section.text));article.append(block);}
-  if(e.qa?.length){const section=headingSection(text('site.qa'));for(const item of e.qa){section.append(node('h3','',item.question),node('p','',item.answer));}article.append(section);}
-  for(const item of e.media||[]){const url=safeAsset(item.src);if(!url)continue;const figure=node('figure');const media=node(item.type==='video'?'video':'img','detail-media');media.src=url;if(item.type==='video'){media.controls=true;media.preload='metadata';}else media.alt=item.alt||item.caption||'';figure.append(media);if(item.caption)figure.append(node('figcaption','',item.caption));article.append(figure);}
-  if(e.links?.length||e.url){const section=headingSection(text('site.outputs'));for(const item of [...(e.links||[]),...(e.url?[{label:e.title,url:e.url}]:[])]){const url=safeAsset(item.url);if(url)section.append(anchor(item.label,url,'output-link'));}article.append(section);}
-  if(!e.sections?.length&&!e.qa?.length&&!e.media?.length&&!e.links?.length)article.append(node('p','detail-pending',text('labels.pending')));
-  const relatives=[];if(e.parentId){const parent=entries.find(x=>x.id===e.parentId);if(parent)relatives.push([text('site.parent'),parent]);}
-  entries.filter(x=>x.parentId===e.id).forEach(x=>relatives.push([text('site.children'),x]));
-  for(const rel of e.related||[]){const match=entries.find(x=>x.id===rel.id);if(match)relatives.push([rel.label,match]);}
-  if(relatives.length){const section=headingSection(text('labels.related'));for(const [label,item] of relatives){const a=anchor('',detailUrl(item,current),'related-card');a.append(node('span','date',label),node('strong','',localized(item).title));section.append(a);}article.append(section);}
+
+function showBackgroundSection(selector, data, translationKey) {
+  const list = document.querySelector(selector);
+  list.replaceChildren();
+  for (const source of data) {
+    const entry = { ...source, ...text(translationKey) };
+    const row = element("li", "background-row");
+    row.append(element("h3", "", entry.title));
+    const period = element("div", "background-period");
+    period.append(entryDate(entry));
+    if (entry.expectedGraduation) {
+      period.append(element("span", "graduation-status", "(" + text("labels.expectedGraduation") + ")"));
+    }
+    row.append(period, element("p", "", entry.summary));
+    if (entry.endDateUnverified) {
+      row.append(element("p", "record-note", text("labels.dischargeUnverified")));
+    }
+    list.append(row);
+  }
 }
+
+function showDetail() {
+  const target = document.querySelector("#entry-detail");
+  target.replaceChildren();
+  const source = entries.find(({ id }) => id === params.get("id"));
+  const backQuery = new URLSearchParams(filterQuery(activeFilter));
+  if (source?.parentId) backQuery.set("open", source.parentId);
+  document.querySelector("#timeline-return").href =
+    "./index.html?" + backQuery + "#timeline";
+
+  if (!source) {
+    target.append(element("h1", "missing-title", text("labels.missing")));
+    return;
+  }
+
+  const entry = localizedEntry(source);
+  if (!entry.detail || !entry.sections?.some((section) => section.text?.trim())) {
+    location.replace(document.querySelector("#timeline-return").href);
+    return;
+  }
+  document.title = entry.title + " | " + text("profile.name");
+  const header = element("header", "detail-header");
+  const meta = element("div", "card-meta");
+  meta.append(badge(entry), entryDate(entry));
+  header.append(meta, element("h1", "", entry.title));
+  if (entry.summary) header.append(element("p", "", entry.summary));
+  target.append(header);
+
+  const body = element("div", "detail-body");
+  for (const section of entry.sections || []) {
+    const block = element("section", "detail-section");
+    block.append(element("h2", "", section.title), element("p", "", section.text));
+    body.append(block);
+  }
+  target.append(body);
+
+  if (!entry.related?.length) return;
+  const related = element("section", "related");
+  related.append(element("h2", "", text("labels.related")));
+  for (const item of entry.related) {
+    const match = entries.find(({ id }) => id === item.id);
+    const href = match && entryHref(localizedEntry(match), activeFilter);
+    if (!href) continue;
+    const card = link("related-card", "", href);
+    card.append(element("span", "related-label", item.label), element("strong", "", localizedEntry(match).title));
+    related.append(card);
+  }
+  if (related.childElementCount > 1) target.append(related);
+}
+
+let renderCurrentPage;
+rememberLanguage();
+applyTranslations();
+
+if (document.body.dataset.page === "timeline") {
+  document.querySelectorAll(".contact-icon").forEach((icon) => {
+    icon.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") icon.dataset.tooltipDismissed = "true";
+    });
+    for (const event of ["mouseleave", "blur"]) {
+      icon.addEventListener(event, () => delete icon.dataset.tooltipDismissed);
+    }
+  });
+  const filters = document.querySelector(".filters");
+  const filterButtons = [...filters.querySelectorAll("[data-filter]")];
+  filterButtons.forEach((button) => {
+    button.hidden = !availableFilters.includes(button.dataset.filter);
+  });
+  const buttons = filterButtons.filter((button) => !button.hidden);
+  const list = document.querySelector("#timeline-list");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const indicator = element("span", "filter-indicator");
+  indicator.setAttribute("aria-hidden", "true");
+  filters.append(indicator);
+  let selectedFilter = activeFilter;
+  let animation;
+
+  function positionIndicator() {
+    const selected = buttons.find((button) => button.dataset.filter === selectedFilter);
+    indicator.style.width = selected.offsetWidth + "px";
+    indicator.style.transform = `translate(${selected.offsetLeft}px, ${selected.offsetTop + selected.offsetHeight - 2}px)`;
+  }
+
+  function selectFilter(filter) {
+    selectedFilter = filter;
+    buttons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
+    });
+    positionIndicator();
+  }
+
+  function transitionTimeline(filter) {
+    animation?.cancel();
+    showTimeline(filter);
+    if (reducedMotion.matches || !list.animate) return;
+    animation = list.animate([{ opacity: 0.65 }, { opacity: 1 }], {
+      duration: 120, easing: "ease-out",
+    });
+  }
+
+  renderCurrentPage = () => {
+    animation?.cancel();
+    showTimeline(selectedFilter);
+    showBackgroundSection("#education-list", education, "education");
+    showBackgroundSection("#military-list", militaryService, "militaryService");
+    selectFilter(selectedFilter);
+  };
+  renderCurrentPage();
+  const resizeObserver = new ResizeObserver(positionIndicator);
+  resizeObserver.observe(filters);
+  buttons.forEach((button) => resizeObserver.observe(button));
+  document.fonts.ready.then(() => {
+    positionIndicator();
+    filters.classList.add("filters-ready");
+  });
+  reducedMotion.addEventListener("change", () => {
+    if (reducedMotion.matches) {
+      animation?.cancel();
+      showTimeline(selectedFilter);
+    }
+  });
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const filter = button.dataset.filter;
+      if (filter === selectedFilter) return;
+      selectFilter(filter);
+      if (location.protocol !== "file:") {
+        history.replaceState(null, "", location.pathname + filterQuery(filter) + location.hash);
+      }
+      transitionTimeline(filter);
+    });
+  });
+} else {
+  renderCurrentPage = showDetail;
+  renderCurrentPage();
+}
+
+
+// Each language button is a native button, supporting Tab, Enter and Space.
+let languageAnimations = [];
+const languageMotion = matchMedia("(prefers-reduced-motion: reduce)");
+languageMotion.addEventListener("change", () => {
+  if (languageMotion.matches) languageAnimations.forEach((animation) => animation.cancel());
+});
+document.querySelectorAll("button[data-language]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (language === button.dataset.language) return;
+    language = button.dataset.language;
+    rememberLanguage();
+    if (location.protocol !== "file:") {
+      const query = new URLSearchParams(location.search);
+      query.set("lang", language);
+      history.replaceState(null, "", location.pathname + "?" + query + location.hash);
+    }
+    languageAnimations.forEach((animation) => animation.cancel());
+    languageAnimations = [];
+    applyTranslations();
+    renderCurrentPage();
+    if (!languageMotion.matches) {
+      document.querySelectorAll(".profile-copy, .page-main, .detail-main").forEach((node) => {
+        if (!node.animate) return;
+        languageAnimations.push(node.animate([{ opacity: 0.45 }, { opacity: 1 }], {
+          duration: 180, easing: "ease-out",
+        }));
+      });
+    }
+  });
+});

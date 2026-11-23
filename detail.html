@@ -2,20 +2,27 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8">
+  <link rel="icon" type="image/png" sizes="64x64" href="./assets/favicon.png?v=4">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="김현우의 연구, 경력 및 프로젝트 포트폴리오">
-  <title>Detail | 김현우</title>
-  <link rel="icon" href="./assets/favicon.png">
-  <link rel="stylesheet" href="./styles.css?v=61">
-  <script src="./locales/ko.js?v=61" defer></script>
-  <script src="./locales/en.js?v=61" defer></script>
-  <script src="./entries.js?v=61" defer></script>
-  <script src="./app.js?v=61" defer></script>
+  <title>경험 | 김현우</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="./styles.css?v=62">
+  <script src="./locales/ko.js?v=62" defer></script>
+  <script src="./locales/en.js?v=62" defer></script>
+  <script src="./entries.js?v=62" defer></script>
+  <script src="./app.js?v=62" defer></script>
 </head>
 <body data-page="detail">
-  <a class="skip-link" href="#main">본문으로 이동</a>
-  <header class="site-header"></header>
-  <main id="main" class="shell" tabindex="-1"></main>
-  <noscript>내용을 보려면 JavaScript를 켜 주세요. Please enable JavaScript to view this portfolio.</noscript>
+  <header class="utility-bar">
+  <div class="language-switch" role="group" aria-label="언어 선택" data-i18n-aria-label="labels.language">
+    <button type="button" data-language="ko" lang="ko" aria-label="한국어" aria-pressed="true" data-i18n-aria-label="labels.ko">KO</button>
+    <button type="button" data-language="en" lang="en" aria-label="영어" aria-pressed="false" data-i18n-aria-label="labels.en">EN</button>
+  </div>
+  </header>
+  <main class="shell detail-main">
+    <a class="back-link" id="timeline-return" data-i18n="labels.back" href="./index.html#timeline">활동 및 성과로 돌아가기</a>
+    <article id="entry-detail"></article>
+    <noscript><p data-i18n="labels.jsRequired">내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.</p></noscript>
+  </main>
 </body>
 </html>

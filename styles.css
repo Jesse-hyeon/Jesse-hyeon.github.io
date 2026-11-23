@@ -144,5 +144,3 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
   .project-grid { grid-template-columns: minmax(0, 1fr); }
   .journey-row { grid-template-columns: 52px minmax(0, 1fr); gap: 16px; }
 }
-
-#career #causal-x .entry-summary { font-size: 0.78125rem; line-height: 1.6; }

@@ -98,7 +98,7 @@ const english = {
     },
     "causal-x": {
       title: "Causal X",
-      summary: "A time-series causal analysis service that examines the drivers of commodity price fluctuations and the lags in their impact to support corporate procurement and risk management decisions",
+      summary: "A procurement support service analyzing the causes of commodity price changes and their time-lagged effects.",
       label: "Startup",
       sections: [
         { title: "Responsibilities", text: "A time-series causal analysis service that examines the drivers of commodity price fluctuations and the lags in their impact to support corporate procurement and risk management decisions\nInterviewed manufacturing companies to understand procurement and contract decision processes\nTranslated causal analysis findings into product features and analysis reports" },

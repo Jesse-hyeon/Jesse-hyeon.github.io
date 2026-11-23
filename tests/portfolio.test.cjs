@@ -172,16 +172,40 @@ test("Career details show related projects and achievements as static lists", ()
   assert(band.main.textContent.includes("2차 공연"));
 });
 
-test("Only meaningful details are clickable and old empty child URLs lead to their parent", () => {
-  const page = render("/projects.html?lang=ko");
-  const other = page.document.getElementById("other");
-  assert.equal(descendants(other).filter(node => node.tagName === "A").length, 0);
-  const causal = render("/detail.html?id=causal-x&lang=ko");
-  assert(!causal.location.redirect);
-  assert(causal.main.textContent.includes("원자재"));
-  const child = render("/detail.html?id=sk-on&lang=en");
-  assert(child.location.redirect.includes("id=impactive-internship"));
-  assert(child.location.redirect.includes("lang=en"));
+test("Every activity opens its own factual detail page in both languages", () => {
+  for (const language of ["ko", "en"]) {
+    const page = render("/projects.html?lang=" + language);
+    const records = vm.runInContext("entries", page.context);
+    for (const record of records) {
+      const detail = render("/detail.html?id=" + record.id + "&lang=" + language);
+      assert(!detail.location.redirect, record.id + " must open its own page");
+      assert(detail.document.querySelector(".detail-facts"));
+      const expected = vm.runInContext("locales." + language + ".entries", detail.context)[record.id].title;
+      assert(detail.main.textContent.includes(expected));
+      assert(detail.main.textContent.includes(record.startDate.replace("-", ".")));
+      assert(!detail.main.textContent.includes("추후 추가"));
+    }
+    for (const route of ["experience", "projects"]) {
+      const listPage = render("/" + route + ".html?lang=" + language);
+      for (const row of descendants(listPage.main).filter(node => node.className.includes("cv-row"))) {
+        const anchor = descendants(row).find(node => node.tagName === "A");
+        assert(anchor, row.id + " must be clickable");
+        assert(new URL(anchor.href, "https://example.com").searchParams.get("id") === row.id);
+      }
+    }
+  }
+});
+
+test("Band and choir titles contain roles without duplicate secondary role lines", () => {
+  const page = render("/experience.html?lang=ko");
+  for (const [id, title] of [
+    ["sabong-band", "사봉밴드 공연 기획 및 건반 연주"],
+    ["choir-competition", "학부합창대회 음악 디렉터"],
+  ]) {
+    const row = page.document.getElementById(id);
+    assert(row.textContent.includes(title));
+    assert(!descendants(row).some(node => node.className === "entry-role"));
+  }
 });
 
 test("Legacy index timeline URLs still render Experience", () => {

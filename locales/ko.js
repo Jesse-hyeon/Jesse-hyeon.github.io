@@ -36,6 +36,9 @@ const korean = {
     "relatedAchievements": "관련 성과",
     "parentActivity": "상위 활동",
     "overview": "개요",
+    "period": "기간",
+    "category": "분류",
+    "role": "역할",
     "projectDetails": "프로젝트 상세",
     "downloadKo": "KO PDF",
     "downloadEn": "EN PDF",
@@ -87,14 +90,12 @@ const korean = {
       ]
     },
     "sabong-band": {
-      "title": "사봉밴드",
-      "summary": "",
-      "role": "공연 기획"
+      "title": "사봉밴드 공연 기획 및 건반 연주",
+      "summary": ""
     },
     "choir-competition": {
-      "title": "학부합창대회",
-      "summary": "",
-      "role": "음악 디렉터"
+      "title": "학부합창대회 음악 디렉터",
+      "summary": ""
     },
     "causal-x": {
       "title": "Causal X",

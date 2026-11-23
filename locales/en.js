@@ -36,6 +36,9 @@ const english = {
     relatedAchievements: "Related Achievements",
     parentActivity: "Parent activity",
     overview: "Overview",
+    period: "Period",
+    category: "Category",
+    role: "Role",
     projectDetails: "Project details",
     downloadKo: "KO PDF",
     downloadEn: "EN PDF",
@@ -87,14 +90,12 @@ const english = {
       ],
     },
     "sabong-band": {
-      title: "Sabong Band",
+      title: "Sabong Band — Performance Planning & Keyboards",
       summary: "",
-      role: "Performance Planning",
     },
     "choir-competition": {
-      title: "College Choir Competition",
+      title: "College Choir Competition — Music Director",
       summary: "",
-      role: "Music Director",
     },
     "causal-x": {
       title: "Causal X",

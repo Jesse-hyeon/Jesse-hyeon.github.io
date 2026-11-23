@@ -43,19 +43,8 @@ function childrenOf(id) {
 function byStartDate(a, b) {
   return b.startDate.localeCompare(a.startDate) || a.order - b.order;
 }
-function hasDetail(source) {
-  const entry = localizedEntry(source);
-  return Boolean(
-    source.category === "award" ||
-    entry.sections?.some(section => section.text?.trim()) ||
-    entry.qa?.some(item => item.question?.trim() && item.answer?.trim()) ||
-    entry.media?.some(item => item.src) ||
-    entry.links?.some(item => item.url) ||
-    childrenOf(entry.id).length
-  );
-}
 function entryHref(source) {
-  return source.url || (hasDetail(source) ? detailUrl(source.id) : null);
+  return source.url || detailUrl(source.id);
 }
 function entryDate(entry) {
   const range = element("span", "entry-range");
@@ -72,7 +61,7 @@ function entryRow(source, { project = false, compact = false } = {}) {
   const entry = localizedEntry(source);
   const row = element("li", compact ? "cv-row compact-row" : "cv-row");
   const href = entryHref(source);
-  const content = href ? link("entry-content entry-link", "", href) : element("div", "entry-content");
+  const content = link("entry-content entry-link", "", href);
   const title = project && entry.projectTitle ? entry.projectTitle : entry.title;
   content.append(element("h3", "", title));
   if (entry.role) content.append(element("p", "entry-role", entry.role));
@@ -136,7 +125,7 @@ function projectCard(source) {
   const entry = localizedEntry(source);
   const row = element("li", "");
   const href = entryHref(source);
-  const card = href ? link("project-card entry-link", "", href) : element("div", "project-card");
+  const card = link("project-card entry-link", "", href);
   card.append(entryDate(entry), element("h3", "", entry.projectTitle || entry.title));
   if (entry.projectSummary || entry.summary) card.append(element("p", "entry-summary", entry.projectSummary || entry.summary));
   row.append(card);
@@ -163,16 +152,20 @@ function showDetail() {
     main.append(element("h1", "page-title", text("labels.missing")));
     return;
   }
-  if (!hasDetail(source)) {
-    const target = source.parentId ? detailUrl(source.parentId) : pageUrl("projects");
-    location.replace(target);
-    return;
-  }
   const entry = localizedEntry(source);
   document.title = entry.title + " | " + text("profile.name");
-  main.append(element("h1", "page-title", entry.title), entryDate(entry));
-  if (entry.role) main.append(element("p", "detail-role", entry.role));
+  main.append(element("h1", "page-title", entry.title));
   if (entry.summary) main.append(element("p", "detail-summary", entry.summary));
+  const overview = section(text("ui.overview"));
+  const facts = element("dl", "detail-facts");
+  const period = element("dd");
+  period.append(entryDate(entry));
+  facts.append(element("dt", "", text("ui.period")), period);
+  facts.append(element("dt", "", text("ui.category")),
+    element("dd", "", entry.label || text("filters." + entry.category)));
+  if (entry.role) facts.append(element("dt", "", text("ui.role")), element("dd", "", entry.role));
+  overview.append(facts);
+  main.append(overview);
   for (const block of entry.sections || []) {
     if (!block.text?.trim()) continue;
     const node = section(block.title);

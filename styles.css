@@ -195,3 +195,11 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
   .language-switch::before, .language-switch button, .resume-links a { transition: none; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+
+.detail-facts { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 10px 16px; margin: 0; }
+.detail-facts dt { color: var(--muted); font-size: 0.8125rem; }
+.detail-facts dd { margin: 0; color: var(--body); font-size: 0.875rem; }
+@media (max-width: 560px) {
+  .detail-facts { grid-template-columns: 72px minmax(0, 1fr); }
+}

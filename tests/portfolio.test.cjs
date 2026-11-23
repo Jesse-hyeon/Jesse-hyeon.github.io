@@ -199,7 +199,7 @@ test("Every activity opens its own factual detail page in both languages", () =>
 test("Band and choir titles contain roles without duplicate secondary role lines", () => {
   const page = render("/experience.html?lang=ko");
   for (const [id, title] of [
-    ["sabong-band", "사봉밴드 공연 기획 및 건반 연주"],
+    ["sabong-band", "사봉밴드 공연 기획 및 참여"],
     ["choir-competition", "학부합창대회 음악 디렉터"],
   ]) {
     const row = page.document.getElementById(id);

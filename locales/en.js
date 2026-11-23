@@ -90,7 +90,7 @@ const english = {
       ],
     },
     "sabong-band": {
-      title: "Sabong Band — Performance Planning & Keyboards",
+      title: "Sabong Band — Performance Planning & Participation",
       summary: "",
     },
     "choir-competition": {

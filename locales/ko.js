@@ -90,7 +90,7 @@ const korean = {
       ]
     },
     "sabong-band": {
-      "title": "사봉밴드 공연 기획 및 건반 연주",
+      "title": "사봉밴드 공연 기획 및 참여",
       "summary": ""
     },
     "choir-competition": {

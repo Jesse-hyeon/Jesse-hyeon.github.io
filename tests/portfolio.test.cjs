@@ -205,3 +205,25 @@ test("Language switches preserve the route, nav state, dates and detail context"
   assert(detail.main.textContent.includes("제1저자"));
   assert(detail.document.querySelector(".back-link").href.includes("lang=ko"));
 });
+
+test("Every award opens its own detail page in both languages without arrow icons", () => {
+  for (const language of ["ko", "en"]) {
+    const page = render("/experience.html?lang=" + language);
+    const honors = page.document.getElementById("honors");
+    const rows = honors.children[1].children;
+    assert.equal(rows.length, 6);
+    for (const row of rows) {
+      const anchor = descendants(row).find(node => node.tagName === "A");
+      assert(anchor, row.id + " must be clickable");
+      const url = new URL(anchor.href, "https://example.com/");
+      assert.equal(url.searchParams.get("id"), row.id);
+      assert.equal(url.searchParams.get("lang"), language);
+      const detail = render(url.href);
+      assert(!detail.location.redirect, row.id + " must show its own detail");
+      assert(detail.main.textContent.includes(anchor.textContent));
+    }
+    assert(!descendants(page.main).some(node => node.className === "link-arrow"));
+    const projects = render("/projects.html?lang=" + language);
+    assert(!descendants(projects.main).some(node => node.className === "link-arrow"));
+  }
+});

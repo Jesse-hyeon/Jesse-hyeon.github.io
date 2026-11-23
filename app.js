@@ -46,6 +46,7 @@ function byStartDate(a, b) {
 function hasDetail(source) {
   const entry = localizedEntry(source);
   return Boolean(
+    source.category === "award" ||
     entry.sections?.some(section => section.text?.trim()) ||
     entry.qa?.some(item => item.question?.trim() && item.answer?.trim()) ||
     entry.media?.some(item => item.src) ||
@@ -67,11 +68,6 @@ function entryDate(entry) {
   }
   return range;
 }
-function addArrow(node) {
-  const arrow = element("span", "link-arrow", "↗");
-  arrow.setAttribute("aria-hidden", "true");
-  node.append(arrow);
-}
 function entryRow(source, { project = false, compact = false } = {}) {
   const entry = localizedEntry(source);
   const row = element("li", compact ? "cv-row compact-row" : "cv-row");
@@ -82,7 +78,6 @@ function entryRow(source, { project = false, compact = false } = {}) {
   if (entry.role) content.append(element("p", "entry-role", entry.role));
   const summary = project && entry.projectSummary ? entry.projectSummary : entry.summary;
   if (summary && !compact) content.append(element("p", "entry-summary", summary));
-  if (href) addArrow(content);
   row.append(entryDate(entry), content);
   row.id = source.id;
   return row;
@@ -144,7 +139,6 @@ function projectCard(source) {
   const card = href ? link("project-card entry-link", "", href) : element("div", "project-card");
   card.append(entryDate(entry), element("h3", "", entry.projectTitle || entry.title));
   if (entry.projectSummary || entry.summary) card.append(element("p", "entry-summary", entry.projectSummary || entry.summary));
-  if (href) addArrow(card);
   row.append(card);
   return row;
 }

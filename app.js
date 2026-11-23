@@ -146,7 +146,12 @@ function showProjects() {
 function showDetail() {
   const source = entries.find(entry => entry.id === params.get("id"));
   const from = params.get("from") === "projects" ? "projects" : "experience";
-  const back = link("back-link", text("ui.back"), pageUrl(from));
+  const back = link("back-link", "", pageUrl(from));
+  back.setAttribute("aria-label", text("ui.back"));
+  back.setAttribute("title", text("ui.back"));
+  const backIcon = element("span", "back-icon");
+  backIcon.setAttribute("aria-hidden", "true");
+  back.append(backIcon);
   main.append(back);
   if (!source) {
     main.append(element("h1", "page-title", text("labels.missing")));

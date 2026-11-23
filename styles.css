@@ -140,7 +140,15 @@ html[lang="ko"] .profile-description { word-break: keep-all; }
 .project-card .entry-range { display: block; margin-bottom: 12px; }
 .project-card .entry-summary { margin-top: 10px; }
 
-.back-link { display: inline-block; margin-bottom: 24px; color: var(--muted); font-size: 0.875rem; }
+.page-layout--detail { display: block; max-width: 842px; }
+.back-link {
+  display: inline-grid; place-items: center; width: 44px; height: 44px;
+  margin-bottom: 24px; border-radius: 50%; color: var(--muted); text-decoration: none;
+  transition: color 160ms ease, background-color 160ms ease;
+}
+.back-icon { width: 10px; height: 10px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateX(2px) rotate(45deg); }
+.back-link:is(:hover, :focus-visible, :active) { color: var(--ink); background: var(--hover); }
+@media (prefers-reduced-motion: reduce) { .back-link { transition: none; } }
 .page-title + .entry-range { display: block; margin-top: 16px; }
 .detail-summary, .detail-role, .detail-copy { font-size: 0.9375rem; color: var(--body); line-height: 1.8; word-break: keep-all; white-space: pre-line; }
 .detail-role { color: var(--muted); margin-block: 14px 0; }

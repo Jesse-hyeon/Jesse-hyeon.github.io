@@ -70,7 +70,7 @@ const korean = {
     "pending": "상세 내용은 추후 추가할 예정입니다.",
     "present": "현재",
     "expectedGraduation": "졸업 예정",
-    "dischargeUnverified": "전역일은 실제 복무 기록 확인이 필요합니다.",
+    "dischargeUnverified": "전역일 2.16 입대일 8.17",
     "related": "연결된 경험",
     "jsRequired": "내용을 보려면 브라우저에서 자바스크립트를 켜 주세요.",
     "count": "{category} · {count}개",

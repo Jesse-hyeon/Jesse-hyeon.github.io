@@ -70,7 +70,7 @@ const english = {
     pending: "Details will be added later.",
     present: "Present",
     expectedGraduation: "Expected graduation",
-    dischargeUnverified: "The discharge date requires verification against official service records.",
+    dischargeUnverified: "Discharge date: Feb 16 · Enlistment date: Aug 17",
     related: "Related experience",
     jsRequired: "Please enable JavaScript to view the experience timeline.",
     count: "{category} · {count} entries",
